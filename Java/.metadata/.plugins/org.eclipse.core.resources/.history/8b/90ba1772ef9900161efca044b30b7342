@@ -1,0 +1,12 @@
+package dbos;
+
+import java.sql.*;
+
+public class Cliente 
+{
+	private int codCliente;
+	private String userLogin, senha, nome, celular;
+	private float frequencia;
+	private 
+	
+}
