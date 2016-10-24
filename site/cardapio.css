@@ -1,0 +1,92 @@
+body{
+    text-align: center;
+    width: 100%;
+    left:0px;
+    right:0px;
+}
+
+#principal{
+    position: absolute;
+    background-color: white;
+    left: 390px;
+    width: 800px;
+    height: 500px;
+    top:280px;
+    font-family: 'Poiret One', 'cursive';
+    font-size: 25px;
+    color: black;
+    text-align:center;
+}
+
+input[type="submit"] {
+    background-color: #CE3323; 
+    width:150px;
+    height: 30px;
+    border: 1px solid white;
+    font-family: 'Poiret One', 'cursive';
+    color: white;
+    font-size: 20px;
+}
+
+input[type="submit"]:hover {
+    background-color: #e7393c; 
+    width:150px;
+    height: 30px;
+    border: 1px solid white;
+    font-family: 'Poiret One', 'cursive';
+    color: white;
+    font-size: 20px;
+}
+#img{
+position: absolute;
+width: 150px;
+height: 150px;
+left: 0px;
+}
+#imgBeb{
+position: absolute;
+width: 150px;
+height: 150px;
+left: 0px;
+}
+x
+{
+    position: absolute;
+    left: 160px;
+    text-align: left;
+    color: red;
+}
+x1
+{
+   position: absolute;
+    left: 160px;
+    text-align: left;
+    color: red;
+}
+#v{
+    position: relative;
+    top: 50px;
+    left: 20px;;
+    width: 630px;
+    height: 150px;
+}
+#pedido
+{
+    position: relative;
+    left: 150px;
+}
+#qtde
+{
+    width: 35px;
+}
+#a{
+    position: absolute;
+    top: 220px;
+    width: 300px;
+    border: 1px solid black;
+    height: 500px;
+    right : 30px;
+    background-color: white;
+    color: black;
+    
+}
