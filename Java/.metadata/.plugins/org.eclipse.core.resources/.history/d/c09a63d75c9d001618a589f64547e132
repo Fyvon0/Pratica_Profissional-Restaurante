@@ -1,0 +1,36 @@
+package daos;
+
+import java.sql.*;
+import Core.*;
+import banco.de.dados.*;
+import dbos.Questionario;
+
+public class Questionarios {
+	public boolean cadastrado (int codigo) throws Exception
+    {
+        boolean retorno = false;
+
+        try
+        {
+            String sql;
+
+            sql = "SELECT * " +
+                  "FROM LIVROS " +
+                  "WHERE CODIGO=?";
+
+            DAOs.getBD().prepareStatement (sql);
+
+            DAOs.getBD().setInt (1, codigo);
+
+            MeuResultSet resultado = (MeuResultSet)DAOs.getBD().executeQuery ();
+
+            retorno = resultado.first();
+        }
+        catch (SQLException erro)
+        {
+            throw new Exception ("Erro ao procurar livro");
+        }
+
+        return retorno;
+    }
+}

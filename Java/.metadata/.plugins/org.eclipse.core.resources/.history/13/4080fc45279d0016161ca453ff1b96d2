@@ -1,0 +1,14 @@
+package dbos;
+
+import java.sql.*;
+import java.util.Calendar;
+import java.math.*;
+
+public class Mesa {
+	private int codMesa, reserva, statusMesa, codCliente;
+	private Timestamp horario, horaPrevista, horaFechamento;
+	private String formaPagamento;
+	private BigDecimal valorTotal;
+	
+	
+}

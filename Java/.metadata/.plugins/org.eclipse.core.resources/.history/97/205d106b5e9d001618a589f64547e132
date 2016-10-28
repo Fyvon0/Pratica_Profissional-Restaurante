@@ -1,0 +1,53 @@
+package dbos;
+
+public class Promocao {
+	private int codPromocao;
+	private String descricao;
+	
+	/**
+	 * @param codPromocao
+	 * @param descricao
+	 */
+	public Promocao(int codPromocao, String descricao) {
+		super();
+		this.codPromocao = codPromocao;
+		this.descricao = descricao;
+	}
+
+	/**
+	 * @return the codPromocao
+	 */
+	public int getCodPromocao() {
+		return codPromocao;
+	}
+
+	/**
+	 * @param codPromocao the codPromocao to set
+	 */
+	public void setCodPromocao(int codPromocao) throws Exception{
+		if (codPromocao <= 0)
+			throw new Exception ("Código de promoção inválido");
+		
+		this.codPromocao = codPromocao;
+	}
+
+	/**
+	 * @return the descricao
+	 */
+	public String getDescricao() {
+		return descricao;
+	}
+
+	/**
+	 * @param descricao the descricao to set
+	 */
+	public void setDescricao(String descricao) throws Exception{
+		if (descricao == null || descricao.equals(""))
+			throw new Exception ("Descrição não fornecida");
+		
+		this.descricao = descricao;
+	}
+	
+	
+	
+}

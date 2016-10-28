@@ -1,0 +1,10 @@
+package daos;
+
+import java.sql.*;
+import Core.*;
+import banco.de.dados.*;
+import dbos.Pedido;
+
+public class Pedidos {
+
+}

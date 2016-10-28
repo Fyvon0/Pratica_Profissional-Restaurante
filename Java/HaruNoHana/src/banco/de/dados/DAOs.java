@@ -8,12 +8,26 @@ package banco.de.dados;
  *
  */
 import Core.*;
+import daos.*;
 
 public class DAOs {
 	
 	private static MeuPreparedStatement bd;
 	
-	public MeuPreparedStatement getBD ()
+	private static Clientes clientes;
+	
+	private static Mesas mesas;
+	
+	
+	public static Mesas getMesas() {
+		return mesas;
+	}
+
+	public static Clientes getClientes() {
+		return DAOs.clientes;
+	}
+
+	public static MeuPreparedStatement getBD ()
 	{
 		return DAOs.bd;
 	}
