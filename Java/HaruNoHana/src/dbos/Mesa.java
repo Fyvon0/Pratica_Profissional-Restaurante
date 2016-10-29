@@ -9,25 +9,61 @@ public class Mesa {
 	private Timestamp horario, horaPrevista, horaFechamento;
 	private String formaPagamento;
 	private BigDecimal valorTotal;
+
+	public Mesa(int codMesa, int reserva, int statusMesa, int codCliente, Timestamp horario, Timestamp horaPrevista,
+			Timestamp horaFechamento, String formaPagamento, BigDecimal valorTotal) throws Exception{
+		this.setCodMesa(codMesa);
+		this.setReserva(reserva);
+		this.setStatusMesa(statusMesa);
+		this.setCodCliente(codCliente);
+		this.setHorario(horario);
+		this.setHoraPrevista(horaPrevista);
+		this.setHoraFechamento(horaFechamento);
+		this.setFormaPagamento(formaPagamento);
+		this.setValorTotal(valorTotal);
+	}
 	
+	/**
+	 * @return codMesa
+	 */
 	public int getCodMesa() {
 		return codMesa;
 	}
+	
+	/**
+	 * @param codMesa	o código de mesa a ser redefinido
+	 * @throws Exception	se o código da mesa for menor ou igual a 0
+	 */
 	public void setCodMesa(int codMesa) throws Exception{
 		if (codMesa <= 0)
 			throw new Exception ("Código inválido");
 			
 		this.codMesa = codMesa;
 	}
+	
+	/**
+	 * Verifica se uma mesa está reservada ou não
+	 * 
+	 * @return reserva	retorna 0 se a mesa estiver livre e 1 se estiver reservada
+	 */
 	public int getReserva() {
 		return reserva;
 	}
+	
+	/**
+	 * @param reserva	valor da reserva a ser redefinida
+	 * @throws Exception	se o valor não for 0 nem 1
+	 */
 	public void setReserva(int reserva) throws Exception{
 		if (!(reserva == 0 || reserva == 1))
 			throw new Exception ("Status de reserva inválido");
 		
 		this.reserva = reserva;
 	}
+	
+	/**
+	 * @return statusMesa
+	 */
 	public int getStatusMesa() {
 		return statusMesa;
 	}
@@ -162,18 +198,6 @@ public class Mesa {
 			return false;
 		
 		return true;
-	}
-	public Mesa(int codMesa, int reserva, int statusMesa, int codCliente, Timestamp horario, Timestamp horaPrevista,
-			Timestamp horaFechamento, String formaPagamento, BigDecimal valorTotal) throws Exception{
-		this.setCodMesa(codMesa);
-		this.setReserva(reserva);
-		this.setStatusMesa(statusMesa);
-		this.setCodCliente(codCliente);
-		this.setHorario(horario);
-		this.setHoraPrevista(horaPrevista);
-		this.setHoraFechamento(horaFechamento);
-		this.setFormaPagamento(formaPagamento);
-		this.setValorTotal(valorTotal);
 	}
 	
 	

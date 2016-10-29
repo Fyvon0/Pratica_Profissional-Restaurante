@@ -7,6 +7,14 @@ import dbos.Cliente;
 
 public class Clientes
 {
+	
+	/**
+	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não
+	 * 
+	 * @param codigo	código de cliente a ser procurado no banco de dados
+	 * @return	<code>true</code> se houver registro com o código informado e <code>false</code> caso contrário
+	 * @throws Exception	se ocorrer algum erro ao contatar o banco de dados
+	 */
 	public boolean cadastrado (int codigo) throws Exception
 	{
 		boolean retorno = false;
@@ -33,6 +41,13 @@ public class Clientes
 		return retorno;
 	}
 	
+	/**
+	 * Retorna as informações do cliente com o código informado
+	 * 
+	 * @param cod	código a ser procurado no banco de dados
+	 * @return	uma instância da classe Cliente com o código informado
+	 * @throws Exception	se o cliente não for cadastrado ou ocorrer algum erro ao procurar no banco de dados
+	 */
 	public Cliente getCliente (int cod) throws Exception
 	{
 		Cliente cliente = null;
@@ -63,6 +78,12 @@ public class Clientes
 		return cliente;
 	}
 	
+	/**
+	 * Informa todos os clientes do banco de dados
+	 * 
+	 * @return	uma instância de MeuResultSet que armazena dados de todos os clientes
+	 * @throws Exception	se houver um erro ao buscar os clientes no banco de dados
+	 */
 	public MeuResultSet getClientes () throws Exception {
 		MeuResultSet resultado = null;
 		
