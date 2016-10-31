@@ -9,7 +9,7 @@ public class Clientes
 {
 	
 	/**
-	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não
+	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não.
 	 * 
 	 * @param codigo	código de cliente a ser procurado no banco de dados
 	 * @return	<code>true</code> se houver registro com o código informado e <code>false</code> caso contrário
@@ -42,7 +42,7 @@ public class Clientes
 	}
 	
 	/**
-	 * Retorna as informações do cliente com o código informado
+	 * Retorna as informações do cliente com o código informado.
 	 * 
 	 * @param cod	código a ser procurado no banco de dados
 	 * @return	uma instância da classe Cliente com o código informado
@@ -79,7 +79,7 @@ public class Clientes
 	}
 	
 	/**
-	 * Informa todos os clientes do banco de dados
+	 * Informa todos os clientes do banco de dados.
 	 * 
 	 * @return	uma instância de MeuResultSet que armazena dados de todos os clientes
 	 * @throws Exception	se houver um erro ao buscar os clientes no banco de dados

@@ -7,6 +7,16 @@ public class Pedido {
 	private int codPedido, quantidade, codCliente, codPrato;
 	private Timestamp horario;
 	
+	/**
+	 * Inicia a intância de Pedido com os valores passados por parâmetro
+	 * 
+	 * @param codPedido	código único que identifica o pedido
+	 * @param quantidade	a quantidade de pratos do pedido
+	 * @param codCliente	código do cliente que realizou o pedido
+	 * @param codPrato	código do prato pedido pelo cliente
+	 * @param horario	horário em que o pedido foi efetuado
+	 * @throws Exception	se algum dos valores passados for inválido (para mais informações, veja os setters)
+	 */
 	public Pedido(int codPedido, int quantidade, int codCliente, int codPrato, Timestamp horario) throws Exception{
 		this.setCodPedido(codPedido);
 		this.setQuantidade(quantidade);
@@ -14,11 +24,18 @@ public class Pedido {
 		this.setCodPrato(codPrato);
 		this.setHorario(horario);
 	}
-
+	
+	/**
+	 * @return	o código do pedido
+	 */
 	public int getCodPedido() {
 		return codPedido;
 	}
 
+	/**
+	 * @param codPedido	o código do pedido a ser redefinido
+	 * @throws Exception	se o código fornecido for menor ou igual a 0
+	 */
 	public void setCodPedido(int codPedido) throws Exception{
 		if (codPedido <= 0)
 			throw new Exception ("Código do Pedido inválido");
@@ -26,21 +43,35 @@ public class Pedido {
 		this.codPedido = codPedido;
 	}
 
+	/**
+	 * @return	a quantidade de pratos dentro desse pedido
+	 */
 	public int getQuantidade() {
 		return quantidade;
 	}
 
+	/**
+	 * @param quantidade	a quantidade de pratos a ser redefinida
+	 * @throws Exception	se a quantidade de pratos for menor ou igual a 0
+	 */
 	public void setQuantidade(int quantidade) throws Exception{
-		if (quantidade < 0)
+		if (quantidade <= 0)
 			throw new Exception ("Quantidade inválida");
 		
 		this.quantidade = quantidade;
 	}
 
+	/**
+	 * @return o código do cliente que executou o pedido
+	 */
 	public int getCodCliente() {
 		return codCliente;
 	}
 
+	/**
+	 * @param codCliente	o código do cliente que realizou o pedido a ser redefinido
+	 * @throws Exception	se o código do cliente fornecido for menor ou igual a 0
+	 */
 	public void setCodCliente(int codCliente) throws Exception{
 		if (codCliente <= 0)
 			throw new Exception ("Código de Cliente inválido");
@@ -48,10 +79,17 @@ public class Pedido {
 		this.codCliente = codCliente;
 	}
 
+	/**
+	 * @return	o código do prato que o pedido contém
+	 */
 	public int getCodPrato() {
 		return codPrato;
 	}
 
+	/**
+	 * @param codPrato	código do prato a ser redefinido
+	 * @throws Exception	se o código do prato for menor ou igual a 0
+	 */
 	public void setCodPrato(int codPrato) throws Exception{
 		if (codPrato <= 0)
 			throw new Exception ("Código de prato inválido");
@@ -59,19 +97,30 @@ public class Pedido {
 		this.codPrato = codPrato;
 	}
 
+	/**
+	 * @return	o horário em que o pedido foi realizado
+	 */
 	public Timestamp getHorario() {
 		return horario;
 	}
 
+	/**
+	 * @param horario	o horário em que o pedido foi realizado a ser redefinido
+	 * @throws Exception	se o horário fornecido for nulo
+	 */
 	public void setHorario(Timestamp horario) throws Exception{
+		if (horario == null)
+			throw new Exception ("Horário fornecido nulo");
+		
 		Calendar cal = Calendar.getInstance();
-		cal.setLenient(false);
 		cal.setTime(horario);
 		this.horario = (Timestamp)cal.getTime();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * Gera o hashCode da instância
+	 * 
+	 * @return o valor do hashCode
 	 */
 	public int hashCode() {
 		final int prime = 31;
@@ -84,8 +133,10 @@ public class Pedido {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * Compara uma instância dessa classe a uma outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas ou <code>false</code> se não forem
 	 */
 	public boolean equals(Object obj) {
 		if (this == obj)

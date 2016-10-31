@@ -10,6 +10,20 @@ public class Mesa {
 	private String formaPagamento;
 	private BigDecimal valorTotal;
 
+	/**
+	 * Inicia os atributos de mesa com os valores passados por parâmetro
+	 * 
+	 * @param codMesa	código único que identifica a mesa
+	 * @param reserva	indica se a mesa está reservada ou não
+	 * @param statusMesa	indica se a mesa está ocupada ou livre
+	 * @param codCliente	código do cliente que está ocupando a mesa ou fez a reserva
+	 * @param horario	horário em que a sessão atual foi iniciada
+	 * @param horaPrevista	a hora prevista para a chegada da reserva (se houver)
+	 * @param horaFechamento	a hora em que foi solicitado o fechamento da conta
+	 * @param formaPagamento	a forma de pagamento optada pelo cliente
+	 * @param valorTotal	o valor total da mesa até agora
+	 * @throws Exception	se algum dos parâmetros tiver valores inválidos (veja os setters para mais informações)
+	 */
 	public Mesa(int codMesa, int reserva, int statusMesa, int codCliente, Timestamp horario, Timestamp horaPrevista,
 			Timestamp horaFechamento, String formaPagamento, BigDecimal valorTotal) throws Exception{
 		this.setCodMesa(codMesa);
@@ -62,65 +76,130 @@ public class Mesa {
 	}
 	
 	/**
-	 * @return statusMesa
+	 * @return 0 se a mesa estiver livre e 1 caso ocupada
 	 */
 	public int getStatusMesa() {
 		return statusMesa;
 	}
+	
+	/**
+	 * @param statusMesa 	indica se a mesa está livre ou ocupada
+	 * @throws Exception	se o valor não for 0 nem 1
+	 */
 	public void setStatusMesa(int statusMesa) throws Exception{
-		if (!(statusMesa == 1 || statusMesa == 2))
+		if (!(statusMesa == 1 || statusMesa == 0))
 			throw new Exception ("StatusMesa inválido");
 		
 		this.statusMesa = statusMesa;
 	}
+	
+	/**
+	 * @return	o código do cliente que ocupa a mesa ou fez a reserva
+	 */
 	public int getCodCliente() {
 		return codCliente;
 	}
+	
+	/**
+	 * @param codCliente	o código do cliente que ocupa a mesa
+	 * @throws Exception	se o código for menor ou igual a 0
+	 */
 	public void setCodCliente(int codCliente) throws Exception{
 		if (codCliente <= 0)
 			throw new Exception ("Código de cliente inválido");
 		
 		this.codCliente = codCliente;
 	}
+	
+	/**
+	 * @return o horário em que a mesa foi iniciada
+	 */
 	public Timestamp getHorario() {
 		return horario;
 	}
+	
+	/**
+	 * @param horario	horario em que a mesa foi iniciada a ser redefinido
+	 * @throws Exception	se o horário for nulo
+	 */
 	public void setHorario(Timestamp horario) throws Exception{
+		if (horario == null)
+			throw new Exception ("Horário nulo");
+		
 		Calendar cal = Calendar.getInstance();
-		cal.setLenient(false);
 		cal.setTime(horario);
 		this.horario = (Timestamp)cal.getTime();
 	}
+	
+	/**
+	 * @return hora prevista para chegada, caso haja reserva
+	 */
 	public Timestamp getHoraPrevista() {
 		return horaPrevista;
 	}
-	public void setHoraPrevista(Timestamp horaPrevista) {
+	
+	/**
+	 * @param horaPrevista	a hora prevista para chegada do cliente na mesa, se houver reserva
+	 * @throws Exception	se a hora prevista for nula
+	 */
+	public void setHoraPrevista(Timestamp horaPrevista) throws Exception{
+		if (horaPrevista == null)
+			throw new Exception ("Hora prevista não fornecida");
+		
 		Calendar cal = Calendar.getInstance();
-		cal.setLenient(false);
 		cal.setTime(horaPrevista);
 		this.horaPrevista = (Timestamp)cal.getTime();
 	}
+	
+	/**
+	 * @return o horário em que o fechamento da conta foi pedido
+	 */
 	public Timestamp getHoraFechamento() {
 		return horaFechamento;
 	}
+	
+	/**
+	 * @param horaFechamento o horário em que o fechamento da conta foi solicitado
+	 * @throws Exception	se o horário do fechamento for nulo
+	 */
 	public void setHoraFechamento(Timestamp horaFechamento) throws Exception{
+		if (horaFechamento == null)
+			throw new Exception ("Hora de Fechamento da conta não fornecida");
+		
 		Calendar cal = Calendar.getInstance();
-		cal.setLenient(false);
 		cal.setTime(horaFechamento);
 		this.horaFechamento = (Timestamp)cal.getTime();
 	}
+	
+	/**
+	 * @return uma String com a forma de pagamento 
+	 */
 	public String getFormaPagamento() {
 		return formaPagamento;
 	}
+	
+	/**
+	 * @param formaPagamento 	uma String que indica qual o método de pagamento solicitado pelo cliente
+	 * @throws Exception	se a String enviada for nula ou igual a cadeia vazia
+	 */
 	public void setFormaPagamento(String formaPagamento) throws Exception{
 		if (formaPagamento == null || formaPagamento.equals(""))
 			throw new Exception ("Forma de Pagamento não fornecida");
 			
 		this.formaPagamento = formaPagamento;
 	}
+	
+	/**
+	 * @return	uma instância de BigDecimal que indica o valor total do consumo na sessão atual nessa mesa
+	 */
 	public BigDecimal getValorTotal() {
 		return valorTotal;
 	}
+	
+	/**
+	 * @param valorTotal	um BigDecimal que indique o total do consumo na mesa na sessão atual
+	 * @throws Exception	se o valorTotal for menor do que 0.0
+	 */
 	public void setValorTotal(BigDecimal valorTotal) throws Exception{
 		if (valorTotal.compareTo(new BigDecimal(0.0)) < 0)
 			throw new Exception ("Valor Total inválido");
@@ -128,6 +207,11 @@ public class Mesa {
 		this.valorTotal = valorTotal;
 	}
 
+	/**
+	 * Gera o hashCode da instância
+	 * 
+	 * @return o valor do hashCode
+	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 666;
@@ -143,6 +227,11 @@ public class Mesa {
 		return result;
 	}
 	
+	/**
+	 * Compara uma instância dessa classe a uma outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas ou <code>false</code> se não forem
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

@@ -6,6 +6,14 @@ import banco.de.dados.*;
 import dbos.Pedido;
 
 public class Pedidos {
+	
+	/**
+	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não.
+	 * 
+	 * @param codigo	código de pedido a ser procurado no banco de dados
+	 * @return	<code>true</code> se houver registro com o código informado e <code>false</code> caso contrário
+	 * @throws Exception	se ocorrer algum erro ao contatar o banco de dados
+	 */
 	public boolean cadastrado (int codigo) throws Exception
     {
         boolean retorno = false;
@@ -30,6 +38,13 @@ public class Pedidos {
         return retorno;
     }
 	
+    /**
+     * Retorna as informações do pedido com o código informado
+     * 
+     * @param codigo	o código do pedido que será procurado no banco de dados
+     * @return	uma instância da classe Pedido cujo código seja igual ao parâmetro
+     * @throws Exception	se não houver pedido com o código fornecido ou ocorrer algum erro ao conectar com o banco de dados
+     */
 	public Pedido getPedido (int codigo) throws Exception
     {
         Pedido pedido = null;
@@ -57,6 +72,12 @@ public class Pedidos {
         return pedido;
     }
 	
+    /**
+     * Retorna todos os pedidos do banco de dados
+     * 
+     * @return	uma instância de MeuResultSet com todas os pedidos do banco de dados
+     * @throws Exception	se houver algum erro ao conectar com o banco de dados
+     */
 	public MeuResultSet getPedidos () throws Exception
     {
         MeuResultSet resultado = null;

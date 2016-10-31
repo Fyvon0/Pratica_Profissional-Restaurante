@@ -7,52 +7,17 @@ public class Prato
 	private int codPrato,classificacao;
 	private String ingredientes,descricao;
 	private BigDecimal preco;
-	public int getCodPrato() {
-		return codPrato;
-	}
-	public void setCodPrato(int codPrato) throws Exception{
-		if (codPrato <= 0)
-			throw new Exception ("Código de prato inválido");
-		
-		this.codPrato = codPrato;
-	}
-	public int getClassificacao() {
-		return classificacao;
-	}
-	public void setClassificacao(int classificacao) throws Exception{
-		if (classificacao <= 0)
-			throw new Exception ("Classificação inválida");
-		
-		this.classificacao = classificacao;
-	}
-	public String getIngredientes() {
-		return ingredientes;
-	}
-	public void setIngredientes(String ingredientes) throws Exception{
-		if (ingredientes == null || ingredientes.equals(""))
-			throw new Exception ("Ingrendientes inválidos");
-		
-		this.ingredientes = ingredientes;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) throws Exception{
-		if (descricao == null || descricao.equals(""))
-			throw new Exception ("Descrição inválida");
-		
-		this.descricao = descricao;
-	}
-	public BigDecimal getPreco() {
-		return preco;
-	}
-	public void setPreco(BigDecimal preco) throws Exception{
-		if (preco.compareTo(new BigDecimal(0.0)) < 0)
-			throw new Exception ("Preço inválido");
-		
-		this.preco = preco;
-	}
 	
+	/**
+	 * Inicializa os atributos de uma instância de prato com os valores dos parâmetros
+	 * 
+	 * @param codPrato	código único que identifica prato
+	 * @param classificacao	um inteiro que identifica se o prato é uma entrada, prato principal, sobremesa ou bebida
+	 * @param ingredientes	os ingredientes que compõem o prato
+	 * @param descricao	uma descrição do prato
+	 * @param preco	o preço do prato
+	 * @throws Exception	se algum dos parâmetros fornecidos for inválido (para mais informações, veja os setters)
+	 */
 	public Prato(int codPrato, int classificacao, String ingredientes, String descricao, BigDecimal preco) throws Exception{
 		this.setCodPrato(codPrato);
 		this.setClassificacao(classificacao);
@@ -60,7 +25,102 @@ public class Prato
 		this.setDescricao(descricao);
 		this.setPreco(preco);
 	}
-
+	
+	/**
+	 * @return	o código do prato
+	 */
+	public int getCodPrato() {
+		return codPrato;
+	}
+	
+	/**
+	 * @param codPrato	o código do prato a ser redefinido
+	 * @throws Exception	se o código do prato fornecido for menor ou igual a 0
+	 */
+	public void setCodPrato(int codPrato) throws Exception{
+		if (codPrato <= 0)
+			throw new Exception ("Código de prato inválido");
+		
+		this.codPrato = codPrato;
+	}
+	
+	/**
+	 * @return	um inteiro que representa a classificação do prato em entradas, pratos principais, sobremesas e bebidas
+	 */
+	public int getClassificacao() {
+		return classificacao;
+	}
+	
+	/**
+	 * @param classificacao	a nova classificação a ser redefinida
+	 * @throws Exception	se a classificação for menor ou igual a 0 ou maior ou igual a 4
+	 */
+	public void setClassificacao(int classificacao) throws Exception{
+		if (classificacao <= 0 || classificacao >= 5)
+			throw new Exception ("Classificação inválida");
+		
+		this.classificacao = classificacao;
+	}
+	
+	/**
+	 * @return	os ingredientes do prato
+	 */
+	public String getIngredientes() {
+		return ingredientes;
+	}
+	
+	/**
+	 * @param ingredientes	os ingredientes a serem redefinidos
+	 * @throws Exception	se os ingredientes forem nulos ou iguais a cadeia vazia
+	 */
+	public void setIngredientes(String ingredientes) throws Exception{
+		if (ingredientes == null || ingredientes.equals(""))
+			throw new Exception ("Ingrendientes inválidos");
+		
+		this.ingredientes = ingredientes;
+	}
+	
+	/**
+	 * @return	a descrição do prato
+	 */
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	/**
+	 * @param descricao	a descrição do prato a ser redefinida
+	 * @throws Exception	se a descrição for nula ou igual a cadeia vazia
+	 */
+	public void setDescricao(String descricao) throws Exception{
+		if (descricao == null || descricao.equals(""))
+			throw new Exception ("Descrição inválida");
+		
+		this.descricao = descricao;
+	}
+	
+	/**
+	 * @return	o preço do produto
+	 */
+	public BigDecimal getPreco() {
+		return preco;
+	}
+	
+	/**
+	 * @param preco	o preço do produto a ser redefinido
+	 * @throws Exception	se o preço for menor que 0.0
+	 */
+	public void setPreco(BigDecimal preco) throws Exception{
+		if (preco.compareTo(new BigDecimal(0.0)) < 0)
+			throw new Exception ("Preço inválido");
+		
+		this.preco = preco;
+	}
+	
+	/**
+	 * Gera o hashCode da instância
+	 * 
+	 * @return o valor do hashCode
+	 */
 	public int hashCode() {
 		final int prime = 31;
 		int result = 666;
@@ -72,6 +132,11 @@ public class Prato
 		return result;
 	}
 
+	/**
+	 * Compara uma instância dessa classe a uma outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas ou <code>false</code> se não forem
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
