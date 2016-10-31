@@ -24,12 +24,14 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 public class HaruNoHana {
 
 	private JFrame frame;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JList<String> lst_Clientes = new JList<String>();
+	private JTable tbl_clientes;
 
 	/**
 	 * Launch the application.
@@ -97,9 +99,13 @@ public class HaruNoHana {
 		tabbedPane.addTab("Mesas", null, pnl_mesas, null);
 		
 		JPanel pnl_clientes = new JPanel();
+		tabbedPane.addTab("Clientes", null, pnl_clientes, null);
+		String header[] = {"codCliente", "userLogin", "frequencia", "senha", "nome", "ultimaVisita","dataCadastro","mediaGasta","celular"};
+		tbl_clientes = new JTable(null,header);
+		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
 		pnl_clientes.addComponentListener(new ComponentAdapter() {
 			@Override
-			public void componentShown(ComponentEvent arg0) {
+			public void componentShown(ComponentEvent e) {
 				MeuResultSet clientes = null;
 				
 				try
@@ -108,21 +114,10 @@ public class HaruNoHana {
 				}
 				catch (Exception erro)
 				{
-					lst_Clientes.add("Não foi possível conectar ao banco de dados", pnl_clientes);
+					tbl_clientes.add(new JLabel("Erro ao se conectar com o banco de dados"));
 				}
-				
-				try
-				{
-					if (clientes.next()) {
-						lst_Clientes.add
-					}
-				}
-				catch (SQLException erro)
-				{}
-				
 			}
 		});
-		tabbedPane.addTab("Clientes", null, pnl_clientes, null);
 		pnl_clientes.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_3 = new JPanel();
@@ -158,8 +153,6 @@ public class HaruNoHana {
 		JRadioButton rdbtnMdiaGasta = new JRadioButton("M\u00E9dia Gasta");
 		buttonGroup.add(rdbtnMdiaGasta);
 		panel_4.add(rdbtnMdiaGasta);
-		
-		pnl_clientes.add(lst_Clientes, BorderLayout.CENTER);
 		
 		JPanel pnl_promocoes = new JPanel();
 		tabbedPane.addTab("Promo\u00E7\u00F5es", null, pnl_promocoes, null);
