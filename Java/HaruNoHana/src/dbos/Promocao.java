@@ -5,24 +5,28 @@ public class Promocao {
 	private String descricao;
 	
 	/**
-	 * @param codPromocao
-	 * @param descricao
+	 * Inicializa as variáveis com os valores passados por parâmetro
+	 * 
+	 * @param codPromocao	o código único que identifica cada promoção
+	 * @param descricao		a descrição dos detalhes da promoção
+	 * @throws Exception	se algum dos parâmetros passados for inválido (veja os setters para mais detalhes)
 	 */
-	public Promocao(int codPromocao, String descricao) {
+	public Promocao(int codPromocao, String descricao) throws Exception{
 		super();
-		this.codPromocao = codPromocao;
-		this.descricao = descricao;
+		this.setCodPromocao(codPromocao);
+		this.setDescricao(descricao);
 	}
 
 	/**
-	 * @return the codPromocao
+	 * @return codPromocao
 	 */
 	public int getCodPromocao() {
 		return codPromocao;
 	}
 
 	/**
-	 * @param codPromocao the codPromocao to set
+	 * @param codPromocao o código de promoção a ser redefinido
+	 * @throws Exception	se o código fornecido for menor ou igual a 0
 	 */
 	public void setCodPromocao(int codPromocao) throws Exception{
 		if (codPromocao <= 0)
@@ -32,14 +36,15 @@ public class Promocao {
 	}
 
 	/**
-	 * @return the descricao
+	 * @return descricao
 	 */
 	public String getDescricao() {
 		return descricao;
 	}
 
 	/**
-	 * @param descricao the descricao to set
+	 * @param descricao a descrição a ser redefinida
+	 * @throws Exception	se a descrição passado for nula ou igual a cadeia vazia
 	 */
 	public void setDescricao(String descricao) throws Exception{
 		if (descricao == null || descricao.equals(""))
@@ -48,8 +53,10 @@ public class Promocao {
 		this.descricao = descricao;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * Gera o hashCode da instância
+	 * 
+	 * @return o valor do hashCode
 	 */
 	public int hashCode() {
 		final int prime = 31;
@@ -59,8 +66,10 @@ public class Promocao {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * Compara uma instância dessa classe a uma outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas ou <code>false</code> se não forem
 	 */
 	public boolean equals(Object obj) {
 		if (this == obj)

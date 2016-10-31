@@ -6,6 +6,14 @@ import banco.de.dados.*;
 import dbos.Promocao;
 
 public class Promocoes {
+	
+	/**
+	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não.
+	 * 
+	 * @param codigo	código de promoção a ser procurado no banco de dados
+	 * @return	<code>true</code> se houver registro com o código informado e <code>false</code> caso contrário
+	 * @throws Exception	se ocorrer algum erro ao contatar o banco de dados
+	 */
 	public boolean cadastrado (int codigo) throws Exception
     {
         boolean retorno = false;
@@ -30,6 +38,12 @@ public class Promocoes {
         return retorno;
     }
 	
+	/**
+	 * Inclui um novo registro de promoção no banco de dados
+	 *
+	 * @param mesa	uma instância da classe Promoção cujos valores das variáveis serão inseridos no banco de dados
+	 * @throws Exception	se a promoção fornecida for nula
+	 */
 	public void incluir (Promocao promocao) throws Exception
     {
         if (promocao==null)
@@ -51,6 +65,12 @@ public class Promocoes {
         }
     }
 	
+	/**
+	 * Exclui do banco de dados um registro de promoção.
+	 *
+	 * @param codigo	o código da promoção que será excluida do banco de dados
+	 * @throws Exception	se não houver registro com o código passado por parâmetro ou ocorrer algum erro ao contatar o banco de dados
+	 */
 	public void excluir (int codigo) throws Exception
     {
         if (!cadastrado (codigo))
@@ -72,6 +92,12 @@ public class Promocoes {
         }
     }
 	
+	/**
+	 * Altera um registro de promoção no banco de dados
+	 * 
+	 * @param mesa	uma instância da classe Promoção que servirá de referência para as alterações a serem feitas no banco de dados
+	 * @throws Exception	se a promoção fornecida for nula ou não houver um registro com o código de promoção da instância
+	 */
 	public void alterar (Promocao promocao) throws Exception
     {
         if (promocao==null)
@@ -99,6 +125,13 @@ public class Promocoes {
         }
     }
 	
+	/**
+    * Retorna as informações da promoção com o código informado
+    * 
+    * @param codigo	o código da promoção que será procurado no banco de dados
+    * @return	uma instância da classe Promoção cujo código seja igual ao parâmetro
+    * @throws Exception	se não houver promoção com o código fornecido ou ocorrer algum erro ao conectar com o banco de dados
+    */
 	public Promocao getPromocao (int codigo) throws Exception
     {
         Promocao promocao = null;
@@ -126,6 +159,12 @@ public class Promocoes {
         return promocao;
     }
 	
+    /**
+     * Retorna todas as promoções do banco de dados
+     * 
+     * @return	uma instância de MeuResultSet com todas as promoções do banco de dados
+     * @throws Exception	se ocorrer algum erro ao conectar com o banco de dados
+     */
 	public MeuResultSet getPromocoes () throws Exception
     {
         MeuResultSet resultado = null;

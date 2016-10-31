@@ -6,6 +6,14 @@ import banco.de.dados.*;
 import dbos.Prato;
 
 public class Pratos {
+	
+	/**
+	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não.
+	 * 
+	 * @param codigo	código de prato a ser procurado no banco de dados
+	 * @return	<code>true</code> se houver registro com o código informado e <code>false</code> caso contrário
+	 * @throws Exception	se ocorrer algum erro ao contatar o banco de dados
+	 */
 	public boolean cadastrado (int codigo) throws Exception
     {
         boolean retorno = false;
@@ -30,6 +38,12 @@ public class Pratos {
         return retorno;
     }
 	
+	/**
+	 * Inclui um novo registro de prato no banco de dados
+	 *
+	 * @param mesa	uma instância da classe Prato cujos valores das variáveis serão inseridos no banco de dados
+	 * @throws Exception	se a mesa fornecida for nula
+	 */
 	public void incluir (Prato prato) throws Exception
     {
         if (prato==null)
@@ -54,6 +68,12 @@ public class Pratos {
         }
     }
 	
+	/**
+	 * Exclui do banco de dados um registro de prato.
+	 *
+	 * @param codigo	o código do prato que será excluido do banco de dados
+	 * @throws Exception	se o código passado por parâmetro não existir
+	 */
 	public void excluir (int codigo) throws Exception
     {
         if (!cadastrado (codigo))
@@ -75,6 +95,12 @@ public class Pratos {
         }
     }
 	
+	/**
+	 * Altera um registro de prato no banco de dados
+	 * 
+	 * @param mesa	uma instância da classe Prato que servirá de referência para as alterações a serem feitas no banco de dados
+	 * @throws Exception	se o prato fornecida for nulo ou não houver um registro com o código de prato da instância passada por parâmetro
+	 */
 	public void alterar (Prato prato) throws Exception
     {
         if (prato==null)
@@ -102,6 +128,13 @@ public class Pratos {
         }
     }
 
+    /**
+     * Retorna as informações do prato com o código informado
+     * 
+     * @param codigo	o código do prato que será procurado no banco de dados
+     * @return	uma instância da classe Prato cujo código seja igual ao parâmetro
+     * @throws Exception	se não houver prato com o código fornecido ou ocorrer algum erro ao conectar com o banco de dados
+     */
 	public Prato getLivro (int codigo) throws Exception
     {
         Prato prato = null;
@@ -129,6 +162,12 @@ public class Pratos {
         return prato;
     }
 	
+    /**
+     * Retorna todos os pratos do banco de dados
+     * 
+     * @return	uma instância de MeuResultSet com todas os pratos do banco de dados
+     * @throws Exception	se houver algum erro ao conectar com o banco de dados
+     */
 	public MeuResultSet getPratos () throws Exception
     {
         MeuResultSet resultado = null;
