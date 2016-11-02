@@ -25,7 +25,9 @@ import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class HaruNoHana {
 
@@ -100,25 +102,22 @@ public class HaruNoHana {
 		
 		JPanel pnl_clientes = new JPanel();
 		tabbedPane.addTab("Clientes", null, pnl_clientes, null);
-		String header[] = {"codCliente", "userLogin", "frequencia", "senha", "nome", "ultimaVisita","dataCadastro","mediaGasta","celular"};
-		tbl_clientes = new JTable(null,header);
-		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
-		pnl_clientes.addComponentListener(new ComponentAdapter() {
+		pnl_clientes.setLayout(new BorderLayout(0, 0));
+		String [] header = {"codCliente","userLogin","frequencia","senha","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
+		tbl_clientes = new JTable();
+		tbl_clientes.addComponentListener(new ComponentAdapter() {
 			@Override
-			public void componentShown(ComponentEvent e) {
-				MeuResultSet clientes = null;
-				
-				try
-				{
-					clientes = DAOs.getClientes().getClientes();
-				}
-				catch (Exception erro)
-				{
-					tbl_clientes.add(new JLabel("Erro ao se conectar com o banco de dados"));
+			public void componentShown(ComponentEvent arg0) {
+				for (int i = 0;i < header.length; i++){
+					JTableHeader th = tbl_clientes.getTableHeader();
+					TableColumnModel tcm = th.getColumnModel();
+					TableColumn tc = tcm.getColumn(i);
+					tc.setHeaderValue( header[i] );
+					th.repaint();
 				}
 			}
 		});
-		pnl_clientes.setLayout(new BorderLayout(0, 0));
+		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
 		pnl_clientes.add(panel_3, BorderLayout.EAST);

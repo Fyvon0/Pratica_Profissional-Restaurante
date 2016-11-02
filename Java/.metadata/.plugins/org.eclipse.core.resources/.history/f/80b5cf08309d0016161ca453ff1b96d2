@@ -1,7 +1,0 @@
-package dbos;
-
-import java.math.*;
-
-public class Prato {
-
-}
