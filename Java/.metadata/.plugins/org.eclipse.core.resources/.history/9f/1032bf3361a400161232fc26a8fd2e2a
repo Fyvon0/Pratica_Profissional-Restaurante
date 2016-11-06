@@ -15,6 +15,7 @@ import javax.swing.JList;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
@@ -24,8 +25,15 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.SQLException;
+
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class HaruNoHana {
 
@@ -52,14 +60,14 @@ public class HaruNoHana {
 	/**
 	 * Create the application.
 	 */
-	public HaruNoHana() {
+	public HaruNoHana(){
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 592, 419);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,24 +109,48 @@ public class HaruNoHana {
 		JPanel pnl_clientes = new JPanel();
 		tabbedPane.addTab("Clientes", null, pnl_clientes, null);
 		pnl_clientes.setLayout(new BorderLayout(0, 0));
-		String [] header = {"codCliente","userLogin","frequencia","senha","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
-		tbl_clientes = new JTable();
-		tbl_clientes.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent arg0) {
-				for (int i = 0;i < header.length; i++){
-					tbl_clientes.getColumnModel().getColumn(i).setHeaderValue(header[i]);
-				}
-			}
-		});
-		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
 		pnl_clientes.add(panel_3, BorderLayout.EAST);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JButton btnPesquisar = new JButton("Pesquisar");
+		btnPesquisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MeuResultSet clientes = null;
+				
+				try
+				{
+					clientes = DAOs.getClientes().getClientes();
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao conectar com o banco de dados");
+				}
+				
+				try
+				{
+					while (clientes.next()) {
+						tableModel.addRow(new Object[]{clientes.getInt("codCliente"),clientes.getString("userLogin"),
+								clientes.getFloat("frequencia"),clientes.getString("nome"),clientes.getDate("ultimaVisita"),
+								clientes.getDate("dataCadastro"),clientes.getFloat("mediaGasta"),clientes.getString("celular")});
+					}   
+				}
+				catch (SQLException erro)
+				{
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao conectar com o banco de dados");
+				}
+			}
+				
+		}
+		);
 		panel_3.add(btnPesquisar, BorderLayout.SOUTH);
+		
+
+		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
+		DefaultTableModel tableModel = new DefaultTableModel(header, 0);
+		tbl_clientes = new JTable(tableModel);
+		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
 		
 		JLabel lblOrdenarPor = new JLabel("Ordenar por:");
 		panel_3.add(lblOrdenarPor, BorderLayout.NORTH);

@@ -102,4 +102,23 @@ public class Clientes
 		
 		return resultado;
 	}
+	
+	public MeuResultSet getClientesOrdenado (String campo) throws Exception {
+		MeuResultSet resultado = null;
+		
+		try
+		{
+			String sql = "SELECT * FROM Cliente ORDER BY " + campo;
+			
+			DAOs.getBD().prepareStatement(sql);
+			
+			resultado = (MeuResultSet)DAOs.getBD().executeQuery();
+		}
+		catch (SQLException erro)
+		{
+			throw new Exception ("Erro ao recuperar clientes");
+		}
+		
+		return resultado;
+	}
 }

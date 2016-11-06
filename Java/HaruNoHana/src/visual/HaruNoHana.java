@@ -15,6 +15,7 @@ import javax.swing.JList;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
@@ -24,16 +25,24 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.SQLException;
+
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
-public class HaruNoHana {
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class HaruNoHana implements ActionListener{
 
 	private JFrame frame;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private ButtonGroup btnGrpOrdemCliente = new ButtonGroup();
 	private JTable tbl_clientes;
+	DefaultTableModel tableModel;
 
 	/**
 	 * Launch the application.
@@ -54,14 +63,14 @@ public class HaruNoHana {
 	/**
 	 * Create the application.
 	 */
-	public HaruNoHana() {
+	public HaruNoHana(){
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 592, 419);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,28 +112,20 @@ public class HaruNoHana {
 		JPanel pnl_clientes = new JPanel();
 		tabbedPane.addTab("Clientes", null, pnl_clientes, null);
 		pnl_clientes.setLayout(new BorderLayout(0, 0));
-		String [] header = {"codCliente","userLogin","frequencia","senha","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
-		tbl_clientes = new JTable();
-		tbl_clientes.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent arg0) {
-				for (int i = 0;i < header.length; i++){
-					JTableHeader th = tbl_clientes.getTableHeader();
-					TableColumnModel tcm = th.getColumnModel();
-					TableColumn tc = tcm.getColumn(i);
-					tc.setHeaderValue( header[i] );
-					th.repaint();
-				}
-			}
-		});
-		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
 		
 		JPanel panel_3 = new JPanel();
 		pnl_clientes.add(panel_3, BorderLayout.EAST);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnPesquisar = new JButton("Pesquisar");
-		panel_3.add(btnPesquisar, BorderLayout.SOUTH);
+		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
+		tableModel = new DefaultTableModel(header, 0);
+		tbl_clientes = new JTable(tableModel);
+		tbl_clientes.addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent e) {
+				//btnPesquisar.doClick();
+			}
+		});
+		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
 		
 		JLabel lblOrdenarPor = new JLabel("Ordenar por:");
 		panel_3.add(lblOrdenarPor, BorderLayout.NORTH);
@@ -133,27 +134,65 @@ public class HaruNoHana {
 		panel_3.add(panel_4, BorderLayout.CENTER);
 		panel_4.setLayout(new GridLayout(5, 1, 0, 0));
 		
-		JRadioButton rdbtnPedidos = new JRadioButton("Nome");
-		buttonGroup.add(rdbtnPedidos);
-		panel_4.add(rdbtnPedidos);
+		JRadioButton rdbtnNome = new JRadioButton("Nome");
+		rdbtnNome.setActionCommand("nome");
+		rdbtnNome.setSelected(true);
+		btnGrpOrdemCliente.add(rdbtnNome);
+		panel_4.add(rdbtnNome);
 		
 		JRadioButton rdbtnDataDeCadastro = new JRadioButton("Data de Cadastro");
-		buttonGroup.add(rdbtnDataDeCadastro);
+		rdbtnDataDeCadastro.setActionCommand("dataCadastro");
+		btnGrpOrdemCliente.add(rdbtnDataDeCadastro);
 		panel_4.add(rdbtnDataDeCadastro);
 		
-		JRadioButton rdbtnltimaVisita = new JRadioButton("\u00DAltima Visita");
-		buttonGroup.add(rdbtnltimaVisita);
-		panel_4.add(rdbtnltimaVisita);
+		JRadioButton rdbtnUltimaVisita = new JRadioButton("\u00DAltima Visita");
+		rdbtnUltimaVisita.setActionCommand("ultimaVisita");
+		btnGrpOrdemCliente.add(rdbtnUltimaVisita);
+		panel_4.add(rdbtnUltimaVisita);
 		
-		JRadioButton rdbtnFrequncia = new JRadioButton("Frequ\u00EAncia");
-		buttonGroup.add(rdbtnFrequncia);
-		panel_4.add(rdbtnFrequncia);
+		JRadioButton rdbtnFrequencia = new JRadioButton("Frequ\u00EAncia");
+		rdbtnFrequencia.setActionCommand("frequencia");
+		btnGrpOrdemCliente.add(rdbtnFrequencia);
+		panel_4.add(rdbtnFrequencia);
 		
-		JRadioButton rdbtnMdiaGasta = new JRadioButton("M\u00E9dia Gasta");
-		buttonGroup.add(rdbtnMdiaGasta);
-		panel_4.add(rdbtnMdiaGasta);
+		JRadioButton rdbtnMediaGasta = new JRadioButton("M\u00E9dia Gasta");
+		rdbtnMediaGasta.setActionCommand("mediaGasta");
+		btnGrpOrdemCliente.add(rdbtnMediaGasta);
+		panel_4.add(rdbtnMediaGasta);
+		
+		rdbtnNome.addActionListener(this);
+		rdbtnDataDeCadastro.addActionListener(this);
+		rdbtnFrequencia.addActionListener(this);
+		rdbtnUltimaVisita.addActionListener(this);
+		rdbtnMediaGasta.addActionListener(this);
 		
 		JPanel pnl_promocoes = new JPanel();
 		tabbedPane.addTab("Promo\u00E7\u00F5es", null, pnl_promocoes, null);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		MeuResultSet clientes = null;
+		
+		try 
+		{
+			clientes = DAOs.getClientes().getClientesOrdenado(e.getActionCommand());
+		}
+		catch (Exception erro)
+		{
+			JOptionPane.showMessageDialog(null, e.toString(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		}
+		
+		try
+		{
+			while (clientes.next())
+				tableModel.addRow(new Object[] {clientes.getInt("codCliente"),clientes.getString("userLogin"),clientes.getFloat("frequencia"),
+					clientes.getString("nome"),clientes.getTimestamp("ultimaVisita"),clientes.getTimestamp("dataCadastro"),
+					clientes.getFloat("mediaGasta"),clientes.getString("celular")});
+		}
+		catch (SQLException erro)
+		{JOptionPane.showMessageDialog(null, e.toString(), "Error",
+                JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
