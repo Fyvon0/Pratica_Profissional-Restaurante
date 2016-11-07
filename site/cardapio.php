@@ -128,7 +128,7 @@ if (!(isset($_SESSION['logado']))) {
 
                 $soma = 0;
                 for ($i = 0; $i< count($_SESSION['pedido']); $i++){
-                    $soma += number_format($_SESSION['pedido'][$i][4],2);
+                    $soma += $_SESSION['pedido'][$i][4];
                     echo "Nome: ". $_SESSION['pedido'][$i][0];
                     echo "<br>";
                     echo "Quantidade: ".$_SESSION['pedido'][$i][1];

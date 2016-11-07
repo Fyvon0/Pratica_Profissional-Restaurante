@@ -4,13 +4,14 @@ session_start();
     header ('Location:login.php');
     exit();
     }
-    if (!(isset($_SESSION['pedido']))) {
-    $_SESSION['total'] = 0;
-}
-     if (!(isset($_SESSION['total']))) {
-    $_SESSION['total'] = 0;  
-}
-
+    if (!(isset($_SESSION['pedidoFinal'])))
+        $_SESSION['pedidoFinal'] = array();
+    if (isset($_SESSION['pedido'])){
+        for ($i = 0; $i< count($_SESSION['pedido']); $i++)
+            $_SESSION['pedidoFinal'][]= array($_SESSION['pedido'][$i][0],$_SESSION['pedido'][$i][1],$_SESSION['pedido'][$i][2],
+                                              $_SESSION['pedido'][$i][3],$_SESSION['pedido'][$i][4]);
+        unset ($_SESSION['pedido']);
+    }
 ?>
 <html>
     <head>
@@ -60,13 +61,14 @@ session_start();
         echo "<b>Pedidos: </b>";
         echo "<BR>";
         echo "<BR>";
-        for ($i = 0; $i< count($_SESSION['pedido']); $i++){
-            $_SESSION['total'] += $_SESSION['pedido'][$i][4];
-                    echo "Prato: <b>". $_SESSION['pedido'][$i][0]."</b>";
+        $_SESSION['total'] = 0;
+        for ($i = 0; $i< count($_SESSION['pedidoFinal']); $i++){
+            $_SESSION['total'] += $_SESSION['pedidoFinal'][$i][4];
+                    echo "Prato: <b>". $_SESSION['pedidoFinal'][$i][0]."</b>";
                     echo "<br>";
-                    echo "Quantidade: <label style='color: blue'>".$_SESSION['pedido'][$i][1]."</label>";
+                    echo "Quantidade: <label style='color: blue'>".$_SESSION['pedidoFinal'][$i][1]."</label>";
                     echo "<br>";
-                    echo "Preço: <label style='color: red'>R$".number_format($_SESSION['pedido'][$i][4],2)."</label>";
+                    echo "Preço: <label style='color: red'>R$".number_format($_SESSION['pedidoFinal'][$i][4],2)."</label>";
                     echo "<br><br>";
                     echo "<hr>";
         }
@@ -98,7 +100,7 @@ session_start();
                     $sql = "Update Mesa set formaPagamento ='$pagamento' where codMesa=".$_SESSION['mesas']."";
                     $stmt = sqlsrv_query($con,$sql);
             
-                    $sql = "Update Mesa set valorTotal =". number_format($_SESSION['total'],2)."  where codMesa=".$_SESSION['mesas']."'";
+                    $sql = "Update Mesa set valorTotal = ".number_format($_SESSION['total'],2)." where codMesa= ".$_SESSION['mesas']."";
                     $stmt = sqlsrv_query($con,$sql);
             
                     session_destroy();
