@@ -3,7 +3,7 @@
   <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;workbench>&#xD;&#xA;&lt;mruList>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Clientes.java&quot; tooltip=&quot;HaruNoHana/src/daos/Clientes.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/HaruNoHana/src/daos/Clientes.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.jdt.ui.ClassFileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.ClassFileEditorNoSource&quot; name=&quot;Runnable.class&quot; tooltip=&quot;java.lang.Runnable&quot;>&#xD;&#xA;&lt;persistable org.eclipse.jdt.ui.ClassFileIdentifier=&quot;=HaruNoHana/C:\/Program Files\/Java\/jre1.8.0_111\/lib\/rt.jar&amp;lt;java.lang(Runnable.class&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.wb.core.guiEditor&quot; name=&quot;HaruNoHana.java&quot; tooltip=&quot;HaruNoHana/src/visual/HaruNoHana.java&quot;>&#xD;&#xA;&lt;persistable path=&quot;/HaruNoHana/src/visual/HaruNoHana.java&quot;/>&#xD;&#xA;&lt;/file>&#xD;&#xA;&lt;/mruList>&#xD;&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_7cx5QqDuEeax2-48a_hD0A" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_8Wz4kqDuEeax2-48a_hD0A" label="%trimmedwindow.label.eclipseSDK" x="124" y="-17" width="1024" height="768">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_7cx5QqDuEeax2-48a_hD0A" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_8Wz4kqDuEeax2-48a_hD0A" label="%trimmedwindow.label.eclipseSDK" x="800" y="0" width="800" height="900">
     <persistedState key="coolBarVisible" value="true"/>
     <persistedState key="perspectiveBarVisible" value="true"/>
     <persistedState key="isRestored" value="true"/>
@@ -11,7 +11,6 @@
     <persistedState key="aggregateWorkingSetId" value="Aggregate for window 1478086120512"/>
     <persistedState key="show_in_time" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;show_in_time/>"/>
     <tags>topLevel</tags>
-    <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_8Wz4kqDuEeax2-48a_hD0A" selectedElement="_8W0foKDuEeax2-48a_hD0A" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_8W0foKDuEeax2-48a_hD0A" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_9XEbsKDuEeax2-48a_hD0A">
         <children xsi:type="advanced:Perspective" xmi:id="_9XEbsKDuEeax2-48a_hD0A" elementId="org.eclipse.jst.j2ee.J2EEPerspective" selectedElement="_9XEbsaDuEeax2-48a_hD0A" label="Java EE" iconURI="platform:/plugin/org.eclipse.jst.j2ee.ui/icons/full/cview16/j2ee_perspective.gif">
@@ -140,7 +139,7 @@
         <tags>EditorStack</tags>
         <tags>active</tags>
         <children xsi:type="basic:Part" xmi:id="_n9UacKDvEeat0s0znnwo8w" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="HaruNoHana.java" iconURI="platform:/plugin/org.eclipse.wb.core.ui/icons/gui_editor.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.wb.core.guiEditor&quot; name=&quot;HaruNoHana.java&quot; partName=&quot;HaruNoHana.java&quot; title=&quot;HaruNoHana.java&quot; tooltip=&quot;HaruNoHana/src/visual/HaruNoHana.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/HaruNoHana/src/visual/HaruNoHana.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;4953&quot; selectionTopPixel=&quot;1860&quot;/>&#xD;&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;editor id=&quot;org.eclipse.wb.core.guiEditor&quot; name=&quot;HaruNoHana.java&quot; partName=&quot;HaruNoHana.java&quot; title=&quot;HaruNoHana.java&quot; tooltip=&quot;HaruNoHana/src/visual/HaruNoHana.java&quot;>&#xD;&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/HaruNoHana/src/visual/HaruNoHana.java&quot;/>&#xD;&#xA;&lt;editorState selectionHorizontalPixel=&quot;404&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;4466&quot; selectionTopPixel=&quot;1350&quot;/>&#xD;&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.wb.core.guiEditor</tags>
           <tags>removeOnHide</tags>
@@ -260,7 +259,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8_V4MKDuEeax2-48a_hD0A" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_9A_UUKTbEeac5fvO2a2msQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_7d_aTKDuEeax2-48a_hD0A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_349FsKTqEeauWL2x9F1iqQ" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_7d_aTKDuEeax2-48a_hD0A"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8_V4MaDuEeax2-48a_hD0A" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -290,7 +289,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8_WfQKDuEeax2-48a_hD0A" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_9BCXoaTbEeac5fvO2a2msQ" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_7d-MGKDuEeax2-48a_hD0A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_34_h8KTqEeauWL2x9F1iqQ" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_7d-MGKDuEeax2-48a_hD0A"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_8_WfQaDuEeax2-48a_hD0A" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>

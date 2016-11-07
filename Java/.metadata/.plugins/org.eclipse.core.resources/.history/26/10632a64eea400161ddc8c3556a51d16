@@ -45,7 +45,6 @@ public class HaruNoHana implements ActionListener{
 	private JTable tbl_clientes;
 	private DefaultTableModel tableModel;
 	private JCheckBox chckbxDecrescente;
-	private JTable tbl_mesas;
 
 	/**
 	 * Launch the application.
@@ -119,36 +118,6 @@ public class HaruNoHana implements ActionListener{
 		JPanel pnl_consultaMesas = new JPanel();
 		tabbedPane_1.addTab("Consulta", null, pnl_consultaMesas, null);
 		pnl_consultaMesas.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_5 = new JPanel();
-		pnl_consultaMesas.add(panel_5, BorderLayout.EAST);
-		panel_5.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		JLabel lblMostrarMesasCom = new JLabel("Mostrar mesas");
-		panel_5.add(lblMostrarMesasCom);
-		
-		JCheckBox chckbxReservas = new JCheckBox("Reservadas");
-		panel_5.add(chckbxReservas);
-		
-		JCheckBox chckbxNoReservadas = new JCheckBox("N\u00E3o reservadas");
-		panel_5.add(chckbxNoReservadas);
-		
-		JCheckBox chckbxLivres = new JCheckBox("Livres");
-		panel_5.add(chckbxLivres);
-		
-		JCheckBox chckbxOcupadas = new JCheckBox("Ocupadas");
-		panel_5.add(chckbxOcupadas);
-		
-		JCheckBox chckbxFechadas = new JCheckBox("Fechadas");
-		panel_5.add(chckbxFechadas);
-		
-		JCheckBox chckbxConsumindo = new JCheckBox("Consumindo");
-		panel_5.add(chckbxConsumindo);
-		
-		String [] header = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
-		tableModel = new DefaultTableModel(header, 0);
-		tbl_mesas = new JTable();
-		pnl_consultaMesas.add(tbl_mesas, BorderLayout.CENTER);
 		
 		JPanel pnl_alteraMesas = new JPanel();
 		tabbedPane_1.addTab("Altera\u00E7\u00E3o", null, pnl_alteraMesas, null);
