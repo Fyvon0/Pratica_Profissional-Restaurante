@@ -4,6 +4,7 @@
     if (!(isset($_SESSION['user'])))
         $_SESSION['user'] = '';
 
+
     if (!(isset($_SESSION['combinErrado'])))
         $_SESSION['combinErrado'] = '';
 
@@ -83,14 +84,31 @@
             <label for="user">Usuário:</label>
             <input type="text" maxlength="25" value=<?php echo "'".$_SESSION['user']."'" ?> name="user">
             <br>
-            <label for="pword">Senha: </label>
-            <input type="password" minlength="7" maxlength="30" name="pword">
+            <label for="pword">Senha:</label>
+           <input type="password" minlength="7" maxlength="30" name="pword">
             <br>
+            
+             <?php 
+                    include 'conexaoRestaurante.php';
+                    $con = EstabeleceConexao();
+                    $sql = "Select * from Mesa where statusMesa = 0";
+                    $stm = sqlsrv_query($con,$sql);
+                    echo "<label>Mesa  </label>";
+                    echo "<select name=mesas>";
+                    while ($linha = sqlsrv_fetch_array($stm))
+                    echo "<option>$linha[0]</option>";
+                    echo "</select><br>";
+                   
+                  
+                   
+            ?>
             <input type="button" value="Login" class="bt_login" onclick="submitForm('verificaLogin.php');" style='margin:7px;'>
             <input type="button" value="Não Tenho Conta" onclick="submitForm('cadastro.php');" class="bt_login">
             <br>
             <input type="button" value="Limpar" onclick="submitForm('login.php?limpar=ok');" class="bt_login">
+            
         </form>
+       
     </div>
     
 </body>

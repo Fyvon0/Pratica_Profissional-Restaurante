@@ -3,9 +3,14 @@
 
 	$_SESSION['user'] = $_POST['user'];
 	$_SESSION['pword'] = $_POST['pword'];
+    $_SESSION['mesas'] = $_POST['mesas'];
 
-	include 'conexao.php';
+	include 'conexaoRestaurante.php';
 	$con = EstabeleceConexao();
+    $sql = "Update Mesa set statusMesa = 1 where codMesa='".$_SESSION['mesas']."'";
+    $stmt = sqlsrv_query($con,$sql);
+    $sql = "Update Mesa set horario = GETDATE() where codMesa ='".$_SESSION['mesas']."'";
+    $stmt = sqlsrv_query($con, $sql);  
 
 	$sql = "SELECT * FROM Cliente WHERE userLogin='".$_SESSION['user']."' and Senha='".$_SESSION['pword']."'";
 	$stmt = sqlsrv_query($con,$sql);

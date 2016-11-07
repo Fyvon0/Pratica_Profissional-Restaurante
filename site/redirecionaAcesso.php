@@ -6,7 +6,7 @@
     $_SESSION['nome']=$_POST['nome'];
     $_SESSION['celular']=$_POST['celular'];
 
-	include 'conexao.php';
+	include 'conexaoRestaurante.php';
 	$con = EstabeleceConexao();
 
 	if (!(isset($_POST['nome']) && isset($_POST['user']) && isset($_POST['pword']) &&
@@ -54,4 +54,7 @@
 			exit();
 		}
 	}
+ 
+ 
+ 
 ?>	
