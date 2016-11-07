@@ -103,12 +103,14 @@ public class Clientes
 		return resultado;
 	}
 	
-	public MeuResultSet getClientesOrdenado (String campo) throws Exception {
+	public MeuResultSet getClientesOrdenado (String campo,boolean desc) throws Exception {
 		MeuResultSet resultado = null;
 		
 		try
 		{
 			String sql = "SELECT * FROM Cliente ORDER BY " + campo;
+			if (desc)
+				sql += " DESC";
 			
 			DAOs.getBD().prepareStatement(sql);
 			

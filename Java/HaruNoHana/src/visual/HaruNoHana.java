@@ -36,13 +36,15 @@ import javax.swing.table.TableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class HaruNoHana implements ActionListener{
 
 	private JFrame frame;
 	private ButtonGroup btnGrpOrdemCliente = new ButtonGroup();
 	private JTable tbl_clientes;
-	DefaultTableModel tableModel;
+	private DefaultTableModel tableModel;
+	private JCheckBox chckbxDecrescente;
 
 	/**
 	 * Launch the application.
@@ -108,6 +110,17 @@ public class HaruNoHana implements ActionListener{
 		
 		JPanel pnl_mesas = new JPanel();
 		tabbedPane.addTab("Mesas", null, pnl_mesas, null);
+		pnl_mesas.setLayout(new BorderLayout(0, 0));
+		
+		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+		pnl_mesas.add(tabbedPane_1, BorderLayout.CENTER);
+		
+		JPanel pnl_consultaMesas = new JPanel();
+		tabbedPane_1.addTab("Consulta", null, pnl_consultaMesas, null);
+		pnl_consultaMesas.setLayout(new BorderLayout(0, 0));
+		
+		JPanel pnl_alteraMesas = new JPanel();
+		tabbedPane_1.addTab("Altera\u00E7\u00E3o", null, pnl_alteraMesas, null);
 		
 		JPanel pnl_clientes = new JPanel();
 		tabbedPane.addTab("Clientes", null, pnl_clientes, null);
@@ -115,24 +128,13 @@ public class HaruNoHana implements ActionListener{
 		
 		JPanel panel_3 = new JPanel();
 		pnl_clientes.add(panel_3, BorderLayout.EAST);
-		panel_3.setLayout(new BorderLayout(0, 0));
 		
-		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
-		tableModel = new DefaultTableModel(header, 0);
-		tbl_clientes = new JTable(tableModel);
-		tbl_clientes.addComponentListener(new ComponentAdapter() {
-			public void componentShown(ComponentEvent e) {
-				//btnPesquisar.doClick();
-			}
-		});
-		pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
-		
-		JLabel lblOrdenarPor = new JLabel("Ordenar por:");
+		panel_3.setLayout(new BorderLayout(0, 0));JLabel lblOrdenarPor = new JLabel("Ordenar por:");
 		panel_3.add(lblOrdenarPor, BorderLayout.NORTH);
 		
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4, BorderLayout.CENTER);
-		panel_4.setLayout(new GridLayout(5, 1, 0, 0));
+		panel_4.setLayout(new GridLayout(6, 1, 0, 0));
 		
 		JRadioButton rdbtnNome = new JRadioButton("Nome");
 		rdbtnNome.setActionCommand("nome");
@@ -160,11 +162,31 @@ public class HaruNoHana implements ActionListener{
 		btnGrpOrdemCliente.add(rdbtnMediaGasta);
 		panel_4.add(rdbtnMediaGasta);
 		
+		chckbxDecrescente = new JCheckBox("Decrescente");
+		panel_4.add(chckbxDecrescente);
+		
 		rdbtnNome.addActionListener(this);
 		rdbtnDataDeCadastro.addActionListener(this);
 		rdbtnFrequencia.addActionListener(this);
 		rdbtnUltimaVisita.addActionListener(this);
 		rdbtnMediaGasta.addActionListener(this);
+		
+		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
+		tableModel = new DefaultTableModel(header, 0);
+		
+		
+		
+		tbl_clientes = new JTable(tableModel);
+		tbl_clientes.addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent e) {
+				rdbtnNome.doClick();
+			}
+		});
+		JScrollPane scrollPane = new JScrollPane(tbl_clientes);
+		pnl_clientes.add(scrollPane, BorderLayout.CENTER);
+		//pnl_clientes.add(tbl_clientes, BorderLayout.CENTER);
+		
+		
 		
 		JPanel pnl_promocoes = new JPanel();
 		tabbedPane.addTab("Promo\u00E7\u00F5es", null, pnl_promocoes, null);
@@ -172,10 +194,11 @@ public class HaruNoHana implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		MeuResultSet clientes = null;
+		tbl_clientes.setEnabled(true);
 		
 		try 
 		{
-			clientes = DAOs.getClientes().getClientesOrdenado(e.getActionCommand());
+			clientes = DAOs.getClientes().getClientesOrdenado(e.getActionCommand(),chckbxDecrescente.isSelected());
 		}
 		catch (Exception erro)
 		{
@@ -185,6 +208,8 @@ public class HaruNoHana implements ActionListener{
 		
 		try
 		{
+			tableModel.setRowCount(0);
+			
 			while (clientes.next())
 				tableModel.addRow(new Object[] {clientes.getInt("codCliente"),clientes.getString("userLogin"),clientes.getFloat("frequencia"),
 					clientes.getString("nome"),clientes.getTimestamp("ultimaVisita"),clientes.getTimestamp("dataCadastro"),
@@ -194,5 +219,7 @@ public class HaruNoHana implements ActionListener{
 		{JOptionPane.showMessageDialog(null, e.toString(), "Error",
                 JOptionPane.ERROR_MESSAGE);
 		}
+		
+		tbl_clientes.setEnabled(false);
 	}
 }
