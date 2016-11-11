@@ -21,7 +21,7 @@ public class Cliente implements Cloneable
 	 * @param frequencia	frequência com que o Cliente visita o restaurante
 	 * @param mediaGasta	média que o cliente gasta no restaurante
 	 * @param ultimaVisita	última visita registrada do cliente
-	 * @param dataCadastro	fata de inserção do registro do cliente
+	 * @param dataCadastro	data de inserção do registro do cliente
 	 * @throws Exception	lança Exception se os paramêtros passados forem inválidos dentro da classificação dos setters
 	 */
 	public Cliente(int codCliente, String userLogin, String senha, String nome, String celular, float frequencia,

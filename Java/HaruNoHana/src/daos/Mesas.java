@@ -4,6 +4,7 @@ import java.sql.*;
 import banco.de.dados.*;
 import Core.*;
 import dbos.*;
+import java.util.*;
 
 public class Mesas {
 	
@@ -191,7 +192,7 @@ public class Mesas {
 
         try
         {
-            String sql = "SELECT * FROM Mesas";
+            String sql = "SELECT * FROM Mesa";
 
             DAOs.getBD().prepareStatement (sql);
 
@@ -204,4 +205,46 @@ public class Mesas {
 
         return resultado;
     }
+	
+	public MeuResultSet getMesasOrdenado (String[] condicao, String campo,boolean desc) throws Exception {
+		MeuResultSet resultado = null;
+		
+		try
+		{
+			String sql = "SELECT * FROM Mesa ";
+			
+			ArrayList condicoes = new ArrayList();
+			
+			for (int i = 0; i < condicao.length; i++)
+				if (condicao[i] != null)
+					condicoes.add(condicao[i]);
+			
+			if (condicoes.size() != 0)
+				sql += " WHERE ";
+			
+			for (int j = 0; j < condicoes.size(); j++)
+				if (j == condicoes.size() - 1)
+					sql += " " + condicoes.get(j) + " ";
+				else
+					sql += " " + condicoes.get(j) + " and ";
+					
+			if ((campo != null)&&(!campo.equals("")))
+				sql += " ORDER BY " + campo;
+			else
+				sql += " ORDER BY codMesa ";
+			
+			if (desc)
+				sql += " DESC";
+			
+			DAOs.getBD().prepareStatement(sql);
+			
+			resultado = (MeuResultSet)DAOs.getBD().executeQuery();
+		}
+		catch (SQLException erro)
+		{
+			throw new Exception ("Erro ao recuperar mesas");
+		}
+		
+		return resultado;
+	}
 }

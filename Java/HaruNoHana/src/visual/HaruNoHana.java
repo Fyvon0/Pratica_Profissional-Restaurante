@@ -37,15 +37,21 @@ import javax.swing.table.TableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 
 public class HaruNoHana implements ActionListener{
 
 	private JFrame frame;
 	private ButtonGroup btnGrpOrdemCliente = new ButtonGroup();
 	private JTable tbl_clientes;
-	private DefaultTableModel tableModel;
-	private JCheckBox chckbxDecrescente;
+	private DefaultTableModel tableModel,tableModelMesas;
+	private JCheckBox chckbxDecrescente, chckbxMesaDecrescente;
 	private JTable tbl_mesas;
+	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnFrequencia,rdbtnMediaGasta,rdbtnReservadas,rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal;
+	private final ButtonGroup btnGrpReservadas = new ButtonGroup();
+	private final ButtonGroup btnGrpOcupadas = new ButtonGroup();
+	private final ButtonGroup btnGrpOrdemMesa = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -127,28 +133,60 @@ public class HaruNoHana implements ActionListener{
 		JLabel lblMostrarMesasCom = new JLabel("Mostrar mesas");
 		panel_5.add(lblMostrarMesasCom);
 		
-		JCheckBox chckbxReservas = new JCheckBox("Reservadas");
-		panel_5.add(chckbxReservas);
+		rdbtnReservadas = new JRadioButton("Reservadas");
+		rdbtnReservadas.setActionCommand("reserva = 1");
+		btnGrpReservadas.add(rdbtnReservadas);
+		panel_5.add(rdbtnReservadas);
 		
-		JCheckBox chckbxNoReservadas = new JCheckBox("N\u00E3o reservadas");
-		panel_5.add(chckbxNoReservadas);
+		rdbtnNoReservadas = new JRadioButton("N\u00E3o Reservadas");
+		rdbtnNoReservadas.setActionCommand("reserva = 0");
+		btnGrpReservadas.add(rdbtnNoReservadas);
+		panel_5.add(rdbtnNoReservadas);
 		
-		JCheckBox chckbxLivres = new JCheckBox("Livres");
-		panel_5.add(chckbxLivres);
+		rdbtnOcupadas = new JRadioButton("Ocupadas");
+		rdbtnOcupadas.setActionCommand("statusMesa = 1");
+		btnGrpOcupadas.add(rdbtnOcupadas);
+		panel_5.add(rdbtnOcupadas);
 		
-		JCheckBox chckbxOcupadas = new JCheckBox("Ocupadas");
-		panel_5.add(chckbxOcupadas);
+		rdbtnLivres = new JRadioButton("Livres");
+		rdbtnLivres.setActionCommand("statusMesa = 0");
+		btnGrpOcupadas.add(rdbtnLivres);
+		panel_5.add(rdbtnLivres);
 		
-		JCheckBox chckbxFechadas = new JCheckBox("Fechadas");
-		panel_5.add(chckbxFechadas);
+		JLabel lblOrdenarPor_1 = new JLabel("Ordenar Por:");
+		panel_5.add(lblOrdenarPor_1);
 		
-		JCheckBox chckbxConsumindo = new JCheckBox("Consumindo");
-		panel_5.add(chckbxConsumindo);
+		rdbtnHoraFechamento = new JRadioButton("Hora Fechamento");
+		rdbtnHoraFechamento.setActionCommand("horaFechamento");
+		btnGrpOrdemMesa.add(rdbtnHoraFechamento);
+		panel_5.add(rdbtnHoraFechamento);
 		
-		String [] header = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
-		tableModel = new DefaultTableModel(header, 0);
-		tbl_mesas = new JTable();
-		pnl_consultaMesas.add(tbl_mesas, BorderLayout.CENTER);
+		rdbtnHoraAbertura = new JRadioButton("Hora Abertura");
+		rdbtnHoraAbertura.setActionCommand("horario");
+		btnGrpOrdemMesa.add(rdbtnHoraAbertura);
+		panel_5.add(rdbtnHoraAbertura);
+		
+		rdbtnValorTotal = new JRadioButton("Valor Total");
+		rdbtnValorTotal.setActionCommand("valorTotal");
+		btnGrpOrdemMesa.add(rdbtnValorTotal);
+		panel_5.add(rdbtnValorTotal);
+		
+		rdbtnReservadas.addActionListener(this);
+		rdbtnNoReservadas.addActionListener(this);
+		rdbtnOcupadas.addActionListener(this);
+		rdbtnLivres.addActionListener(this);
+		rdbtnHoraFechamento.addActionListener(this);
+		rdbtnHoraAbertura.addActionListener(this);
+		rdbtnValorTotal.addActionListener(this);
+		
+		chckbxMesaDecrescente = new JCheckBox("Decrescente");
+		panel_5.add(chckbxMesaDecrescente);
+		
+		String [] col = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
+		tableModelMesas = new DefaultTableModel(col, 0);
+		tbl_mesas = new JTable(tableModelMesas);
+		JScrollPane scrollPaneMesas = new JScrollPane (tbl_mesas);
+		pnl_consultaMesas.add(scrollPaneMesas, BorderLayout.CENTER);
 		
 		JPanel pnl_alteraMesas = new JPanel();
 		tabbedPane_1.addTab("Altera\u00E7\u00E3o", null, pnl_alteraMesas, null);
@@ -167,28 +205,28 @@ public class HaruNoHana implements ActionListener{
 		panel_3.add(panel_4, BorderLayout.CENTER);
 		panel_4.setLayout(new GridLayout(6, 1, 0, 0));
 		
-		JRadioButton rdbtnNome = new JRadioButton("Nome");
+		rdbtnNome = new JRadioButton("Nome");
 		rdbtnNome.setActionCommand("nome");
 		rdbtnNome.setSelected(true);
 		btnGrpOrdemCliente.add(rdbtnNome);
 		panel_4.add(rdbtnNome);
 		
-		JRadioButton rdbtnDataDeCadastro = new JRadioButton("Data de Cadastro");
+		rdbtnDataDeCadastro = new JRadioButton("Data de Cadastro");
 		rdbtnDataDeCadastro.setActionCommand("dataCadastro");
 		btnGrpOrdemCliente.add(rdbtnDataDeCadastro);
 		panel_4.add(rdbtnDataDeCadastro);
 		
-		JRadioButton rdbtnUltimaVisita = new JRadioButton("\u00DAltima Visita");
+		rdbtnUltimaVisita = new JRadioButton("\u00DAltima Visita");
 		rdbtnUltimaVisita.setActionCommand("ultimaVisita");
 		btnGrpOrdemCliente.add(rdbtnUltimaVisita);
 		panel_4.add(rdbtnUltimaVisita);
 		
-		JRadioButton rdbtnFrequencia = new JRadioButton("Frequ\u00EAncia");
+		rdbtnFrequencia = new JRadioButton("Frequ\u00EAncia");
 		rdbtnFrequencia.setActionCommand("frequencia");
 		btnGrpOrdemCliente.add(rdbtnFrequencia);
 		panel_4.add(rdbtnFrequencia);
 		
-		JRadioButton rdbtnMediaGasta = new JRadioButton("M\u00E9dia Gasta");
+		rdbtnMediaGasta = new JRadioButton("M\u00E9dia Gasta");
 		rdbtnMediaGasta.setActionCommand("mediaGasta");
 		btnGrpOrdemCliente.add(rdbtnMediaGasta);
 		panel_4.add(rdbtnMediaGasta);
@@ -224,33 +262,81 @@ public class HaruNoHana implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		MeuResultSet clientes = null;
-		tbl_clientes.setEnabled(true);
-		
-		try 
-		{
-			clientes = DAOs.getClientes().getClientesOrdenado(e.getActionCommand(),chckbxDecrescente.isSelected());
-		}
-		catch (Exception erro)
-		{
-			JOptionPane.showMessageDialog(null, e.toString(), "Error",
-                    JOptionPane.ERROR_MESSAGE);
-		}
-		
-		try
-		{
-			tableModel.setRowCount(0);
+		if ((e.getSource() == rdbtnNome)||(e.getSource() == rdbtnDataDeCadastro)||(e.getSource() == rdbtnUltimaVisita)||(e.getSource() == rdbtnFrequencia)||(e.getSource() == rdbtnMediaGasta)) {
+			MeuResultSet clientes = null;
+			tbl_clientes.setEnabled(true);
 			
-			while (clientes.next())
-				tableModel.addRow(new Object[] {clientes.getInt("codCliente"),clientes.getString("userLogin"),clientes.getFloat("frequencia"),
-					clientes.getString("nome"),clientes.getTimestamp("ultimaVisita"),clientes.getTimestamp("dataCadastro"),
-					clientes.getFloat("mediaGasta"),clientes.getString("celular")});
+			try 
+			{
+				clientes = DAOs.getClientes().getClientesOrdenado(e.getActionCommand(),chckbxDecrescente.isSelected());
+			}
+			catch (Exception erro)
+			{
+				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+			}
+			
+			try
+			{
+				tableModel.setRowCount(0);
+				
+				while (clientes.next())
+					tableModel.addRow(new Object[] {clientes.getInt("codCliente"),clientes.getString("userLogin"),clientes.getFloat("frequencia"),
+						clientes.getString("nome"),clientes.getTimestamp("ultimaVisita"),clientes.getTimestamp("dataCadastro"),
+						clientes.getFloat("mediaGasta"),clientes.getString("celular")});
+			}
+			catch (SQLException erro)
+			{JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                JOptionPane.ERROR_MESSAGE);
+			}
+			
+			tbl_clientes.setEnabled(false);
+		} else {
+			MeuResultSet mesas = null;
+			tbl_mesas.setEnabled(true);
+			
+			try 
+			{
+				String [] condicoes = new String [2];
+				
+				String ordem = "";
+				
+				if (this.btnGrpOcupadas.getSelection() != null)
+					condicoes [0] = this.btnGrpOcupadas.getSelection().getActionCommand();
+				
+				if (this.btnGrpReservadas.getSelection() != null)
+					condicoes[1] = this.btnGrpReservadas.getSelection().getActionCommand();
+				
+				if (this.btnGrpOrdemMesa.getSelection() != null)
+					ordem = this.btnGrpOrdemMesa.getSelection().getActionCommand();
+				
+				mesas = DAOs.getMesas().getMesasOrdenado(condicoes, ordem, this.chckbxMesaDecrescente.isSelected());
+				//mesas = DAOs.getMesas().getMesas();
+			}
+			catch (Exception erro)
+			{
+				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+			}
+			
+			try
+			{
+				tableModelMesas.setRowCount(0);
+								
+				while (mesas.next()){
+					boolean reserva = mesas.getInt("reserva") == 1;
+					boolean statusMesa = mesas.getInt("statusMesa") == 1;
+
+					tableModelMesas.addRow(new Object[] {mesas.getInt("codMesa"),reserva,mesas.getTimestamp("horario"),mesas.getTimestamp("horaPrevista"),mesas.getString("formaPagamento"),
+							mesas.getBigDecimal("valorTotal"),mesas.getTimestamp("horaFechamento"),statusMesa,mesas.getInt("codCliente")});
+				}
+			}
+			catch (SQLException erro)
+			{JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                JOptionPane.ERROR_MESSAGE);
+			}
+			
+			tbl_mesas.setEnabled(false);
 		}
-		catch (SQLException erro)
-		{JOptionPane.showMessageDialog(null, e.toString(), "Error",
-                JOptionPane.ERROR_MESSAGE);
-		}
-		
-		tbl_clientes.setEnabled(false);
 	}
 }
