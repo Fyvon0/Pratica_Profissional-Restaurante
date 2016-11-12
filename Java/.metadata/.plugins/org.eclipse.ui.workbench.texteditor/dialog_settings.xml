@@ -2,12 +2,13 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="MesaDecrescente" key="selection"/>
+		<item value="getPromocoes" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="getPromocoes"/>
 			<item value="MesaDecrescente"/>
 			<item value="chkb"/>
 			<item value="chkbxMesa"/>

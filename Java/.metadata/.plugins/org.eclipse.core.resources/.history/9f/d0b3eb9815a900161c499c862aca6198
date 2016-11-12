@@ -1,0 +1,147 @@
+package dbos;
+
+public class Promocao {
+	/**
+	 * Inicializa as variáveis com os valores passados por parâmetro
+	 * 
+	 * @param codPromocao	o código único que identifica cada promoção
+	 * @param desconto		int que representa a procentagem que será descontada da venda
+	 * @param descricao		a descrição dos detalhes da promoção
+	 * @param nome			nome que permite que o cliente identifique a promoção
+	 * @param condicao		condição que limita os clientes que receberão a promoção
+	 * @throws Exception	se algum dos parâmetros passados for inválido (veja os setters para mais detalhes)
+	 */
+	public Promocao(int codPromocao, int desconto, String descricao, String nome, String condicao) throws Exception{
+		this.setCodPromocao(codPromocao);
+		this.setDesconto(desconto);
+		this.setDescricao(descricao);
+		this.setNome(nome);
+		this.setCondicao(condicao);
+	}
+
+	/**
+	 * @return desconto
+	 */
+	public int getDesconto() {
+		return desconto;
+	}
+
+	/**
+	 * @param desconto o desconto a ser redefinido
+	 */
+	public void setDesconto(int desconto) {
+		this.desconto = desconto;
+	}
+
+	/**
+	 * @return nome
+	 */
+	public String getNome() {
+		return nome;
+	}
+
+	/**
+	 * @param nome o nome a ser redefinido
+	 */
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	/**
+	 * @return condicao
+	 */
+	public String getCondicao() {
+		return condicao;
+	}
+
+	/**
+	 * @param condicao a condição a ser redefinida
+	 */
+	public void setCondicao(String condicao) {
+		this.condicao = condicao;
+	}
+
+	private int codPromocao,desconto;
+	private String descricao,nome,condicao;
+
+	/**
+	 * @return codPromocao
+	 */
+	public int getCodPromocao() {
+		return codPromocao;
+	}
+
+	/**
+	 * @param codPromocao o código de promoção a ser redefinido
+	 * @throws Exception	se o código fornecido for menor ou igual a 0
+	 */
+	public void setCodPromocao(int codPromocao) throws Exception{
+		if (codPromocao <= 0)
+			throw new Exception ("Código de promoção inválido");
+		
+		this.codPromocao = codPromocao;
+	}
+
+	/**
+	 * @return descricao
+	 */
+	public String getDescricao() {
+		return descricao;
+	}
+
+	/**
+	 * @param descricao a descrição a ser redefinida
+	 * @throws Exception	se a descrição passado for nula ou igual a cadeia vazia
+	 */
+	public void setDescricao(String descricao) throws Exception{
+		if (descricao == null || descricao.equals(""))
+			throw new Exception ("Descrição não fornecida");
+		
+		this.descricao = descricao;
+	}
+
+	/**
+	 * Gera o hashCode da instância
+	 * 
+	 * @return o valor do hashCode
+	 */
+	public int hashCode() {
+		final int prime = 31;
+		int result = 666;
+		result = prime * result + (new Integer(codPromocao)).hashCode();
+		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
+		return result;
+	}
+
+	/**
+	 * Compara uma instância dessa classe a uma outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas ou <code>false</code> se não forem
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		
+		if (obj == null)
+			return false;
+		
+		if (getClass() != obj.getClass())
+			return false;
+		
+		Promocao other = (Promocao) obj;
+		
+		if (codPromocao != other.codPromocao)
+			return false;
+		
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		
+		return true;
+	}
+	
+	
+	
+}

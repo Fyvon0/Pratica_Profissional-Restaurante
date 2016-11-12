@@ -51,11 +51,14 @@ public class Promocoes {
 
         try
         {
-            String sql = "INSERT INTO Promocao VALUES (?)";
+            String sql = "INSERT INTO Promocao VALUES (?,?,?,?)";
 
             DAOs.getBD().prepareStatement (sql);
 
             DAOs.getBD().setString (1, promocao.getDescricao());
+            DAOs.getBD().setString (2, promocao.getNome());
+            DAOs.getBD().setInt	   (3, promocao.getDesconto());
+            DAOs.getBD().setString (4, promocao.getCondicao());
 
             DAOs.getBD().executeUpdate ();
         }
@@ -110,12 +113,15 @@ public class Promocoes {
         {
             String sql;
 
-            sql = "UPDATE Promocao set descricao = ?  WHERE codPromocao = ?";
+            sql = "UPDATE Promocao set descricao = ?, nome = ?, desconto = ?, condicao = ?  WHERE codPromocao = ?";
 
             DAOs.getBD().prepareStatement (sql);
 
             DAOs.getBD().setString (1, promocao.getDescricao());
-            DAOs.getBD().setInt    (2, promocao.getCodPromocao());
+            DAOs.getBD().setString (2, promocao.getNome());
+            DAOs.getBD().setInt	   (3, promocao.getDesconto());
+            DAOs.getBD().setString (4, promocao.getCondicao());
+            DAOs.getBD().setInt    (5, promocao.getCodPromocao());
 
             DAOs.getBD().executeUpdate ();
         }
@@ -149,7 +155,7 @@ public class Promocoes {
             if (!resultado.first())
                 throw new Exception ("Nao cadastrado");
 
-            promocao = new Promocao (resultado.getInt("codPromocao"),resultado.getString("descricao"));
+            promocao = new Promocao (resultado.getInt("codPromocao"), resultado.getInt("desconto"), resultado.getString("descricao"), resultado.getString("nome"), resultado.getString("condicao"));
         }
         catch (SQLException erro)
         {
