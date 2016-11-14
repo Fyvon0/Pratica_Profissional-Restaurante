@@ -589,8 +589,6 @@ public class HaruNoHana implements ActionListener{
 				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
 		                JOptionPane.ERROR_MESSAGE);
 			}
-			
-			btnAtualizar.doClick();
 		} else if (e.getSource() == btnAtualizar) {
 			MeuResultSet pedidos = null;
 			

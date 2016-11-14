@@ -51,7 +51,7 @@ public class Pedidos {
 
         try
         {
-            String sql = "DELETE FROM PedidoWHERE codPedido=?";
+            String sql = "DELETE FROM Promocao WHERE codPromocao=?";
 
             DAOs.getBD().prepareStatement (sql);
 
@@ -61,7 +61,7 @@ public class Pedidos {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao excluir pedido");
+            throw new Exception ("Erro ao excluir promocao");
         }
     }
 	

@@ -60,7 +60,7 @@ public class HaruNoHana implements ActionListener{
 	private JTextField txtNome;
 	private JTextField txtDescricao;
 	private JTextField txtCondicao;
-	private JButton btnAtender,btnAtualizar;
+	private JButton btnAtender;
 	private JTable tablePedidos;
 
 	/**
@@ -176,7 +176,7 @@ public class HaruNoHana implements ActionListener{
 		});
 		panel_11.add(btnAtender);
 		
-		btnAtualizar = new JButton("Atualizar");
+		JButton btnAtualizar = new JButton("Atualizar");
 		panel_11.add(btnAtualizar);
 		
 		JPanel pnl_mesas = new JPanel();
@@ -585,37 +585,7 @@ public class HaruNoHana implements ActionListener{
 				DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
 			}
 			catch (Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-		                JOptionPane.ERROR_MESSAGE);
-			}
-			
-			btnAtualizar.doClick();
-		} else if (e.getSource() == btnAtualizar) {
-			MeuResultSet pedidos = null;
-			
-			try
-			{
-				pedidos = DAOs.getPedidos().getPedidos();
-			}
-			catch (Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			}
-			
-			try
-			{
-				tableModelPedidos.setRowCount(0);
-			
-				while (pedidos.next())
-					tableModelPedidos.addRow(new Object[] {pedidos.getInt("codPedido"),pedidos.getInt("codPrato"),pedidos.getInt("quantidade"),pedidos.getTimestamp("horario"),pedidos.getInt("codCliente")});
-			}
-			catch(Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			}
+			{}
 		}
 	}
 }

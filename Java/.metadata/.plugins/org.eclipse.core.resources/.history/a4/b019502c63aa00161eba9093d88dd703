@@ -38,33 +38,6 @@ public class Pedidos {
         return retorno;
     }
 	
-	/**
-	 * Exclui do banco de dados um registro de pedido.
-	 *
-	 * @param codigo	o código do pedido que será excluido do banco de dados
-	 * @throws Exception	se não houver registro com o código passado por parâmetro ou ocorrer algum erro ao contatar o banco de dados
-	 */
-	public void excluir (int codigo) throws Exception
-    {
-        if (!cadastrado (codigo))
-            throw new Exception ("Nao cadastrado");
-
-        try
-        {
-            String sql = "DELETE FROM PedidoWHERE codPedido=?";
-
-            DAOs.getBD().prepareStatement (sql);
-
-            DAOs.getBD().setInt (1, codigo);
-
-            DAOs.getBD().executeUpdate ();
-        }
-        catch (SQLException erro)
-        {
-            throw new Exception ("Erro ao excluir pedido");
-        }
-    }
-	
     /**
      * Retorna as informações do pedido com o código informado
      * 

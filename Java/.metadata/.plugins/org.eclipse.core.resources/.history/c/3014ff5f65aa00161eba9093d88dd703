@@ -60,8 +60,7 @@ public class HaruNoHana implements ActionListener{
 	private JTextField txtNome;
 	private JTextField txtDescricao;
 	private JTextField txtCondicao;
-	private JButton btnAtender,btnAtualizar;
-	private JTable tablePedidos;
+	private JButton btnAtender;
 
 	/**
 	 * Launch the application.
@@ -159,7 +158,7 @@ public class HaruNoHana implements ActionListener{
 		
 		String [] columns = {"codPedido","codPrato","quantidade","horario","codCliente"};
 		tableModelPedidos = new DefaultTableModel(columns,0);
-		tablePedidos = new JTable(tableModelPedidos);
+		JTable tablePedidos = new JTable(tableModelPedidos);
 		JScrollPane scrollPanePedidos = new JScrollPane (tablePedidos);
 		pnl_pedidos.add(scrollPanePedidos, BorderLayout.CENTER);
 		
@@ -176,7 +175,7 @@ public class HaruNoHana implements ActionListener{
 		});
 		panel_11.add(btnAtender);
 		
-		btnAtualizar = new JButton("Atualizar");
+		JButton btnAtualizar = new JButton("Atualizar");
 		panel_11.add(btnAtualizar);
 		
 		JPanel pnl_mesas = new JPanel();
@@ -582,40 +581,10 @@ public class HaruNoHana implements ActionListener{
 		} else if (e.getSource() == btnAtender) {
 			try
 			{
-				DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
+				DAOs.getPedidos().excluir();
 			}
 			catch (Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-		                JOptionPane.ERROR_MESSAGE);
-			}
-			
-			btnAtualizar.doClick();
-		} else if (e.getSource() == btnAtualizar) {
-			MeuResultSet pedidos = null;
-			
-			try
-			{
-				pedidos = DAOs.getPedidos().getPedidos();
-			}
-			catch (Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			}
-			
-			try
-			{
-				tableModelPedidos.setRowCount(0);
-			
-				while (pedidos.next())
-					tableModelPedidos.addRow(new Object[] {pedidos.getInt("codPedido"),pedidos.getInt("codPrato"),pedidos.getInt("quantidade"),pedidos.getTimestamp("horario"),pedidos.getInt("codCliente")});
-			}
-			catch(Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			}
+			{}
 		}
 	}
 }

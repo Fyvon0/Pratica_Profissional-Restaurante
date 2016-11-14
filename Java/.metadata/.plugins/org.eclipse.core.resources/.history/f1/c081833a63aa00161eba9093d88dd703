@@ -61,7 +61,7 @@ public class Pedidos {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao excluir pedido");
+            throw new Exception ("Erro ao excluir promocao");
         }
     }
 	

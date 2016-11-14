@@ -49,7 +49,7 @@ public class HaruNoHana implements ActionListener{
 	private JFrame frame;
 	private ButtonGroup btnGrpOrdemCliente = new ButtonGroup();
 	private JTable tbl_clientes;
-	private DefaultTableModel tableModel,tableModelMesas,tableModelPromocoes,tableModelPedidos;
+	private DefaultTableModel tableModel,tableModelMesas,tableModelPromocoes;
 	private JCheckBox chckbxDecrescente, chckbxMesaDecrescente;
 	private JTable tbl_mesas;
 	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnFrequencia,rdbtnMediaGasta,rdbtnReservadas,rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal;
@@ -60,8 +60,7 @@ public class HaruNoHana implements ActionListener{
 	private JTextField txtNome;
 	private JTextField txtDescricao;
 	private JTextField txtCondicao;
-	private JButton btnAtender,btnAtualizar;
-	private JTable tablePedidos;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -123,61 +122,27 @@ public class HaruNoHana implements ActionListener{
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel pnl_pedidos = new JPanel();
-		/*pnl_pedidos.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-
-				MeuResultSet pedidos = null;
-				
-				try
-				{
-					pedidos = DAOs.getPedidos().getPedidos();
-				}
-				catch (Exception erro)
-				{
-					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-						JOptionPane.ERROR_MESSAGE);
-				}
-				
-				try
-				{
-					tableModelPedidos.setRowCount(0);
-				
-					while (pedidos.next())
-						tableModelPedidos.addRow(new Object[] {pedidos.getInt("codPedido"),pedidos.getInt("codPrato"),pedidos.getInt("quantidade"),pedidos.getTimestamp("horario"),pedidos.getInt("codCliente")});
-				}
-				catch(Exception erro)
-				{
-					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-						JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});*/
 		tabbedPane.addTab("Pedidos", null, pnl_pedidos, null);
 		pnl_pedidos.setLayout(new BorderLayout(0, 0));
 		
 		
 		String [] columns = {"codPedido","codPrato","quantidade","horario","codCliente"};
-		tableModelPedidos = new DefaultTableModel(columns,0);
-		tablePedidos = new JTable(tableModelPedidos);
-		JScrollPane scrollPanePedidos = new JScrollPane (tablePedidos);
-		pnl_pedidos.add(scrollPanePedidos, BorderLayout.CENTER);
+		table = new JTable();
+		pnl_pedidos.add(table, BorderLayout.CENTER);
+		
+
+		
+		String [] col = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
+		tableModelMesas = new DefaultTableModel(col, 0);
+		tbl_mesas = new JTable(tableModelMesas);
+		JScrollPane scrollPaneMesas = new JScrollPane (tbl_mesas);
+		pnl_consultaMesas.add(scrollPaneMesas, BorderLayout.CENTER);
 		
 		JLabel lblSelecioneALinha = new JLabel("Selecione a linha do pedido que deseja atender");
 		pnl_pedidos.add(lblSelecioneALinha, BorderLayout.NORTH);
 		
-		JPanel panel_11 = new JPanel();
-		pnl_pedidos.add(panel_11, BorderLayout.SOUTH);
-		
-		btnAtender = new JButton("Atender");
-		btnAtender.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		panel_11.add(btnAtender);
-		
-		btnAtualizar = new JButton("Atualizar");
-		panel_11.add(btnAtualizar);
+		JButton btnAtender = new JButton("Atender");
+		pnl_pedidos.add(btnAtender, BorderLayout.SOUTH);
 		
 		JPanel pnl_mesas = new JPanel();
 		tabbedPane.addTab("Mesas", null, pnl_mesas, null);
@@ -579,43 +544,6 @@ public class HaruNoHana implements ActionListener{
 			}
 			
 			tbl_mesas.setEnabled(false);
-		} else if (e.getSource() == btnAtender) {
-			try
-			{
-				DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
-			}
-			catch (Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-		                JOptionPane.ERROR_MESSAGE);
-			}
-			
-			btnAtualizar.doClick();
-		} else if (e.getSource() == btnAtualizar) {
-			MeuResultSet pedidos = null;
-			
-			try
-			{
-				pedidos = DAOs.getPedidos().getPedidos();
-			}
-			catch (Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			}
-			
-			try
-			{
-				tableModelPedidos.setRowCount(0);
-			
-				while (pedidos.next())
-					tableModelPedidos.addRow(new Object[] {pedidos.getInt("codPedido"),pedidos.getInt("codPrato"),pedidos.getInt("quantidade"),pedidos.getTimestamp("horario"),pedidos.getInt("codCliente")});
-			}
-			catch(Exception erro)
-			{
-				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			}
 		}
 	}
 }
