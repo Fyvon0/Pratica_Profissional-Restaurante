@@ -123,7 +123,7 @@ public class HaruNoHana implements ActionListener{
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JPanel pnl_pedidos = new JPanel();
-		/*pnl_pedidos.addComponentListener(new ComponentAdapter() {
+		pnl_pedidos.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
 
@@ -152,7 +152,7 @@ public class HaruNoHana implements ActionListener{
 						JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});*/
+		});
 		tabbedPane.addTab("Pedidos", null, pnl_pedidos, null);
 		pnl_pedidos.setLayout(new BorderLayout(0, 0));
 		
@@ -172,11 +172,51 @@ public class HaruNoHana implements ActionListener{
 		btnAtender = new JButton("Atender");
 		btnAtender.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try
+				{
+					DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+			                JOptionPane.ERROR_MESSAGE);
+				}
+				
+				btnAtualizar.doClick();
+				
 			}
 		});
 		panel_11.add(btnAtender);
 		
 		btnAtualizar = new JButton("Atualizar");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MeuResultSet pedidos = null;
+				
+				try
+				{
+					pedidos = DAOs.getPedidos().getPedidos();
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				}
+				
+				try
+				{
+					tableModelPedidos.setRowCount(0);
+				
+					while (pedidos.next())
+						tableModelPedidos.addRow(new Object[] {pedidos.getInt("codPedido"),pedidos.getInt("codPrato"),pedidos.getInt("quantidade"),pedidos.getTimestamp("horario"),pedidos.getInt("codCliente")});
+				}
+				catch(Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		panel_11.add(btnAtualizar);
 		
 		JPanel pnl_mesas = new JPanel();
@@ -332,7 +372,7 @@ public class HaruNoHana implements ActionListener{
 		pnl_promocoes.add(tabbedPane_2, BorderLayout.CENTER);
 		tbl_Promocoes = new JTable(tableModelPromocoes);
 		JScrollPane scrollPanePromocoes = new JScrollPane (tbl_Promocoes);
-		/*scrollPanePromocoes.addComponentListener(new ComponentAdapter() {
+		scrollPanePromocoes.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				MeuResultSet promos = null;
@@ -360,7 +400,7 @@ public class HaruNoHana implements ActionListener{
 						JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});*/
+		});
 		tabbedPane_2.addTab("Consulta", null, scrollPanePromocoes, null);
 		
 		JPanel pnl_alteraPromocoes = new JPanel();
@@ -583,6 +623,7 @@ public class HaruNoHana implements ActionListener{
 			try
 			{
 				DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
+				btnAtender.setText("" + tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 1));
 			}
 			catch (Exception erro)
 			{

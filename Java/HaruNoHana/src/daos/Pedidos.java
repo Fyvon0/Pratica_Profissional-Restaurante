@@ -51,13 +51,14 @@ public class Pedidos {
 
         try
         {
-            String sql = "DELETE FROM PedidoWHERE codPedido=?";
+            String sql = "DELETE FROM Pedido WHERE codPedido=?";
 
             DAOs.getBD().prepareStatement (sql);
 
             DAOs.getBD().setInt (1, codigo);
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {

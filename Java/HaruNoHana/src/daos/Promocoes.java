@@ -88,6 +88,8 @@ public class Promocoes {
             DAOs.getBD().setInt (1, codigo);
 
             DAOs.getBD().executeUpdate ();
+            
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -124,6 +126,8 @@ public class Promocoes {
             DAOs.getBD().setInt    (5, promocao.getCodPromocao());
 
             DAOs.getBD().executeUpdate ();
+            
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
