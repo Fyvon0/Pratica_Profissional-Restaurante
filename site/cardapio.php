@@ -5,6 +5,9 @@ if (!(isset($_SESSION['logado']))) {
     header ('Location:login.php');
     exit();
 }
+if (!(isset($_SESSION['codCliente'])))
+    $_SESSION['codCliente'] = 0;
+
 ?>
 
 <html>
@@ -92,7 +95,10 @@ if (!(isset($_SESSION['logado']))) {
              
         }
          }
-  
+        $sql10 = "Select codCliente from Cliente where nome='".$_SESSION['user']."'";
+        $stmt10 = sqlsrv_query($con, $sql10);
+         if($linha = sqlsrv_fetch_array($stmt10))
+             $_SESSION['codCliente'] = $linha[0];
 
         
         
@@ -107,6 +113,8 @@ if (!(isset($_SESSION['logado']))) {
            if ($_POST['qtde'] != 0) {
                 $sql  = "SELECT * from Prato where codPrato='".$_POST['adicionar']."'";
                 $stmt = sqlsrv_query($con, $sql);
+                $sql1 = "Insert into Pedido values (".$_POST['qtde'].",GETDATE(),".$_SESSION['codCliente'].",".$_POST['adicionar'].")";              
+                $stmt1 = sqlsrv_query($con, $sql1);
                
                $repetido = false;
                $i = 0;

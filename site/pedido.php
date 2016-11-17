@@ -104,7 +104,7 @@ session_start();
                     $stmt = sqlsrv_query($con,$sql);
             
                     session_destroy();
-                    header ('Location:login.php');
+                    header ('Location:questionario.php');
             }
             
     ?></div>
