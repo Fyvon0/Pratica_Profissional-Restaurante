@@ -2,10 +2,11 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="javax.swing.table.JTableHeader"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableColumnModel"/>
-<fullyQualifiedTypeName name="javax.swing.table.DefaultTableModel"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="javax.swing.table.TableModel"/>
 <fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
 <fullyQualifiedTypeName name="javax.swing.ListModel"/>
+<fullyQualifiedTypeName name="javax.swing.JTable"/>
+<fullyQualifiedTypeName name="javax.swing.table.DefaultTableModel"/>
 </qualifiedTypeNameHistroy>

@@ -94,7 +94,7 @@ public class Pedidos {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao procurar livro");
+            throw new Exception ("Erro ao procurar pedido");
         }
 
         return pedido;
@@ -106,13 +106,39 @@ public class Pedidos {
      * @return	uma instância de MeuResultSet com todas os pedidos do banco de dados
      * @throws Exception	se houver algum erro ao conectar com o banco de dados
      */
-	public MeuResultSet getPedidos () throws Exception
+	public synchronized MeuResultSet getPedidos () throws Exception
     {
         MeuResultSet resultado = null;
 
         try
         {
             String sql = "SELECT * FROM Pedido";
+
+            DAOs.getBD().prepareStatement (sql);
+
+            resultado = (MeuResultSet)DAOs.getBD().executeQuery ();
+        }
+        catch (SQLException erro)
+        {
+            throw new Exception ("Erro ao recuperar pedidos");
+        }
+
+        return resultado;
+    }
+	
+    /**
+     * Retorna todos os pedidos do banco de dados em ordem decrescente
+     * 
+     * @return	uma instância de MeuResultSet com todas os pedidos do banco de dados
+     * @throws Exception	se houver algum erro ao conectar com o banco de dados
+     */
+	public synchronized MeuResultSet getPedidosDesc () throws Exception
+    {
+        MeuResultSet resultado = null;
+
+        try
+        {
+            String sql = "SELECT * FROM Pedido ORDER BY codPedido DESC";
 
             DAOs.getBD().prepareStatement (sql);
 

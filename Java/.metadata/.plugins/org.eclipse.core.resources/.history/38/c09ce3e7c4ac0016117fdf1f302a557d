@@ -1,0 +1,8 @@
+package visual;
+
+public class AtualizaPedidos extends Thread{
+
+	private JTable tblPedidos,tblFechamentos;
+	
+	public void run ()
+}

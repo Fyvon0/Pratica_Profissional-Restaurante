@@ -47,7 +47,7 @@ public class Promocoes {
 	public void incluir (Promocao promocao) throws Exception
     {
         if (promocao==null)
-            throw new Exception ("Livro nao fornecido");
+            throw new Exception ("Promoção nao fornecida");
 
         try
         {
@@ -61,6 +61,7 @@ public class Promocoes {
             DAOs.getBD().setString (4, promocao.getCondicao());
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {

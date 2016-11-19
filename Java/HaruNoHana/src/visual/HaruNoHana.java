@@ -43,13 +43,15 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.JSplitPane;
 
-public class HaruNoHana implements ActionListener{
+public class HaruNoHana extends Thread implements ActionListener {
 
-	private JFrame frame;
+	private static JFrame frame;
 	private ButtonGroup btnGrpOrdemCliente = new ButtonGroup();
 	private JTable tbl_clientes;
 	private DefaultTableModel tableModel,tableModelMesas,tableModelPromocoes,tableModelPedidos;
+	private static DefaultTableModel tableModelPeds,tableModelFechs;
 	private JCheckBox chckbxDecrescente, chckbxMesaDecrescente;
 	private JTable tbl_mesas;
 	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnFrequencia,rdbtnMediaGasta,rdbtnReservadas,rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal;
@@ -60,23 +62,73 @@ public class HaruNoHana implements ActionListener{
 	private JTextField txtNome;
 	private JTextField txtDescricao;
 	private JTextField txtCondicao;
-	private JButton btnAtender,btnAtualizar;
+	private JButton btnAtender,btnAtualizar,btnAtualizarCodigos;
 	private JTable tablePedidos;
+	private static JTable tablePeds;
+	private static JTable tableFechs;
+	private static JPanel panel;
 
+	public void run() {
+		try {
+			HaruNoHana window = new HaruNoHana();
+			window.frame.setVisible(true);
+			panel = new JPanel();
+			frame.getContentPane().add(panel, BorderLayout.EAST);
+			panel.setLayout(new GridLayout(2, 1, 0, 0));
+			
+			JPanel panel_1 = new JPanel();
+			panel.add(panel_1);
+			panel_1.setLayout(new BorderLayout(0, 0));
+			
+			JLabel lbl_pedidos = new JLabel("\u00DAltimos Pedidos");
+			panel_1.add(lbl_pedidos, BorderLayout.NORTH);
+			tablePeds = new JTable(tableModelPeds);
+			JScrollPane scrollPanePeds = new JScrollPane (tablePeds);
+			panel_1.add(scrollPanePeds, BorderLayout.CENTER);
+			
+			JPanel panel_2 = new JPanel();
+			panel.add(panel_2);
+			panel_2.setLayout(new BorderLayout(0, 0));
+			
+			JLabel lbl_fechamentos = new JLabel("\u00DAltimos Fechamentos");
+			panel_2.add(lbl_fechamentos, BorderLayout.NORTH);
+			tableFechs = new JTable(tableModelFechs);
+			JScrollPane scrollPaneFechs = new JScrollPane(tableFechs);
+			panel_2.add(scrollPaneFechs, BorderLayout.CENTER);
+		} catch (Exception e) {
+			e.printStackTrace();}
+		}
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HaruNoHana window = new HaruNoHana();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		HaruNoHana window = new HaruNoHana();
+		window.frame.setVisible(true);
+		panel = new JPanel();
+		frame.getContentPane().add(panel, BorderLayout.EAST);
+		panel.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lbl_pedidos = new JLabel("\u00DAltimos Pedidos");
+		panel_1.add(lbl_pedidos, BorderLayout.NORTH);
+		tablePeds = new JTable(tableModelPeds);
+		JScrollPane scrollPanePeds = new JScrollPane (tablePeds);
+		panel_1.add(scrollPanePeds, BorderLayout.CENTER);
+		
+		JPanel panel_2 = new JPanel();
+		panel.add(panel_2);
+		panel_2.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lbl_fechamentos = new JLabel("\u00DAltimos Fechamentos");
+		panel_2.add(lbl_fechamentos, BorderLayout.NORTH);
+		tableFechs = new JTable(tableModelFechs);
+		JScrollPane scrollPaneFechs = new JScrollPane(tableFechs);
+		panel_2.add(scrollPaneFechs, BorderLayout.CENTER);
+		AtualizaPedidos atPed = new AtualizaPedidos(HaruNoHana.tableModelPeds,HaruNoHana.tableModelFechs);
+		atPed.start();
 	}
 
 	/**
@@ -89,40 +141,37 @@ public class HaruNoHana implements ActionListener{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(){
+	private void initialize(){		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 592, 419);
+		frame.setBounds(100, 100, 900, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.EAST);
-		panel.setLayout(new GridLayout(2, 1, 0, 0));
+		String [] colunas = {"codPrato","qtde","hora"};
+		tableModelPeds = new DefaultTableModel (colunas,0);
 		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		String [] head = {"codMesa","hora","valor"};
+		tableModelFechs = new DefaultTableModel (head,0);
 		
-		JLabel lbl_pedidos = new JLabel("\u00DAltimos Pedidos");
-		panel_1.add(lbl_pedidos, BorderLayout.NORTH);
 		
-		JList lst_pedidos = new JList();
-		panel_1.add(lst_pedidos, BorderLayout.CENTER);
+		String [] columns = {"codPedido","codPrato","quantidade","horario","codCliente"};
+		tableModelPedidos = new DefaultTableModel(columns,0);
 		
-		JPanel panel_2 = new JPanel();
-		panel.add(panel_2);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		String [] col = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
+		tableModelMesas = new DefaultTableModel(col, 0);
 		
-		JLabel lbl_fechamentos = new JLabel("\u00DAltimos Fechamentos");
-		panel_2.add(lbl_fechamentos, BorderLayout.NORTH);
+		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
+		tableModel = new DefaultTableModel(header, 0);
 		
-		JList lst_fechamentos = new JList();
-		panel_2.add(lst_fechamentos, BorderLayout.CENTER);
+		String [] cols = {"codPromocao","nome","descricao","desconto (%)","condicao"};
+		tableModelPromocoes = new DefaultTableModel(cols,0);
+		
+		DefaultListModel listModel = new DefaultListModel();
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel pnl_pedidos = new JPanel();
+		JPanel pnl_pedidos = new JPanel();	
 		pnl_pedidos.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -155,10 +204,6 @@ public class HaruNoHana implements ActionListener{
 		});
 		tabbedPane.addTab("Pedidos", null, pnl_pedidos, null);
 		pnl_pedidos.setLayout(new BorderLayout(0, 0));
-		
-		
-		String [] columns = {"codPedido","codPrato","quantidade","horario","codCliente"};
-		tableModelPedidos = new DefaultTableModel(columns,0);
 		tablePedidos = new JTable(tableModelPedidos);
 		JScrollPane scrollPanePedidos = new JScrollPane (tablePedidos);
 		pnl_pedidos.add(scrollPanePedidos, BorderLayout.CENTER);
@@ -172,17 +217,19 @@ public class HaruNoHana implements ActionListener{
 		btnAtender = new JButton("Atender");
 		btnAtender.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try
-				{
-					DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
+				if (tablePedidos.getSelectedRow() != -1) {
+					try
+					{
+						DAOs.getPedidos().excluir((Integer)tablePedidos.getValueAt(tablePedidos.getSelectedRow(), 0));
+					}
+					catch (Exception erro)
+					{
+						JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+				                JOptionPane.ERROR_MESSAGE);
+					}
+					
+					btnAtualizar.doClick();
 				}
-				catch (Exception erro)
-				{
-					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-			                JOptionPane.ERROR_MESSAGE);
-				}
-				
-				btnAtualizar.doClick();
 				
 			}
 		});
@@ -285,9 +332,6 @@ public class HaruNoHana implements ActionListener{
 		
 		chckbxMesaDecrescente = new JCheckBox("Decrescente");
 		panel_5.add(chckbxMesaDecrescente);
-		
-		String [] col = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
-		tableModelMesas = new DefaultTableModel(col, 0);
 		tbl_mesas = new JTable(tableModelMesas);
 		JScrollPane scrollPaneMesas = new JScrollPane (tbl_mesas);
 		pnl_consultaMesas.add(scrollPaneMesas, BorderLayout.CENTER);
@@ -302,7 +346,8 @@ public class HaruNoHana implements ActionListener{
 		JPanel panel_3 = new JPanel();
 		pnl_clientes.add(panel_3, BorderLayout.EAST);
 		
-		panel_3.setLayout(new BorderLayout(0, 0));JLabel lblOrdenarPor = new JLabel("Ordenar por:");
+		panel_3.setLayout(new BorderLayout(0, 0));
+		JLabel lblOrdenarPor = new JLabel("Ordenar por:");
 		panel_3.add(lblOrdenarPor, BorderLayout.NORTH);
 		
 		JPanel panel_4 = new JPanel();
@@ -344,9 +389,6 @@ public class HaruNoHana implements ActionListener{
 		rdbtnUltimaVisita.addActionListener(this);
 		rdbtnMediaGasta.addActionListener(this);
 		
-		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
-		tableModel = new DefaultTableModel(header, 0);
-		
 		
 		
 		tbl_clientes = new JTable(tableModel);
@@ -365,16 +407,19 @@ public class HaruNoHana implements ActionListener{
 		tabbedPane.addTab("Promo\u00E7\u00F5es", null, pnl_promocoes, null);
 		pnl_promocoes.setLayout(new BorderLayout(0, 0));
 		
-		String [] cols = {"codPromocao","nome","descricao","desconto (%)","condicao"};
-		tableModelPromocoes = new DefaultTableModel(cols,0);
-		
 		JTabbedPane tabbedPane_2 = new JTabbedPane(JTabbedPane.TOP);
 		pnl_promocoes.add(tabbedPane_2, BorderLayout.CENTER);
+		
+		JPanel panel_12 = new JPanel();
+		tabbedPane_2.addTab("Consulta", null, panel_12, null);
+		panel_12.setLayout(new BorderLayout(0, 0));
 		tbl_Promocoes = new JTable(tableModelPromocoes);
 		JScrollPane scrollPanePromocoes = new JScrollPane (tbl_Promocoes);
-		scrollPanePromocoes.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent arg0) {
+		panel_12.add(scrollPanePromocoes);
+		
+		JButton btnAtualizarPromo = new JButton("Atualizar");
+		btnAtualizarPromo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				MeuResultSet promos = null;
 				
 				try
@@ -392,7 +437,7 @@ public class HaruNoHana implements ActionListener{
 					tableModelPromocoes.setRowCount(0);
 				
 					while (promos.next())
-						tableModel.addRow(new Object[] {promos.getInt("codPromocao"),promos.getString("nome"),promos.getString("descricao"),promos.getInt("desconto"),promos.getString("condicao")});
+						tableModelPromocoes.addRow(new Object[] {promos.getInt("codPromocao"),promos.getString("nome"),promos.getString("descricao"),promos.getInt("desconto"),promos.getString("condicao")});
 				}
 				catch(Exception erro)
 				{
@@ -401,7 +446,7 @@ public class HaruNoHana implements ActionListener{
 				}
 			}
 		});
-		tabbedPane_2.addTab("Consulta", null, scrollPanePromocoes, null);
+		panel_12.add(btnAtualizarPromo, BorderLayout.SOUTH);
 		
 		JPanel pnl_alteraPromocoes = new JPanel();
 		tabbedPane_2.addTab("Inclus\u00E3o e Exclus\u00E3o", null, pnl_alteraPromocoes, null);
@@ -450,7 +495,7 @@ public class HaruNoHana implements ActionListener{
 					try
 					{
 						spnDesconto.commitEdit();
-						Promocao promo = new Promocao (0,(Integer)spnDesconto.getValue(),txtDescricao.getText(),txtNome.getText(),txtCondicao.getText());
+						Promocao promo = new Promocao (1,(Integer)spnDesconto.getValue(),txtDescricao.getText(),txtNome.getText(),txtCondicao.getText());
 						DAOs.getPromocoes().incluir(promo);
 					}
 					catch (Exception erro)
@@ -485,13 +530,11 @@ public class HaruNoHana implements ActionListener{
 		
 		JLabel lblDigiteOCdigo = new JLabel("Escolha o C\u00F3digo da Promo\u00E7\u00E3o que deseja excluir");
 		panel_9.add(lblDigiteOCdigo);
-		
-		DefaultListModel listModel = new DefaultListModel();
 		JList lstCodPromocoes = new JList(listModel);
 		lstCodPromocoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		JButton btnAtualizarCdigos = new JButton("Atualizar C\u00F3digos");
-		btnAtualizarCdigos.addActionListener(new ActionListener() {
+		btnAtualizarCodigos = new JButton("Atualizar C\u00F3digos");
+		btnAtualizarCodigos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MeuResultSet promos = null;
 				listModel.clear();
@@ -518,7 +561,7 @@ public class HaruNoHana implements ActionListener{
 				}
 			}
 		});
-		panel_9.add(btnAtualizarCdigos);
+		panel_9.add(btnAtualizarCodigos);
 		
 		JLabel lblCdigoDaPromoo = new JLabel("C\u00F3digo da Promo\u00E7\u00E3o");
 		panel_9.add(lblCdigoDaPromoo);
@@ -535,12 +578,17 @@ public class HaruNoHana implements ActionListener{
 						JOptionPane.showMessageDialog(null, erro.toString(), "Error",
 			                    JOptionPane.ERROR_MESSAGE);
 					}
-			}
+
+				btnAtualizarCodigos.doClick();
+				}
 		});
 		panel_9.add(btnNewButton);
 		
 		JPanel panel_10 = new JPanel();
 		tabbedPane.addTab("Pratos", null, panel_10, null);
+		
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane,HaruNoHana.panel);
+		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 	}
 
 	public void actionPerformed(ActionEvent e) {
