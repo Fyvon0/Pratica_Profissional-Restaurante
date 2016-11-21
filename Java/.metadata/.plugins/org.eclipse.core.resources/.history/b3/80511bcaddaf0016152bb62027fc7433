@@ -1,0 +1,23 @@
+package visual;
+
+import javax.swing.*;
+
+import Core.MeuResultSet;
+import banco.de.dados.DAOs;
+
+public class AtualizaPedidos extends Thread{
+
+	private JButton atualizar;
+
+	public AtualizaPedidos (JButton botao)
+	{
+		this.atualizar = botao;
+	}
+	
+	public void run ()
+	{
+
+		JOptionPane.showMessageDialog(null, "funfou");
+		atualizar.doClick();
+	}
+}
