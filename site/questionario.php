@@ -1,5 +1,8 @@
 <?php 
 session_start();
+
+
+
 ?>
 <html>
     <head> 
@@ -36,16 +39,16 @@ input[type="submit"]:hover {
     <fieldset>
         <legend><h1>Questionário</h1></legend>
     <label>Como estava a comida?</label><br>   
-        <input type="text" name="comida" placeholder="Coloque sua nota"><br>
+        <input type="number" min="0" max="10" name="comida" placeholder="Coloque sua nota"><br>
         <br>
     <hr>
         <br>
     <label>Como foi o atendimento?</label><br>
-        <input type="text" name="atendimento" placeholder="Coloque sua nota"><br>
+        <input type="number" min="0" max="10" name="atendimento" placeholder="Coloque sua nota"><br>
         <br>
     <hr>
     <label>Foi demorado o preparo da comida?</label><br>
-        <input type="text" name="demora" placeholder="Coloque sua nota"><br>
+        <input type="number" min="0" max="10" name="demora" placeholder="Coloque sua nota"><br>
         <br>
     <hr>
     <label>Sugestões</label><br>
@@ -59,7 +62,11 @@ input[type="submit"]:hover {
     
     include 'conexaoRestaurante.php';
     $conexao = EstabeleceConexao();
-    if (isset($_POST['finalizar']))
+     $sql10 = "Select codCliente from Cliente where nome='".$_SESSION['user']."'";
+        $stmt10 = sqlsrv_query($conexao, $sql10);
+         if($linha = sqlsrv_fetch_array($stmt10))
+             $_SESSION['codCliente'] = $linha[0];
+    if (isset($_POST['finalizar']) && isset($_POST['comida']) && isset($_POST['atendimento']) && isset($_POST['demora']) && isset($_POST['sugestao']))
     {
         $comida = $_POST['comida'];
         $atendimento =  $_POST['atendimento'];
@@ -67,7 +74,7 @@ input[type="submit"]:hover {
         $sugestao = $_POST['sugestao'];
         $sql = "Insert into Questionario values ($comida,$atendimento,'$sugestao',$demora,".$_SESSION['codCliente'].")";
         $stmt = sqlsrv_query($conexao,$sql);
-        
+        session_destroy();
         header ('Location:login.php');
     }
         

@@ -1,4 +1,6 @@
 <?php
+ include 'conexaoRestaurante.php';
+        $con = EstabeleceConexao();
 session_start();
 	if (!(isset($_SESSION['logado']))) {
     header ('Location:login.php');
@@ -7,9 +9,12 @@ session_start();
     if (!(isset($_SESSION['pedidoFinal'])))
         $_SESSION['pedidoFinal'] = array();
     if (isset($_SESSION['pedido'])){
-        for ($i = 0; $i< count($_SESSION['pedido']); $i++)
+        for ($i = 0; $i< count($_SESSION['pedido']); $i++) {
+            $sql1 = "Insert into Pedido values (".$_SESSION['pedido'][$i][1].",GETDATE(),".$_SESSION['codCliente'].",".$_SESSION['pedido'][$i][2].")";              
+            $stmt1 = sqlsrv_query($con, $sql1);
             $_SESSION['pedidoFinal'][]= array($_SESSION['pedido'][$i][0],$_SESSION['pedido'][$i][1],$_SESSION['pedido'][$i][2],
                                               $_SESSION['pedido'][$i][3],$_SESSION['pedido'][$i][4]);
+        }
         unset ($_SESSION['pedido']);
     }
 ?>
@@ -26,8 +31,7 @@ session_start();
     <body>
         <?php
         include ('topo.php');
-        include 'conexaoRestaurante.php';
-        $con = EstabeleceConexao();
+       
         
         if (isset($_POST['x'])){
             $_SESSION['x'] = $_POST['x'];
@@ -103,7 +107,21 @@ session_start();
                     $sql = "Update Mesa set valorTotal = ".number_format($_SESSION['total'],2)." where codMesa= ".$_SESSION['mesas']."";
                     $stmt = sqlsrv_query($con,$sql);
             
-                    session_destroy();
+                    $sql = "SELECT mediaGasta FROM Cliente WHERE userLogin='".$_SESSION['user']."'";
+                    $stmt = sqlsrv_query($con,$sql);
+                    if($linha = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_NUMERIC))
+                    $mediaGasta = $linha[0];
+                    
+                    $sql = "SELECT valorTotal FROM Mesa WHERE codMesa=".$_SESSION['mesas']."";
+                    $stmt = sqlsrv_query($con,$sql);
+                    if($linha = sqlsrv_fetch_array($stmt,SQLSRV_FETCH_NUMERIC))
+                    $valorTotal = $linha[0];
+                    $total = (($_SESSION['qtdVisitas'] - 1) * $mediaGasta) + $valorTotal;
+                    $mediaGasta = $total / $_SESSION['qtdVisitas'];
+                    
+                    $sql = "Update Cliente set mediaGasta = $mediaGasta where userLogin='".$_SESSION['user']."'";
+                    $stmt = sqlsrv_query($con,$sql);
+            
                     header ('Location:questionario.php');
             }
             

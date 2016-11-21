@@ -1,10 +1,10 @@
 <?php
 	session_start();
-
     $_SESSION['user']=$_POST['user'];
     $_SESSION['pword']=$_POST['pword'];
     $_SESSION['nome']=$_POST['nome'];
     $_SESSION['celular']=$_POST['celular'];
+    
 
 	include 'conexaoRestaurante.php';
 	$con = EstabeleceConexao();
@@ -39,11 +39,16 @@
 		}
 
 		if ($_SESSION['userExiste'] || $_SESSION['celExiste'])
+        {
 			header('Location:cadastro.php');
-
-		$sql = "INSERT INTO Cliente VALUES ('".$_SESSION['user']."',0,'".$_SESSION['pword']."','".$_POST['nome']."',GETDATE(),GETDATE(),0,'".$_SESSION['celular']."')";
+           
+        }
+        
+		$sql = "INSERT INTO Cliente VALUES ('".$_SESSION['user']."',0,'".$_SESSION['pword']."','".$_POST['nome']."',GETDATE(),GETDATE(),0,'".$_SESSION['celular']."',0)";
 
 		$stmt = sqlsrv_query($con,$sql);
+        
+        
 
 		if ($stmt) {
 			$_SESSION['logado']  = true;
