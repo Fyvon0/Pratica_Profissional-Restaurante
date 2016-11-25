@@ -6,6 +6,22 @@
 		<item value="174" key="y"/>
 		<item value="552" key="height"/>
 	</section>
+	<section name="org.eclipse.wb.internal.core.editor.palette.dialogs.ImportArchiveDialog">
+		<item value="747" key="x"/>
+		<item value="606" key="width"/>
+		<item value="129" key="y"/>
+		<item value="442" key="height"/>
+		<list key="HISTORY_JAR_LIST">
+			<item value="E:/GitHub/Pratica_Profissional-Restaurante/Java/HaruNoHana/datetimepicker3.3.jar"/>
+			<item value="E:\GitHub\Pratica_Profissional-Restaurante\Java\HaruNoHana\datetimepicker3.3.jar"/>
+		</list>
+	</section>
+	<section name="org.eclipse.wb.internal.core.editor.palette.dialogs.PaletteManagerDialog">
+		<item value="564" key="x"/>
+		<item value="525" key="width"/>
+		<item value="54" key="y"/>
+		<item value="516" key="height"/>
+	</section>
 	<section name="org.eclipse.wb.internal.core.model.property.editor.string.StringPropertyDialog">
 		<item value="579" key="x"/>
 		<item value="530" key="width"/>

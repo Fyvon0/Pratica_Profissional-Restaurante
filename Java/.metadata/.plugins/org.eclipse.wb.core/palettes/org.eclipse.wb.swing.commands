@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+	<addComponent
+		id="com.lavantech.gui.comp.DateTimePicker_1480078927604"
+		name="DateTimePicker"
+		description="Custom component: com.lavantech.gui.comp.DateTimePicker"
+		visible="true"
+		class="com.lavantech.gui.comp.DateTimePicker"
+		category="org.eclipse.wb.swing.actions"/>
+	<addComponent
+		id="com.lavantech.gui.comp.TimePanel_1480078927604"
+		name="TimePanel"
+		description="Custom component: com.lavantech.gui.comp.TimePanel"
+		visible="true"
+		class="com.lavantech.gui.comp.TimePanel"
+		category="org.eclipse.wb.swing.actions"/>
+	<addComponent
+		id="com.lavantech.gui.comp.CalendarPanel_1480078927604"
+		name="CalendarPanel"
+		description="Custom component: com.lavantech.gui.comp.CalendarPanel"
+		visible="true"
+		class="com.lavantech.gui.comp.CalendarPanel"
+		category="org.eclipse.wb.swing.actions"/>
+</commands>

@@ -11,4 +11,8 @@
 <fullyQualifiedTypeName name="javax.swing.table.DefaultTableModel"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.util.TimerTask"/>
+<fullyQualifiedTypeName name="lib.lgooddatepicker.components.DateTimePicker"/>
+<fullyQualifiedTypeName name="java.math.BigDecimal"/>
+<fullyQualifiedTypeName name="java.sql.Timestamp"/>
+<fullyQualifiedTypeName name="com.github.lgooddatepicker.components.DateTimePicker"/>
 </qualifiedTypeNameHistroy>

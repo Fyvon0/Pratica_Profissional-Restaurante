@@ -41,7 +41,7 @@ public class Promocoes {
 	/**
 	 * Inclui um novo registro de promoção no banco de dados
 	 *
-	 * @param mesa	uma instância da classe Promoção cujos valores das variáveis serão inseridos no banco de dados
+	 * @param promocao	uma instância da classe Promoção cujos valores das variáveis serão inseridos no banco de dados
 	 * @throws Exception	se a promoção fornecida for nula
 	 */
 	public void incluir (Promocao promocao) throws Exception
@@ -62,6 +62,25 @@ public class Promocoes {
 
             DAOs.getBD().executeUpdate ();
             DAOs.getBD().commit();
+            
+            sql = "SELECT MAX(codPromocao) FROM Promocao";
+            DAOs.getBD().prepareStatement(sql);
+            MeuResultSet promo = (MeuResultSet)DAOs.getBD().executeQuery();
+            int codPromocao = promo.getInt("codPromocao");
+            
+            sql = "SELECT codCliente FROM cliente WHERE ?";
+            DAOs.getBD().prepareStatement(sql);
+            DAOs.getBD().setString(1, promocao.getCondicao());
+            MeuResultSet clientes = (MeuResultSet)DAOs.getBD().executeQuery();
+            
+            while (clientes.next()) {
+            	sql = "INSERT INTO clientePromocao VALUES (?,?)";
+            	DAOs.getBD().prepareStatement(sql);
+            	DAOs.getBD().setInt(1, clientes.getInt("codCliente"));
+            	DAOs.getBD().setInt(2, codPromocao);
+            	DAOs.getBD().executeUpdate();
+            	DAOs.getBD().commit();
+            }
         }
         catch (SQLException erro)
         {
@@ -82,7 +101,13 @@ public class Promocoes {
 
         try
         {
-            String sql = "DELETE FROM Promocao WHERE codPromocao=?";
+        	String sql = "DELETE FROM clientePromocao where codPromocao = ?";
+        	DAOs.getBD().prepareStatement(sql);
+        	DAOs.getBD().setInt(1,codigo);
+        	DAOs.getBD().executeUpdate();
+        	DAOs.getBD().commit();
+        	
+            sql = "DELETE FROM Promocao WHERE codPromocao=?";
 
             DAOs.getBD().prepareStatement (sql);
 

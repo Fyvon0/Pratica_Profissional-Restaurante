@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="tableModelPeds" key="selection"/>
+		<item value="lstCodPromocoes" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="lstCodPromocoes"/>
+			<item value="timer"/>
+			<item value="excluir"/>
+			<item value="excluit"/>
 			<item value="tableModelPeds"/>
 			<item value="AtualizaPedidos"/>
 			<item value="table"/>
 			<item value="getPromocoes"/>
-			<item value="MesaDecrescente"/>
-			<item value="chkb"/>
-			<item value="chkbxMesa"/>
-			<item value="chkboxMesa"/>
 		</list>
 		<list key="replacehistory">
 		</list>
