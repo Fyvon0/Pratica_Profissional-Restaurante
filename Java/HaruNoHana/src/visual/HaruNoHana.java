@@ -76,6 +76,8 @@ public class HaruNoHana extends Thread implements ActionListener {
 	private JTable tablePeds;
 	private JTable tableFechs;
 	private JPanel panel;
+	private JTable table;
+	private JTable tblQuest;
 
 	public void run() {
 		try {
@@ -776,6 +778,43 @@ public class HaruNoHana extends Thread implements ActionListener {
 		
 		JPanel panel_10 = new JPanel();
 		tabbedPane.addTab("Pratos", null, panel_10, null);
+		panel_10.setLayout(new BorderLayout(0, 0));
+		
+		JTabbedPane tabbedPane_3 = new JTabbedPane(JTabbedPane.TOP);
+		panel_10.add(tabbedPane_3);
+		
+		JPanel panel_20 = new JPanel();
+		tabbedPane_3.addTab("Consulta", null, panel_20, null);
+		panel_20.setLayout(new BorderLayout(0, 0));
+		
+		table = new JTable();
+		panel_20.add(table, BorderLayout.CENTER);
+		
+		JPanel panel_22 = new JPanel();
+		panel_20.add(panel_22, BorderLayout.EAST);
+		panel_22.setLayout(new GridLayout(6, 1, 0, 0));
+		
+		JLabel lblAbas = new JLabel("Abas:");
+		panel_22.add(lblAbas);
+		
+		JRadioButton rdbtnEntradas = new JRadioButton("Entradas");
+		panel_22.add(rdbtnEntradas);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Pratos");
+		panel_22.add(rdbtnNewRadioButton);
+		
+		JRadioButton rdbtnSobremesas = new JRadioButton("Sobremesas");
+		panel_22.add(rdbtnSobremesas);
+		
+		JRadioButton rdbtnBebidas = new JRadioButton("Bebidas");
+		panel_22.add(rdbtnBebidas);
+		
+		JRadioButton rdbtnTodas = new JRadioButton("Todas");
+		panel_22.add(rdbtnTodas);
+		
+		JPanel panel_21 = new JPanel();
+		tabbedPane_3.addTab("Altera\u00E7\u00E3o", null, panel_21, null);
+		panel_21.setLayout(new BorderLayout(0, 0));
 
 		panel = new JPanel();
 		frmHaruNoHana.getContentPane().add(panel, BorderLayout.EAST);
@@ -812,6 +851,43 @@ public class HaruNoHana extends Thread implements ActionListener {
 		panel_2.add(scrollPaneFechs, BorderLayout.CENTER);
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane,panel);
+		
+		JPanel panel_23 = new JPanel();
+		tabbedPane.addTab("Question\u00E1rios", null, panel_23, null);
+		panel_23.setLayout(new BorderLayout(0, 0));
+
+		String [] cabec = {"codQuest","codCliente","qualidadeComida","atendimento","tempoEspera","observacoes"};
+		DefaultTableModel tableModelQuest = new DefaultTableModel (cabec,0);
+		JTable tblQuest = new JTable(tableModelQuest);
+		JScrollPane scrollPaneQuest = new JScrollPane(tblQuest);
+		panel_23.add(scrollPaneQuest);
+		
+		JButton btnAtualizaQuest = new JButton("Atualizar");
+		btnAtualizaQuest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tableModelQuest.setRowCount(0);
+				MeuResultSet quest = null;
+				
+				try
+				{
+					quest = DAOs.getQuestionarios().getQuestionarios();
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+				}
+				
+				try
+				{
+					while (quest.next())
+						tableModelQuest.addRow(new Object [] {quest.getInt("codQuest"),quest.getInt("codCliente"),quest.getFloat("qualidadeComida"),quest.getFloat("atendimento"),quest.getFloat("tempoEspera"),quest.getString("observacoes")});
+				}
+				catch (Exception erro)
+				{}
+			}
+		});
+		panel_23.add(btnAtualizaQuest, BorderLayout.SOUTH);
 		frmHaruNoHana.getContentPane().add(splitPane, BorderLayout.CENTER);
 		
 		long delay = 2000;   // delay de 2 seg.
