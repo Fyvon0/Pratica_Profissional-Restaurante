@@ -46,12 +46,14 @@ public class Promocoes {
 	 */
 	public void incluir (Promocao promocao) throws Exception
     {
-        if (promocao==null)
+		if (promocao==null)
             throw new Exception ("Promoção nao fornecida");
 
+		String sql;
+		
         try
         {
-            String sql = "INSERT INTO Promocao VALUES (?,?,?,?)";
+            sql = "INSERT INTO Promocao VALUES (?,?,?,?)";
 
             DAOs.getBD().prepareStatement (sql);
 
@@ -63,9 +65,43 @@ public class Promocoes {
             DAOs.getBD().executeUpdate ();
             DAOs.getBD().commit();
         }
+        catch (Exception erro)
+        {
+        	throw new Exception (erro.getMessage());
+        }
+        
+        int codPromocao;
+        
+        try
+        {
+            sql = "SELECT codPromocao FROM Promocao";
+            DAOs.getBD().prepareStatement(sql);
+            MeuResultSet promo = (MeuResultSet)DAOs.getBD().executeQuery();
+            promo.last();
+            codPromocao = promo.getInt("codPromocao");
+        }
+        catch (Exception erro)
+        {
+        	throw new Exception (erro.getMessage());
+        }
+        try
+        {
+        	sql = "SELECT codCliente FROM cliente WHERE " + promocao.getCondicao();
+            DAOs.getBD().prepareStatement(sql);
+            MeuResultSet clientes = (MeuResultSet)DAOs.getBD().executeQuery();
+            
+            while (clientes.next()) {
+            	sql = "INSERT INTO clientePromocao VALUES (?,?)";
+            	DAOs.getBD().prepareStatement(sql);
+            	DAOs.getBD().setInt(1, clientes.getInt("codCliente"));
+            	DAOs.getBD().setInt(2, codPromocao);
+            	DAOs.getBD().executeUpdate();
+            	DAOs.getBD().commit();
+            }
+        }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao inserir promocao");
+            throw new Exception (erro.getMessage());
         }
     }
 	
@@ -77,25 +113,31 @@ public class Promocoes {
 	 */
 	public void excluir (int codigo) throws Exception
     {
-        if (!cadastrado (codigo))
-            throw new Exception ("Nao cadastrado");
+		 if (!cadastrado (codigo))
+	            throw new Exception ("Nao cadastrado");
 
-        try
-        {
-            String sql = "DELETE FROM Promocao WHERE codPromocao=?";
+	        try
+	        {
+	        	String sql = "DELETE FROM clientePromocao where codPromocao = ?";
+	        	DAOs.getBD().prepareStatement(sql);
+	        	DAOs.getBD().setInt(1,codigo);
+	        	DAOs.getBD().executeUpdate();
+	        	DAOs.getBD().commit();
+	        	
+	            sql = "DELETE FROM Promocao WHERE codPromocao=?";
 
-            DAOs.getBD().prepareStatement (sql);
+	            DAOs.getBD().prepareStatement (sql);
 
-            DAOs.getBD().setInt (1, codigo);
+	            DAOs.getBD().setInt (1, codigo);
 
-            DAOs.getBD().executeUpdate ();
-            
-            DAOs.getBD().commit();
-        }
-        catch (SQLException erro)
-        {
-            throw new Exception ("Erro ao excluir promocao");
-        }
+	            DAOs.getBD().executeUpdate ();
+	            
+	            DAOs.getBD().commit();
+	        }
+	        catch (SQLException erro)
+	        {
+	            throw new Exception ("Erro ao excluir promocao");
+	        }
     }
 	
 	/**

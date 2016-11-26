@@ -5,9 +5,9 @@ import java.util.Calendar;
 
 public class Cliente implements Cloneable
 {
-	private int codCliente;
+	private int codCliente, qtdVisitas;
 	private String userLogin, senha, nome, celular;
-	private float frequencia, mediaGasta;
+	private float mediaGasta;
 	private Timestamp ultimaVisita, dataCadastro;
 	
 	/**
@@ -18,25 +18,38 @@ public class Cliente implements Cloneable
 	 * @param senha			senha do usuário
 	 * @param nome			nome do usuário
 	 * @param celular		celular para eventuais contatos
-	 * @param frequencia	frequência com que o Cliente visita o restaurante
 	 * @param mediaGasta	média que o cliente gasta no restaurante
 	 * @param ultimaVisita	última visita registrada do cliente
 	 * @param dataCadastro	data de inserção do registro do cliente
 	 * @throws Exception	lança Exception se os paramêtros passados forem inválidos dentro da classificação dos setters
 	 */
-	public Cliente(int codCliente, String userLogin, String senha, String nome, String celular, float frequencia,
+	public Cliente(int codCliente, int qtdVisitas, String userLogin, String senha, String nome, String celular,
 			float mediaGasta, Timestamp ultimaVisita, Timestamp dataCadastro) throws Exception{
 		this.setCodCliente(codCliente);
+		this.setQtdVisitas(qtdVisitas);
 		this.setUserLogin (userLogin);
 		this.setSenha(senha);
 		this.setNome(nome);
 		this.setCelular(celular);
-		this.setFrequencia(frequencia);
 		this.setMediaGasta(mediaGasta);
 		this.setUltimaVisita(ultimaVisita);
 		this.setDataCadastro(dataCadastro);
 	}
 	
+	/**
+	 * @return a quantidade de visitas que o cliente já realizou
+	 */
+	public int getQtdVisitas() {
+		return qtdVisitas;
+	}
+
+	/**
+	 * @param qtdVisitas a quantidade de visitas a ser redefinida
+	 */
+	public void setQtdVisitas(int qtdVisitas) {
+		this.qtdVisitas = qtdVisitas;
+	}
+
 	/** 
 	 * @return codCliente	
 	 */
@@ -128,24 +141,6 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return frequencia
-	 */
-	public float getFrequencia() {
-		return frequencia;
-	}
-	
-	/**
-	 * @param frequencia frequencia a ser redefinida
-	 * @throws Exception	se a frequencia for menor ou igual a 0
-	 */
-	public void setFrequencia(float frequencia) throws Exception{
-		if (frequencia <= 0.00f)
-			throw new Exception ("Frequencia inválida");
-		
-		this.frequencia = frequencia;
-	}
-	
-	/**
 	 * @return	mediaGasta
 	 */
 	public float getMediaGasta() {
@@ -205,82 +200,73 @@ public class Cliente implements Cloneable
 	
 	// APOCALÍPTICOS
 	
-	/**
-	 * Gera o hashCode da classe
-	 * 
-	 * @return o valor do hashCode
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 666;
+		int result = 1;
 		result = prime * result + ((celular == null) ? 0 : celular.hashCode());
-		result = prime * result + (new Integer(codCliente)).hashCode();
+		result = prime * result + codCliente;
 		result = prime * result + ((dataCadastro == null) ? 0 : dataCadastro.hashCode());
-		result = prime * result + (new Float(frequencia)).hashCode();
-		result = prime * result + (new Float(mediaGasta)).hashCode();
+		result = prime * result + Float.floatToIntBits(mediaGasta);
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + qtdVisitas;
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((ultimaVisita == null) ? 0 : ultimaVisita.hashCode());
 		result = prime * result + ((userLogin == null) ? 0 : userLogin.hashCode());
 		return result;
 	}
 	
-	/**
-	 * Compara uma instância dessa classe a uma outra
-	 * 
-	 * @return <code>true</code> se as instâncias forem idênticas ou <code>false</code> se não forem
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		
 		if (obj == null)
 			return false;
-		
 		if (getClass() != obj.getClass())
 			return false;
-		
 		Cliente other = (Cliente) obj;
-		
-		if (other.celular == null) {
-			return false;
+		if (celular == null) {
+			if (other.celular != null)
+				return false;
 		} else if (!celular.equals(other.celular))
 			return false;
-		
 		if (codCliente != other.codCliente)
 			return false;
-		
-		if (other.dataCadastro == null) {
-			return false;
+		if (dataCadastro == null) {
+			if (other.dataCadastro != null)
+				return false;
 		} else if (!dataCadastro.equals(other.dataCadastro))
 			return false;
-		
-		if (Float.floatToIntBits(frequencia) != Float.floatToIntBits(other.frequencia))
-			return false;
-		
 		if (Float.floatToIntBits(mediaGasta) != Float.floatToIntBits(other.mediaGasta))
 			return false;
-		
-		if (other.nome == null) {
-			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
-		
-		if (other.senha == null) {
+		if (qtdVisitas != other.qtdVisitas)
 			return false;
+		if (senha == null) {
+			if (other.senha != null)
+				return false;
 		} else if (!senha.equals(other.senha))
 			return false;
-		
-		if (other.ultimaVisita == null) {
-			return false;
+		if (ultimaVisita == null) {
+			if (other.ultimaVisita != null)
+				return false;
 		} else if (!ultimaVisita.equals(other.ultimaVisita))
 			return false;
-		
-		if (other.userLogin == null) {
-			return false;
+		if (userLogin == null) {
+			if (other.userLogin != null)
+				return false;
 		} else if (!userLogin.equals(other.userLogin))
 			return false;
-		
 		return true;
 	}
 
@@ -291,7 +277,7 @@ public class Cliente implements Cloneable
 	 */
 	public String toString() {
 		return "Cliente [codCliente=" + codCliente + ", userLogin=" + userLogin + ", senha=" + senha + ", nome=" + nome
-				+ ", celular=" + celular + ", frequencia=" + frequencia + ", mediaGasta=" + mediaGasta
+				+ ", celular=" + celular + ", mediaGasta=" + mediaGasta
 				+ ", ultimaVisita=" + ultimaVisita + ", dataCadastro=" + dataCadastro + "]";
 	}
 	
@@ -306,11 +292,11 @@ public class Cliente implements Cloneable
 			throw new Exception ("Cliente não fornecido");
 		
 		this.setCodCliente(cliente.codCliente);
+		this.setQtdVisitas(cliente.qtdVisitas);
 		this.setUserLogin (cliente.userLogin);
 		this.setSenha(cliente.senha);
 		this.setNome(cliente.nome);
 		this.setCelular(cliente.celular);
-		this.setFrequencia(cliente.frequencia);
 		this.setMediaGasta(cliente.mediaGasta);
 		this.setUltimaVisita(cliente.ultimaVisita);
 		this.setDataCadastro(cliente.dataCadastro);

@@ -65,8 +65,8 @@ public class Clientes
 			if (!resultado.first())
 				throw new Exception ("Não cadastrado");
 			
-			cliente = new Cliente (resultado.getInt("codCliente"),resultado.getString("userLogin"),resultado.getString("Senha"),
-					resultado.getString("Nome"),resultado.getString("Celular"),resultado.getFloat("Frequencia"),
+			cliente = new Cliente (resultado.getInt("codCliente"),resultado.getInt("qtdVisitas"),resultado.getString("userLogin"),
+					resultado.getString("Senha"),resultado.getString("Nome"),resultado.getString("Celular"),
 					resultado.getFloat("mediaGasta"),resultado.getTimestamp("ultimaVisita"),
 					resultado.getTimestamp("dataCadastro"));
 		}

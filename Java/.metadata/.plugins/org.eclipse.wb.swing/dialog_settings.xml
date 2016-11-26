@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="org.eclipse.wb.internal.swing.model.property.editor.models.combo.ComboBoxModelDialog">
+		<item value="445" key="x"/>
+		<item value="476" key="width"/>
+		<item value="201" key="y"/>
+		<item value="365" key="height"/>
+	</section>
 	<section name="org.eclipse.wb.internal.swing.model.property.editor.models.spinner.SpinnerModelDialog">
 		<item value="420" key="x"/>
 		<item value="525" key="width"/>

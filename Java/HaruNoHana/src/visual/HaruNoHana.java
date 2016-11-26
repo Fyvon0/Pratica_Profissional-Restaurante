@@ -29,6 +29,7 @@ import java.awt.event.ComponentEvent;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,6 +52,8 @@ import javax.swing.JSplitPane;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
 import java.util.Calendar;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class HaruNoHana extends Thread implements ActionListener {
 
@@ -61,14 +64,13 @@ public class HaruNoHana extends Thread implements ActionListener {
 	private DefaultTableModel tableModelPeds,tableModelFechs;
 	private JCheckBox chckbxDecrescente, chckbxMesaDecrescente;
 	private JTable tbl_mesas;
-	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnFrequencia,rdbtnMediaGasta,rdbtnReservadas,rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal;
+	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnQtdVisitas,rdbtnMediaGasta,rdbtnReservadas,rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal;
 	private final ButtonGroup btnGrpReservadas = new ButtonGroup();
 	private final ButtonGroup btnGrpOcupadas = new ButtonGroup();
 	private final ButtonGroup btnGrpOrdemMesa = new ButtonGroup();
 	private JTable tbl_Promocoes;
 	private JTextField txtNome;
 	private JTextField txtDescricao;
-	private JTextField txtCondicao;
 	private JButton btnAtender,btnAtualizar,btnAtualizarCodigos;
 	private JTable tablePedidos;
 	private JTable tablePeds;
@@ -121,7 +123,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		String [] col = {"codMesa","reserva","horario","horaPrevista","formaPagamento","valorTotal","horaFechamento","statusMesa","codCliente"};
 		tableModelMesas = new DefaultTableModel(col, 0);
 		
-		String [] header = {"codCliente","userLogin","frequencia","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
+		String [] header = {"codCliente","userLogin","qtdVisitas","nome","ultimaVisita","dataCadastro","mediaGasta","celular"};
 		tableModel = new DefaultTableModel(header, 0);
 		
 		String [] cols = {"codPromocao","nome","descricao","desconto (%)","condicao"};
@@ -539,10 +541,10 @@ public class HaruNoHana extends Thread implements ActionListener {
 		btnGrpOrdemCliente.add(rdbtnUltimaVisita);
 		panel_4.add(rdbtnUltimaVisita);
 		
-		rdbtnFrequencia = new JRadioButton("Frequ\u00EAncia");
-		rdbtnFrequencia.setActionCommand("frequencia");
-		btnGrpOrdemCliente.add(rdbtnFrequencia);
-		panel_4.add(rdbtnFrequencia);
+		rdbtnQtdVisitas = new JRadioButton("Quantidade Visitas");
+		rdbtnQtdVisitas.setActionCommand("qtdVisitas");
+		btnGrpOrdemCliente.add(rdbtnQtdVisitas);
+		panel_4.add(rdbtnQtdVisitas);
 		
 		rdbtnMediaGasta = new JRadioButton("M\u00E9dia Gasta");
 		rdbtnMediaGasta.setActionCommand("mediaGasta");
@@ -554,7 +556,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		
 		rdbtnNome.addActionListener(this);
 		rdbtnDataDeCadastro.addActionListener(this);
-		rdbtnFrequencia.addActionListener(this);
+		rdbtnQtdVisitas.addActionListener(this);
 		rdbtnUltimaVisita.addActionListener(this);
 		rdbtnMediaGasta.addActionListener(this);
 		
@@ -654,24 +656,34 @@ public class HaruNoHana extends Thread implements ActionListener {
 		panel_8.add(spnDesconto);
 		
 		JLabel lblAviso = new JLabel("");
+
+		JComboBox cmbxCond = new JComboBox();
+		JComboBox cmbxSinal = new JComboBox();
+		JSpinner spnValor = new JSpinner();
 		
 		JButton btnIncluirPromoo = new JButton("Incluir Promo\u00E7\u00E3o");
 		btnIncluirPromoo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if ((txtNome.getText() == null)||(txtNome.getText().equals(""))||(txtDescricao.getText() == null)||(txtDescricao.getText().equals(""))||(txtCondicao.getText() == null)||(txtCondicao.getText().equals("")))
-						lblAviso.setText("Preencha todos os campos");
-				else {
-					try
-					{
-						spnDesconto.commitEdit();
-						Promocao promo = new Promocao (1,(Integer)spnDesconto.getValue(),txtDescricao.getText(),txtNome.getText(),txtCondicao.getText());
-						DAOs.getPromocoes().incluir(promo);
-					}
-					catch (Exception erro)
-					{
-						JOptionPane.showMessageDialog(null, erro.toString(), "Error",
-			                JOptionPane.ERROR_MESSAGE);
-					}
+				if (txtDescricao.getText().equals("")||txtNome.getText().equals("")) {
+					lblAviso.setText("Preencha todos os campos");
+					return;
+				}
+				try {
+					spnValor.commitEdit();
+				} catch (ParseException e) {}
+				String texto = (String)cmbxCond.getSelectedItem() + (String)cmbxSinal.getSelectedItem() + (Integer)spnValor.getValue() + "";
+			
+				lblAviso.setText(texto);
+				try
+				{
+					spnDesconto.commitEdit();
+					Promocao promo = new Promocao (1,(Integer)spnDesconto.getValue(),txtDescricao.getText(),txtNome.getText(),texto);
+					DAOs.getPromocoes().incluir(promo);
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+		                JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -679,9 +691,18 @@ public class HaruNoHana extends Thread implements ActionListener {
 		JLabel lblCondio = new JLabel("Condi\u00E7\u00E3o: ");
 		panel_8.add(lblCondio);
 		
-		txtCondicao = new JTextField();
-		panel_8.add(txtCondicao);
-		txtCondicao.setColumns(10);
+		JPanel panel_17 = new JPanel();
+		panel_8.add(panel_17);
+		panel_17.setLayout(new GridLayout(1, 3, 0, 0));
+		
+		cmbxCond.setModel(new DefaultComboBoxModel(new String[] {"mediaGasta", "qtdVisitas"}));
+		panel_17.add(cmbxCond);
+		
+		cmbxSinal.setModel(new DefaultComboBoxModel(new String[] {"<", "<=", "=", ">=", ">"}));
+		panel_17.add(cmbxSinal);
+		
+		spnValor.setModel(new SpinnerNumberModel(1, 1, 100, 1));
+		panel_17.add(spnValor);
 		panel_8.add(btnIncluirPromoo);
 		
 		panel_8.add(lblAviso);
@@ -805,7 +826,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if ((e.getSource() == rdbtnNome)||(e.getSource() == rdbtnDataDeCadastro)||(e.getSource() == rdbtnUltimaVisita)||(e.getSource() == rdbtnFrequencia)||(e.getSource() == rdbtnMediaGasta)) {
+		if ((e.getSource() == rdbtnNome)||(e.getSource() == rdbtnDataDeCadastro)||(e.getSource() == rdbtnUltimaVisita)||(e.getSource() == rdbtnQtdVisitas)||(e.getSource() == rdbtnMediaGasta)) {
 			MeuResultSet clientes = null;
 			tbl_clientes.setEnabled(true);
 			
@@ -824,7 +845,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 				tableModel.setRowCount(0);
 				
 				while (clientes.next())
-					tableModel.addRow(new Object[] {clientes.getInt("codCliente"),clientes.getString("userLogin"),clientes.getFloat("frequencia"),
+					tableModel.addRow(new Object[] {clientes.getInt("codCliente"),clientes.getString("userLogin"),clientes.getInt("qtdVisitas"),
 						clientes.getString("nome"),clientes.getTimestamp("ultimaVisita"),clientes.getTimestamp("dataCadastro"),
 						clientes.getFloat("mediaGasta"),clientes.getString("celular")});
 			}
