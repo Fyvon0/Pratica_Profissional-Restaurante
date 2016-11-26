@@ -26,7 +26,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,6 +48,9 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.JSplitPane;
+import javax.swing.SpinnerDateModel;
+import java.util.Date;
+import java.util.Calendar;
 
 public class HaruNoHana extends Thread implements ActionListener {
 
@@ -295,6 +300,213 @@ public class HaruNoHana extends Thread implements ActionListener {
 		
 		JPanel pnl_alteraMesas = new JPanel();
 		tabbedPane_1.addTab("Altera\u00E7\u00E3o", null, pnl_alteraMesas, null);
+		pnl_alteraMesas.setLayout(new GridLayout(3, 1, 0, 0));
+		
+		JPanel panel_13 = new JPanel();
+		pnl_alteraMesas.add(panel_13);
+		panel_13.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblAdicionarMesas = new JLabel("Adicionar Mesas");
+		panel_13.add(lblAdicionarMesas, BorderLayout.NORTH);
+		
+		JPanel panel_16 = new JPanel();
+		panel_13.add(panel_16, BorderLayout.CENTER);
+		panel_16.setLayout(new GridLayout(2, 2, 0, 0));
+		
+		JLabel lblEscolhaONmero = new JLabel("Escolha o n\u00FAmero da mesa que deseja adicionar: ");
+		panel_16.add(lblEscolhaONmero);
+		
+		JSpinner spnMesa = new JSpinner();
+		spnMesa.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		panel_16.add(spnMesa);
+		
+		JLabel lblAvisoMesa = new JLabel("");
+		
+		JButton btnAdicionarMesa = new JButton("Adicionar Mesa");
+		btnAdicionarMesa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try
+				{
+					spnMesa.commitEdit();
+					if (DAOs.getMesas().cadastrado((Integer)spnMesa.getValue())) {
+						lblAvisoMesa.setText("Esse código de mesa já existe");
+						return;
+					}
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);					
+				}
+				
+				lblAvisoMesa.setText("");
+				
+				long data = new Date().getTime();
+				
+				try
+				{
+					DAOs.getMesas().incluir(new Mesa((Integer)spnMesa.getValue(),0,0,1,new Timestamp(data),new Timestamp(data),new Timestamp(data),"Débito",new BigDecimal(0.0F)));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);	
+				}
+			}
+		});
+		panel_16.add(btnAdicionarMesa);
+		
+		
+		panel_16.add(lblAvisoMesa);
+		
+		JPanel panel_15 = new JPanel();
+		pnl_alteraMesas.add(panel_15);
+		panel_15.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblReservarMesas = new JLabel("Reservar Mesas");
+		panel_15.add(lblReservarMesas, BorderLayout.NORTH);
+		
+		JPanel panel_18 = new JPanel();
+		panel_15.add(panel_18, BorderLayout.CENTER);
+		panel_18.setLayout(new GridLayout(3, 2, 0, 0));
+		
+		JLabel lblEscolhaONmero_1 = new JLabel("Escolha o n\u00FAmero da mesa: ");
+		panel_18.add(lblEscolhaONmero_1);
+		
+		DefaultListModel listModelMesas = new DefaultListModel();
+		JList lstMesa = new JList(listModelMesas);
+		lstMesa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		panel_18.add(lstMesa);
+		
+		JLabel lblEscolhaOHorrio = new JLabel("Escolha o hor\u00E1rio: ");
+		panel_18.add(lblEscolhaOHorrio);
+		
+		SpinnerDateModel spnModelHora = new SpinnerDateModel(new Date(),null, null, Calendar.DAY_OF_YEAR);
+		JSpinner spnHora = new JSpinner(spnModelHora);
+		panel_18.add(spnHora);
+		
+		JButton btnAtualizarMesas = new JButton("Atualizar Mesas");
+		JButton btnAtualizarMesasReserva = new JButton("Atualizar Mesas");
+		
+		JButton btnReservarMesa = new JButton("Reservar Mesa");
+		btnReservarMesa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (lstMesa.getSelectedIndex() < 0)
+					return;
+				
+				try
+				{
+					DAOs.getMesas().reservar((Integer)lstMesa.getSelectedValue(), new Timestamp(spnModelHora.getDate().getTime()));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+						JOptionPane.ERROR_MESSAGE);	
+				}
+			
+				btnAtualizarMesas.doClick();
+				btnAtualizarMesasReserva.doClick();
+			}
+		});
+		panel_18.add(btnReservarMesa);
+	
+		btnAtualizarMesas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				listModelMesas.clear();
+				MeuResultSet mesas = null;
+				
+				try
+				{
+					mesas =DAOs.getMesas().getMesasOrdenado(new String [] {"reserva = 0"}, "", false);
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);	
+				}
+				
+				try
+				{
+					while (mesas.next())
+						listModelMesas.addElement(mesas.getInt("codMesa"));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);	
+				}
+			}
+		});
+		panel_18.add(btnAtualizarMesas);
+		
+		JPanel panel_14 = new JPanel();
+		pnl_alteraMesas.add(panel_14);
+		panel_14.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblCancelarReservas = new JLabel("Cancelar Reservas");
+		panel_14.add(lblCancelarReservas, BorderLayout.NORTH);
+		
+		JPanel panel_19 = new JPanel();
+		panel_14.add(panel_19, BorderLayout.CENTER);
+		panel_19.setLayout(new GridLayout(2, 2, 0, 0));
+		
+		JLabel lblEscolhaONmero_2 = new JLabel("Escolha o n\u00FAmero da mesa cuja reserva deseja cancelar:");
+		panel_19.add(lblEscolhaONmero_2);
+		
+		DefaultListModel<Integer> lstModelReserva = new DefaultListModel<Integer> ();
+		JList<Integer> lstMesasReserva = new JList<Integer>(lstModelReserva);
+		panel_19.add(lstMesasReserva);
+				
+		JButton btnCancelarReserva = new JButton("Cancelar Reserva");
+		btnCancelarReserva.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (lstMesasReserva.getSelectedIndex() < 0)
+					return;
+				
+				try
+				{
+					DAOs.getMesas().cancelarReserva(lstMesasReserva.getSelectedValue().intValue());
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);	
+				}
+				
+				btnAtualizarMesasReserva.doClick();
+				btnAtualizarMesas.doClick();
+			}
+		});
+		panel_19.add(btnCancelarReserva);
+		
+		btnAtualizarMesasReserva.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lstModelReserva.clear();
+				MeuResultSet mesas = null;
+				
+				try
+				{
+					mesas = DAOs.getMesas().getMesasOrdenado(new String [] {"reserva = 1"}, "", false);
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);	
+				}
+				
+				try
+				{
+					while (mesas.next())
+						lstModelReserva.addElement(mesas.getInt("codMesa"));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+							JOptionPane.ERROR_MESSAGE);	
+				}
+			}
+		});
+		panel_19.add(btnAtualizarMesasReserva);
 		
 		JPanel pnl_clientes = new JPanel();
 		tabbedPane.addTab("Clientes", null, pnl_clientes, null);

@@ -126,9 +126,7 @@ public class Mesa {
 		if (horario == null)
 			throw new Exception ("Horário nulo");
 		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(horario);
-		this.horario = (Timestamp)cal.getTime();
+		this.horario = horario;
 	}
 	
 	/**
@@ -146,9 +144,7 @@ public class Mesa {
 		if (horaPrevista == null)
 			throw new Exception ("Hora prevista não fornecida");
 		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(horaPrevista);
-		this.horaPrevista = (Timestamp)cal.getTime();
+		this.horaPrevista = horaPrevista;
 	}
 	
 	/**
@@ -166,9 +162,7 @@ public class Mesa {
 		if (horaFechamento == null)
 			throw new Exception ("Hora de Fechamento da conta não fornecida");
 		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(horaFechamento);
-		this.horaFechamento = (Timestamp)cal.getTime();
+		this.horaFechamento = horaFechamento;
 	}
 	
 	/**

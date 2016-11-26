@@ -23,7 +23,7 @@ public class Mesas {
 	    {
 	        String sql;
 	
-	        sql = "SELECT * FROM Mesa WHERE codMesas=?";
+	        sql = "SELECT * FROM Mesa WHERE codMesa=?";
 	
 	        DAOs.getBD().prepareStatement (sql);
 	
@@ -56,20 +56,22 @@ public class Mesas {
         {
             String sql;
 
-            sql = "INSERT INTO Mesa VALUES (?,?,?,?,?,?,?,?)";
+            sql = "INSERT INTO Mesa VALUES (?,?,?,?,?,?,?,?,?)";
 
             DAOs.getBD().prepareStatement (sql);
 
-            DAOs.getBD().setInt(1, mesa.getReserva ());
-            DAOs.getBD().setTimestamp(2, mesa.getHorario ());
-            DAOs.getBD().setTimestamp(3,mesa.getHoraPrevista());
-            DAOs.getBD().setString(4,mesa.getFormaPagamento());
-            DAOs.getBD().setBigDecimal(5, mesa.getValorTotal());
-            DAOs.getBD().setTimestamp(6, mesa.getHoraFechamento());;
-            DAOs.getBD().setInt(7, mesa.getStatusMesa());
-            DAOs.getBD().setInt(8, mesa.getCodCliente());
+            DAOs.getBD().setInt(1, mesa.getCodMesa());
+            DAOs.getBD().setInt(2, mesa.getReserva ());
+            DAOs.getBD().setTimestamp(3, mesa.getHorario ());
+            DAOs.getBD().setTimestamp(4,mesa.getHoraPrevista());
+            DAOs.getBD().setString(5,mesa.getFormaPagamento());
+            DAOs.getBD().setBigDecimal(6, mesa.getValorTotal());
+            DAOs.getBD().setTimestamp(7, mesa.getHoraFechamento());;
+            DAOs.getBD().setInt(8, mesa.getStatusMesa());
+            DAOs.getBD().setInt(9, mesa.getCodCliente());
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -213,7 +215,7 @@ public class Mesas {
 		{
 			String sql = "SELECT * FROM Mesa ";
 			
-			ArrayList condicoes = new ArrayList();
+			ArrayList<String> condicoes = new ArrayList<String>();
 			
 			for (int i = 0; i < condicao.length; i++)
 				if (condicao[i] != null)
@@ -248,4 +250,49 @@ public class Mesas {
 		return resultado;
 	}
 	
+	public void reservar (int codigo, Timestamp horario) throws Exception
+	{
+		if (!cadastrado(codigo))
+			throw new Exception ("Mesas: Mesa não cadastrada");
+		
+		if (horario == null)
+			throw new Exception ("Mesas: Horário fornecido nulo");
+		
+		int reserva = 1;
+		
+		try
+		{
+			String sql ="UPDATE Mesa SET reserva = ?, horaPrevista = ? WHERE codMesa = ?";
+			DAOs.getBD().prepareStatement(sql);
+			DAOs.getBD().setInt(1, reserva);
+			DAOs.getBD().setTimestamp(2, horario);
+			DAOs.getBD().setInt(3, codigo);
+			DAOs.getBD().executeUpdate();
+			DAOs.getBD().commit();
+		}
+		catch (Exception erro)
+		{
+			throw new Exception (erro.getMessage());
+		}
+	}
+	
+	public void cancelarReserva (int codigo) throws Exception
+	{
+		if (!cadastrado(codigo))
+			throw new Exception ("Mesas: Mesa não cadastrada");
+		
+		try
+		{
+			String sql = "UPDATE Mesa SET reserva = ? WHERE codMesa = ?";
+			DAOs.getBD().prepareStatement(sql);
+			DAOs.getBD().setInt(1, 0);
+			DAOs.getBD().setInt(2, codigo);
+			DAOs.getBD().executeUpdate();
+			DAOs.getBD().commit();
+		}
+		catch (Exception erro)
+		{
+			throw new Exception ("Erro ao cancelar reserva");
+		}
+	}
 }
