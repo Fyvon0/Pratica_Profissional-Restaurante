@@ -143,42 +143,6 @@ public class Mesas {
         }
     }
     
-    public void cancelaReserva (int codigo) throws Exception
-    {
-    	if (!cadastrado(codigo))
-    		throw new Exception ("Código de Mesa não registrado");
-    	try
-    	{
-	    	String sql = "UPDATE Mesa SET reserva = ? WHERE codMesa = ?";
-	    	DAOs.getBD().prepareStatement(sql);
-	    	DAOs.getBD().setInt(1, 0);
-	    	DAOs.getBD().setInt(2, codigo);
-	    	DAOs.getBD().executeUpdate();
-	    	DAOs.getBD().commit();
-    	}
-    	catch (Exception erro) {
-    		throw new Exception ("Erro ao alterar mesa");
-    	}
-    } 
-    
-    public void reservar (int codigo) throws Exception
-    {
-    	if (!cadastrado(codigo))
-    		throw new Exception ("Código de Mesa não registrado");
-    	try
-    	{
-	    	String sql = "UPDATE Mesa SET reserva = ? WHERE codMesa = ?";
-	    	DAOs.getBD().prepareStatement(sql);
-	    	DAOs.getBD().setInt(1, 1);
-	    	DAOs.getBD().setInt(2, codigo);
-	    	DAOs.getBD().executeUpdate();
-	    	DAOs.getBD().commit();
-    	}
-    	catch (Exception erro) {
-    		throw new Exception ("Erro ao alterar mesa");
-    	}
-    }
-    
     /**
      * Retorna as informações da mesa com o código informado
      * 

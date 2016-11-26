@@ -1,0 +1,50 @@
+package visual;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import Core.MeuResultSet;
+import banco.de.dados.DAOs;
+
+public class AtualizaPedidos extends Thread{
+
+	private JTable tblPedidos,tblFechamentos;
+
+	public AtualizaPedidos (JTable tblPed, JTable tblFech)
+	{
+		this.tblFechamentos = tblFech;
+		this.tblPedidos = tblPed;
+	}
+	
+	public void run ()
+	{
+		DefaultTableModel tableModelPedidos = (DefaultTableModel) this.tblPedidos.getModel();
+		
+		MeuResultSet pedidos = null;
+		
+		try
+		{
+			pedidos = DAOs.getPedidos().getPedidosDesc();
+		}
+		catch (Exception erro)
+		{
+			JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+				JOptionPane.ERROR_MESSAGE);
+		}
+		
+		try
+		{
+			tableModelPedidos.setRowCount(0);
+		
+			while (pedidos.next())
+				tableModelPedidos.addRow(new Object[] {pedidos.getInt("codPedido"),pedidos.getInt("codPrato"),pedidos.getInt("quantidade"),pedidos.getTimestamp("horario"),pedidos.getInt("codCliente")});
+		}
+		catch(Exception erro)
+		{
+			JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+				JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	}
+}
