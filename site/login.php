@@ -12,6 +12,8 @@
     {
         session_destroy();
     }
+
+
 ?>
 <html>
 <head>
