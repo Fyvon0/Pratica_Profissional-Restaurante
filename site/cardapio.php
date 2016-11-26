@@ -16,7 +16,7 @@ if (!(isset($_SESSION['codCliente'])))
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="cardapio.css">
     <link rel="stylesheet" type="text/css" href="buttons.css">
-    <link href="https://fonts.googleapis.com/css?family=Montez|Poiret+One" rel="stylesheet"> 
+    <!--<link href="https://fonts.googleapis.com/css?family=Montez|Poiret+One" rel="stylesheet"> -->
     <link rel="icon" href="logo.ico">
 </head>
 
@@ -95,7 +95,7 @@ if (!(isset($_SESSION['codCliente'])))
              
         }
          }
-        $sql10 = "Select codCliente from Cliente where userLogin='".$_SESSION['user']."'";
+        $sql10 = "Select codCliente from Cliente where nome='".$_SESSION['user']."'";
         $stmt10 = sqlsrv_query($con, $sql10);
          if($linha = sqlsrv_fetch_array($stmt10))
              $_SESSION['codCliente'] = $linha[0];
@@ -113,7 +113,8 @@ if (!(isset($_SESSION['codCliente'])))
            if ($_POST['qtde'] != 0) {
                 $sql  = "SELECT * from Prato where codPrato='".$_POST['adicionar']."'";
                 $stmt = sqlsrv_query($con, $sql);
-               
+                $sql1 = "Insert into Pedido values (".$_POST['qtde'].",GETDATE(),".$_SESSION['codCliente'].",".$_POST['adicionar'].")";              
+                $stmt1 = sqlsrv_query($con, $sql1);
                
                $repetido = false;
                $i = 0;
