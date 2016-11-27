@@ -1,6 +1,6 @@
 package dbos;
 
-public class Questionario {
+public class Questionario implements Cloneable{
 	private int codQuest,codCliente;
 	private float qualidadeComida, atendimento, tempoEspera;
 	private String observacoes;
@@ -133,7 +133,99 @@ public class Questionario {
 		
 		this.observacoes = observacoes;
 	}
+
+	/**
+	 * Gera o hashCode de uma instância dessa classe
+	 * 
+	 * @return o hashCode()
+	 */
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(atendimento);
+		result = prime * result + codCliente;
+		result = prime * result + codQuest;
+		result = prime * result + ((observacoes == null) ? 0 : observacoes.hashCode());
+		result = prime * result + Float.floatToIntBits(qualidadeComida);
+		result = prime * result + Float.floatToIntBits(tempoEspera);
+		return result;
+	}
+
+	/**
+	 * Compara se uma instância dessa classe é idêntica a outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas e <code>false<code> se não
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Questionario other = (Questionario) obj;
+		if (Float.floatToIntBits(atendimento) != Float.floatToIntBits(other.atendimento))
+			return false;
+		if (codCliente != other.codCliente)
+			return false;
+		if (codQuest != other.codQuest)
+			return false;
+		if (observacoes == null) {
+			if (other.observacoes != null)
+				return false;
+		} else if (!observacoes.equals(other.observacoes))
+			return false;
+		if (Float.floatToIntBits(qualidadeComida) != Float.floatToIntBits(other.qualidadeComida))
+			return false;
+		if (Float.floatToIntBits(tempoEspera) != Float.floatToIntBits(other.tempoEspera))
+			return false;
+		return true;
+	}
+
+	/**
+	 * Gera uma String que é uma representação de uma instância dessa classe
+	 * 
+	 * @return uma String com os valores das variáveis
+	 */
+	public String toString() {
+		return "Questionario [codQuest=" + codQuest + ", codCliente=" + codCliente + ", qualidadeComida="
+				+ qualidadeComida + ", atendimento=" + atendimento + ", tempoEspera=" + tempoEspera + ", observacoes="
+				+ observacoes + "]";
+	}
 	
+	/**
+	 * Inicializa os valores de uma instância baseado nos valores de outra instância 
+	 *
+	 * @param q Questionario que servirá de base para os valores
+	 * @throws Exception se o questionario fornecido for nulo
+	 */
+	public Questionario (Questionario q) throws Exception
+	{
+		if (q == null)
+			throw new Exception("Questionario: questionario fornecido nulo");
+		
+		this.setAtendimento(q.atendimento);
+		this.setCodCliente(q.codCliente);
+		this.setCodQuest(q.codQuest);
+		this.setObservacoes(q.observacoes);
+		this.setQualidadeComida(q.qualidadeComida);
+		this.setTempoEspera(q.tempoEspera);
+	}
 	
-	
+	/**
+	 * Gera uma instância com os valores das variáveis iguais a essa
+	 * 
+	 * @return um Questionario com os valores iguais a esse
+	 */
+	public Object clone ()
+	{
+		Questionario q = null;
+		try
+		{
+			q = new Questionario(this);
+		}
+		catch (Exception erro)
+		{}
+		return q;
+	}
 }

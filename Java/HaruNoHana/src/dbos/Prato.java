@@ -2,7 +2,7 @@ package dbos;
 
 import java.math.*;
 
-public class Prato
+public class Prato implements Cloneable
 {
 	private int codPrato;
 	private String classificacao,ingredientes,descricao,nome;
@@ -193,8 +193,52 @@ public class Prato
 		
 		return true;
 	}
+
+	/**
+	 * Gera uma string que representa essa instância
+	 * 
+	 * @return uma String com os valores das variáveis dessa instância
+	 */
+	public String toString() {
+		return "Prato [codPrato=" + codPrato + ", classificacao=" + classificacao + ", ingredientes=" + ingredientes
+				+ ", descricao=" + descricao + ", nome=" + nome + ", preco=" + preco + "]";
+	}
 	
+	/**
+	 * Inicializa os valores de uma instância baseado nos valores de outra instância 
+	 *
+	 * @param p	prato que servirá de base para os valores
+	 * @throws Exception se o prato fornecido for nulo
+	 */
+	public Prato (Prato p) throws Exception
+	{
+		if (p == null)
+			throw new Exception("Prato: prato fornecido nulo");
+		
+		this.setClassificacao(p.classificacao);
+		this.setCodPrato(p.codPrato);
+		this.setDescricao(p.descricao);
+		this.setIngredientes(p.ingredientes);
+		this.setNome(p.nome);
+		this.setPreco(p.preco);
+	}
 	
-	
-	
+	/**
+	 * Gera uma instância com os valores das variáveis iguais a essa
+	 * 
+	 * @return um Prato com os valores iguais a esse
+	 */
+	public Object clone ()
+	{
+		Prato p = null;
+		
+		try
+		{
+			p = new Prato (this);
+		}
+		catch (Exception erro)
+		{}
+		
+		return p;
+	}	
 }

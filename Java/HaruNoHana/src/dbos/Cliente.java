@@ -296,8 +296,8 @@ public class Cliente implements Cloneable
 		this.setNome(cliente.nome);
 		this.setCelular(cliente.celular);
 		this.setMediaGasta(cliente.mediaGasta);
-		this.setUltimaVisita(cliente.ultimaVisita);
-		this.setDataCadastro(cliente.dataCadastro);
+		this.setUltimaVisita(cliente.getUltimaVisita());
+		this.setDataCadastro(cliente.getDataCadastro());
 	}
 	
 	/**

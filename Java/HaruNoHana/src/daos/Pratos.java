@@ -32,7 +32,7 @@ public class Pratos {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao procurar livro");
+            throw new Exception ("Erro ao procurar prato");
         }
 
         return retorno;
@@ -47,7 +47,7 @@ public class Pratos {
 	public void incluir (Prato prato) throws Exception
     {
         if (prato==null)
-            throw new Exception ("Livro nao fornecido");
+            throw new Exception ("Prato nao fornecido");
 
         int codPrato;
         
@@ -143,6 +143,7 @@ public class Pratos {
             DAOs.getBD().setInt(6, prato.getCodPrato());
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -210,6 +211,13 @@ public class Pratos {
         return resultado;
     }
 	
+	/**
+	 * Recupera todos os pratos do banco de dados que pertencerem a uma certa classificação 
+	 * 
+	 * @param campo a classificação que será buscada
+	 * @return um MeuResultSet com todos os pratos pertencentes a tal classificacao
+	 * @throws Exception se ocorrer um erro ao buscar as informações no banco de dados
+	 */
 	public MeuResultSet getPratosOrdenado (String campo) throws Exception
 	{
 		MeuResultSet resultado = null;

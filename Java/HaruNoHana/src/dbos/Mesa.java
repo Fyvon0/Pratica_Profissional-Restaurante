@@ -1,10 +1,9 @@
 package dbos;
 
 import java.sql.*;
-import java.util.Calendar;
 import java.math.*;
 
-public class Mesa {
+public class Mesa implements Cloneable{
 	private int codMesa, reserva, statusMesa, codCliente;
 	private Timestamp horario, horaPrevista, horaFechamento;
 	private String formaPagamento;
@@ -311,9 +310,9 @@ public class Mesa {
 		this.setReserva(m.reserva);
 		this.setStatusMesa(m.statusMesa);
 		this.setCodCliente(m.codCliente);
-		this.setHorario(m.horario);
-		this.setHoraPrevista(m.horaPrevista);
-		this.setHoraFechamento(m.horaFechamento);
+		this.setHorario(m.getHorario());
+		this.setHoraPrevista(m.getHoraPrevista());
+		this.setHoraFechamento(m.getHoraFechamento());
 		this.setFormaPagamento(m.formaPagamento);
 		this.setValorTotal(m.valorTotal);
 	}

@@ -1,0 +1,233 @@
+package dbos;
+
+public class Questionario implements Cloneable{
+	private int codQuest,codCliente;
+	private float qualidadeComida, atendimento, tempoEspera;
+	private String observacoes;
+	
+	/**
+	 * Inicializa as variáveis com os valores recebidos por parâmetro
+	 * 
+	 * @param codQuest	código único que identifica cada questionário
+	 * @param codCliente	o código do cliente que respondeu o questionário
+	 * @param qualidadeComida	uma nota de 0 a 10 que o cliente atribuiu ao prato
+	 * @param atendimento	uma nota de 0 a 10 que o cliente atribuiu ao serviço do restaurante
+	 * @param tempoEspera	uma avaliação de 0 a 10 que o cliente atribuiu ao tempo de entrega do prato
+	 * @param observacoes	quaisquer observações extras que o cliente tenha a fazer sobre o prato
+	 * @throws Exception	se algum dos parâmetros passados for inválido (veja os setters para mais informações)
+	 */
+	public Questionario(int codQuest, int codCliente, float qualidadeComida, float atendimento, float tempoEspera,
+			String observacoes) throws Exception{
+		this.setCodQuest(codQuest);
+		this.setCodCliente(codCliente);
+		this.setQualidadeComida(qualidadeComida);
+		this.setAtendimento(atendimento);
+		this.setTempoEspera(tempoEspera);
+		this.setObservacoes(observacoes);
+	}
+
+	/**
+	 * @return codQuest
+	 */
+	public int getCodQuest() {
+		return codQuest;
+	}
+
+	/**
+	 * @param codQuest	o código de questionário a ser redefinido
+	 * @throws Exception	se o código passado for menor ou igual a 0
+	 */
+	public void setCodQuest(int codQuest) throws Exception{
+		if (codQuest <= 0)
+			throw new Exception ("Código de Questionário inválido");
+		
+		this.codQuest = codQuest;
+	}
+
+	/**
+	 * @return codCliente
+	 */
+	public int getCodCliente() {
+		return codCliente;
+	}
+
+	/**
+	 * @param codCliente o código de cliente a ser redefinido
+	 * @throws Exception	se o código passado for menor ou igual a 0
+	 */
+	public void setCodCliente(int codCliente) throws Exception{
+		if (codCliente <= 0)
+			throw new Exception ("Código de Cliente inválido");
+		
+		this.codCliente = codCliente;
+	}
+
+	/**
+	 * @return qualidadeComida
+	 */
+	public float getQualidadeComida() {
+		return qualidadeComida;
+	}
+
+	/**
+	 * @param qualidadeComida a qualidade da comida a ser redefinida
+	 * @throws Exception	se a qualidade da comida passada for menor que 0.0
+	 */
+	public void setQualidadeComida(float qualidadeComida) throws Exception{
+		if (qualidadeComida < 0.0F)
+			throw new Exception ("Qualidade da comida inválida");
+		
+		this.qualidadeComida = qualidadeComida;
+	}
+
+	/**
+	 * @return atendimento
+	 */
+	public float getAtendimento() {
+		return atendimento;
+	}
+
+	/**
+	 * @param atendimento	a qualidade do atendimento a ser redefinida
+	 * @throws Exception	se o parâmetro fornecido for menor que 0.0
+	 */
+	public void setAtendimento(float atendimento) throws Exception{
+		if (atendimento < 0.0F)
+			throw new Exception ("Atendimento inválido");
+		
+		this.atendimento = atendimento;
+	}
+
+	/**
+	 * @return tempoEspera
+	 */
+	public float getTempoEspera() {
+		return tempoEspera;
+	}
+
+	/**
+	 * @param tempoEspera a avaliação do tempo de espera a ser redefinida
+	 * @throws Exception	se a avaliação do tempo de esperar passada for menor que 0.0
+	 */
+	public void setTempoEspera(float tempoEspera) throws Exception{
+		if (tempoEspera < 0.0F)
+			throw new Exception ("Tempo de Espera inválida");
+		
+		this.tempoEspera = tempoEspera;
+	}
+
+	/**
+	 * @return observacoes
+	 */
+	public String getObservacoes() {
+		return observacoes;
+	}
+
+	/**
+	 * @param observacoes as observações a serem redefinidas
+	 * @throws Exception	se as observações passadas forem nulas
+	 */
+	public void setObservacoes(String observacoes) throws Exception{
+		if (observacoes == null)
+			throw new Exception ("Observações não fornecidas");
+		
+		this.observacoes = observacoes;
+	}
+
+	/**
+	 * Gera o hashCode de uma instância dessa classe
+	 * 
+	 * @return o hashCode()
+	 */
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(atendimento);
+		result = prime * result + codCliente;
+		result = prime * result + codQuest;
+		result = prime * result + ((observacoes == null) ? 0 : observacoes.hashCode());
+		result = prime * result + Float.floatToIntBits(qualidadeComida);
+		result = prime * result + Float.floatToIntBits(tempoEspera);
+		return result;
+	}
+
+	/**
+	 * Compara se uma instância dessa classe é idêntica a outra
+	 * 
+	 * @return <code>true</code> se as instâncias forem idênticas e <code>false<code> se não
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Questionario other = (Questionario) obj;
+		if (Float.floatToIntBits(atendimento) != Float.floatToIntBits(other.atendimento))
+			return false;
+		if (codCliente != other.codCliente)
+			return false;
+		if (codQuest != other.codQuest)
+			return false;
+		if (observacoes == null) {
+			if (other.observacoes != null)
+				return false;
+		} else if (!observacoes.equals(other.observacoes))
+			return false;
+		if (Float.floatToIntBits(qualidadeComida) != Float.floatToIntBits(other.qualidadeComida))
+			return false;
+		if (Float.floatToIntBits(tempoEspera) != Float.floatToIntBits(other.tempoEspera))
+			return false;
+		return true;
+	}
+
+	/**
+	 * Gera uma String que é uma representação de uma instância dessa classe
+	 * 
+	 * @return uma String com os valores das variáveis
+	 */
+	public String toString() {
+		return "Questionario [codQuest=" + codQuest + ", codCliente=" + codCliente + ", qualidadeComida="
+				+ qualidadeComida + ", atendimento=" + atendimento + ", tempoEspera=" + tempoEspera + ", observacoes="
+				+ observacoes + "]";
+	}
+	
+	/**
+	 * Inicializa os valores de uma instância baseado nos valores de outra instância 
+	 *
+	 * @param q Questionario que servirá de base para os valores
+	 * @throws Exception se o questionario fornecido for nulo
+	 */
+	public Questionario (Questionario q) throws Exception
+	{
+		if (q == null)
+			throw new Exception("Questionario: questionario fornecido nulo");
+		
+		this.setAtendimento(q.atendimento);
+		this.setCodCliente(q.codCliente);
+		this.setCodQuest(q.codQuest);
+		this.setObservacoes(q.observacoes);
+		this.setQualidadeComida(q.qualidadeComida);
+		this.setTempoEspera(q.tempoEspera);
+	}
+	
+	/**
+	 * Gera uma instância com os valores das variáveis iguais a essa
+	 * 
+	 * @return um Questionario com os valores iguais a esse
+	 */
+	public Object clone ()
+	{
+		Questionario q = null;
+		try
+		{
+			q = new Questionario(this);
+		}
+		catch (Exception erro)
+		{}
+		return q;
+		}
+	}
+	
+}

@@ -3,7 +3,7 @@ package dbos;
 import java.sql.*;
 import java.util.Calendar;
 
-public class Pedido {
+public class Pedido implements Cloneable{
 	private int codPedido, quantidade, codCliente, codPrato;
 	private Timestamp horario;
 	
@@ -170,8 +170,52 @@ public class Pedido {
 		
 		return true;
 	}
+
+	/**
+	 * Gera uma representação de uma instância dessa classe em formato de String
+	 * 
+	 * @return uma String com o valor dos atributos
+	 */
+	public String toString() {
+		return "Pedido [codPedido=" + codPedido + ", quantidade=" + quantidade + ", codCliente=" + codCliente
+				+ ", codPrato=" + codPrato + ", horario=" + horario + "]";
+	}
 	
+	/**
+	 * Inicializa os valores das variáveis de uma instância baseado em outra instância
+	 * 
+	 * @param p	um Pedido cujos valores servirão de base para inicializar os valores dessa instância
+	 * @throws Exception	se o Pedido fornecido for nulo
+	 */
+	public Pedido (Pedido p) throws Exception
+	{		
+		if (p == null)
+			throw new Exception ("Pedido: pedido fornecido nulo");
+		
+		this.setCodCliente(p.codCliente);
+		this.setCodPedido(p.codPedido);
+		this.setCodPrato(p.codPrato);
+		this.setHorario(p.getHorario());
+		this.setQuantidade(p.quantidade);
+	}
 	
-	
+	/**
+	 * Gera uma cópia com os atributos com os mesmos valores
+	 * 
+	 * @return um Object com os valores das variáveis iguais ao do this
+	 */
+	public Object clone ()
+	{
+		Pedido result = null;
+		
+		try 
+		{
+			result = new Pedido(this);
+		}
+		catch (Exception erro)
+		{}
+		
+		return result;
+	}
 	
 }

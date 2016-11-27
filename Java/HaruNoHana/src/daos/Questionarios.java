@@ -68,7 +68,7 @@ public class Questionarios {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao procurar livro");
+            throw new Exception ("Erro ao procurar questionário");
         }
 
         return questionario;

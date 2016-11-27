@@ -5,7 +5,7 @@ import Core.*;
 import banco.de.dados.*;
 import dbos.Promocao;
 
-public class Promocoes {
+public class Promocoes{
 	
 	/**
 	 * Procura pelo registro com o código passado por parâmetro no banco de dados e informa se ele existe ou não.

@@ -55,7 +55,7 @@
 			$_SESSION['incompleto'] = false;
 	        $_SESSION['celExiste'] = false;
 	        $_SESSION['userExiste'] = false;
-			header('Location:cardapio.php');
+			header('Location:login.php');
 			exit();
 		}
 	}

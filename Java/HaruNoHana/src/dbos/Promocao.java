@@ -1,6 +1,6 @@
 package dbos;
 
-public class Promocao {
+public class Promocao implements Cloneable{
 	
 	private int codPromocao,desconto;
 	private String descricao,nome,condicao;
@@ -154,7 +154,49 @@ public class Promocao {
 		
 		return true;
 	}
+
+	/**
+	 * Gera uma representação de uma instância dessa classe em formato de String
+	 * 
+	 * @return uma String com os valores das variáveis
+	 */
+	public String toString() {
+		return "Promocao [codPromocao=" + codPromocao + ", desconto=" + desconto + ", descricao=" + descricao
+				+ ", nome=" + nome + ", condicao=" + condicao + "]";
+	}
 	
+	/**
+	 * Inicializa os valores de uma instância baseado nos valores de outra instância 
+	 *
+	 * @param p	promocao que servirá de base para os valores
+	 * @throws Exception se a promocao fornecida for nula
+	 */
+	public Promocao (Promocao p) throws Exception
+	{
+		if (p == null)
+			throw new Exception ("Promocao: promocao fornecida nula");
+		
+		this.setCodPromocao(p.codPromocao);
+		this.setCondicao(p.condicao);
+		this.setDesconto(p.desconto);
+		this.setDescricao(p.descricao);
+		this.setNome(p.nome);
+	}
 	
-	
+	/**
+	 * Gera uma instância com os valores das variáveis iguais a essa
+	 * 
+	 * @return uma Promocao com os valores iguais a essa
+	 */
+	public Object clone ()
+	{
+		Promocao p = null;
+		try
+		{
+			p = new Promocao(this);
+		}
+		catch(Exception erro)
+		{}
+		return p;
+	}
 }
