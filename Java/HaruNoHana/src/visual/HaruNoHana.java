@@ -23,10 +23,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -55,16 +61,21 @@ import java.util.Calendar;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import static java.nio.file.StandardCopyOption.*;
+import javax.swing.JFileChooser;
+
 public class HaruNoHana extends Thread implements ActionListener {
 
 	private static JFrame frmHaruNoHana;
 	private ButtonGroup btnGrpOrdemCliente = new ButtonGroup();
 	private JTable tbl_clientes;
-	private DefaultTableModel tableModel,tableModelMesas,tableModelPromocoes,tableModelPedidos;
+	private DefaultTableModel tableModel,tableModelMesas,tableModelPromocoes,tableModelPedidos,tableModelPratos;
 	private DefaultTableModel tableModelPeds,tableModelFechs;
 	private JCheckBox chckbxDecrescente, chckbxMesaDecrescente;
 	private JTable tbl_mesas;
-	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnQtdVisitas,rdbtnMediaGasta,rdbtnReservadas,rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal;
+	private JRadioButton rdbtnNome,rdbtnDataDeCadastro,rdbtnUltimaVisita,rdbtnQtdVisitas,rdbtnMediaGasta,rdbtnReservadas,
+						rdbtnNoReservadas,rdbtnOcupadas,rdbtnLivres,rdbtnHoraFechamento,rdbtnHoraAbertura,rdbtnValorTotal,
+						rdbtnEntradas,rdbtnPratos,rdbtnSobremesas,rdbtnBebidas,rdbtnTodas;
 	private final ButtonGroup btnGrpReservadas = new ButtonGroup();
 	private final ButtonGroup btnGrpOcupadas = new ButtonGroup();
 	private final ButtonGroup btnGrpOrdemMesa = new ButtonGroup();
@@ -76,8 +87,12 @@ public class HaruNoHana extends Thread implements ActionListener {
 	private JTable tablePeds;
 	private JTable tableFechs;
 	private JPanel panel;
-	private JTable table;
+	private JTable tblPratos;
 	private JTable tblQuest;
+	private final ButtonGroup btnGrpPratos = new ButtonGroup();
+	private JTextField txtNomePrato;
+	private JTextField txtDescPrato;
+	private JTextField txtIngPrato;
 
 	public void run() {
 		try {
@@ -594,6 +609,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		btnAtualizarPromo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MeuResultSet promos = null;
+				tbl_Promocoes.setEnabled(true);
 				
 				try
 				{
@@ -617,6 +633,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				}
+				tbl_Promocoes.setEnabled(false);
 			}
 		});
 		panel_12.add(btnAtualizarPromo, BorderLayout.SOUTH);
@@ -787,8 +804,11 @@ public class HaruNoHana extends Thread implements ActionListener {
 		tabbedPane_3.addTab("Consulta", null, panel_20, null);
 		panel_20.setLayout(new BorderLayout(0, 0));
 		
-		table = new JTable();
-		panel_20.add(table, BorderLayout.CENTER);
+		String [] cabecalho = {"codPrato","nomePrato","ingredientes","descricao","classificacao","preco"};
+		tableModelPratos = new DefaultTableModel(cabecalho,0);
+		tblPratos = new JTable(tableModelPratos);
+		JScrollPane scrollPanePratos = new JScrollPane(tblPratos);
+		panel_20.add(scrollPanePratos, BorderLayout.CENTER);
 		
 		JPanel panel_22 = new JPanel();
 		panel_20.add(panel_22, BorderLayout.EAST);
@@ -797,24 +817,214 @@ public class HaruNoHana extends Thread implements ActionListener {
 		JLabel lblAbas = new JLabel("Abas:");
 		panel_22.add(lblAbas);
 		
-		JRadioButton rdbtnEntradas = new JRadioButton("Entradas");
+		rdbtnEntradas = new JRadioButton("Entradas");
+		rdbtnEntradas.setActionCommand("Entrada");
+		rdbtnEntradas.addActionListener(this);
+		btnGrpPratos.add(rdbtnEntradas);
 		panel_22.add(rdbtnEntradas);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Pratos");
-		panel_22.add(rdbtnNewRadioButton);
+		rdbtnPratos = new JRadioButton("Pratos");
+		rdbtnPratos.setActionCommand("Pratos");
+		rdbtnPratos.addActionListener(this);
+		btnGrpPratos.add(rdbtnPratos);
+		panel_22.add(rdbtnPratos);
 		
-		JRadioButton rdbtnSobremesas = new JRadioButton("Sobremesas");
+		rdbtnSobremesas = new JRadioButton("Sobremesas");
+		rdbtnSobremesas.setActionCommand("Sobremesa");
+		rdbtnSobremesas.addActionListener(this);
+		btnGrpPratos.add(rdbtnSobremesas);
 		panel_22.add(rdbtnSobremesas);
 		
-		JRadioButton rdbtnBebidas = new JRadioButton("Bebidas");
+		rdbtnBebidas = new JRadioButton("Bebidas");
+		rdbtnBebidas.setActionCommand("Bebidas");
+		rdbtnBebidas.addActionListener(this);
+		btnGrpPratos.add(rdbtnBebidas);
 		panel_22.add(rdbtnBebidas);
 		
-		JRadioButton rdbtnTodas = new JRadioButton("Todas");
+		rdbtnTodas = new JRadioButton("Todas");
+		rdbtnTodas.setActionCommand("Todas");
+		rdbtnTodas.addActionListener(this);
+		btnGrpPratos.add(rdbtnTodas);
 		panel_22.add(rdbtnTodas);
 		
 		JPanel panel_21 = new JPanel();
 		tabbedPane_3.addTab("Altera\u00E7\u00E3o", null, panel_21, null);
-		panel_21.setLayout(new BorderLayout(0, 0));
+		panel_21.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		JPanel panel_24 = new JPanel();
+		panel_21.add(panel_24);
+		panel_24.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblAdicionarMesa = new JLabel("Adicionar Prato");
+		panel_24.add(lblAdicionarMesa, BorderLayout.NORTH);
+		
+		JPanel panel_26 = new JPanel();
+		panel_24.add(panel_26, BorderLayout.CENTER);
+		panel_26.setLayout(new GridLayout(6, 2, 0, 0));
+		
+		JLabel lblDigiteONome = new JLabel("Digite o nome do prato");
+		panel_26.add(lblDigiteONome);
+		
+		txtNomePrato = new JTextField();
+		panel_26.add(txtNomePrato);
+		txtNomePrato.setColumns(10);
+		
+		JLabel lblDigiteADescrio = new JLabel("Digite a descri\u00E7\u00E3o do prato");
+		panel_26.add(lblDigiteADescrio);
+		
+		txtDescPrato = new JTextField();
+		panel_26.add(txtDescPrato);
+		txtDescPrato.setColumns(10);
+		
+		JLabel lblDigiteOsIngredientes = new JLabel("Digite os ingredientes do prato");
+		panel_26.add(lblDigiteOsIngredientes);
+		
+		txtIngPrato = new JTextField();
+		panel_26.add(txtIngPrato);
+		txtIngPrato.setColumns(10);
+		
+		JLabel lblEscolhaAClassificao = new JLabel("Escolha a classifica\u00E7\u00E3o do prato");
+		panel_26.add(lblEscolhaAClassificao);
+		
+		JComboBox cmbxClassificacao = new JComboBox();
+		cmbxClassificacao.setModel(new DefaultComboBoxModel(new String[] {"Entrada", "Pratos", "Sobremesa", "Bebidas"}));
+		panel_26.add(cmbxClassificacao);
+		
+		JLabel lblAvisoPrato = new JLabel("");
+	
+		JSpinner spnPrecoPrato = new JSpinner();
+		
+		JButton btnAdicionarPrato = new JButton("Adicionar Prato");
+		btnAdicionarPrato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (txtNomePrato.getText().equals("")||txtNomePrato.getText() == null||txtDescPrato.getText().equals("")||txtDescPrato.getText() == null||txtIngPrato.getText().equals("")||txtIngPrato.getText() == null) {
+					lblAvisoPrato.setText("Preencha todos os campos");
+					return;
+				}
+				
+				try
+				{
+					DAOs.getPratos().incluir(new Prato(1, (String)cmbxClassificacao.getSelectedItem(), txtIngPrato.getText(), txtDescPrato.getText(),txtNomePrato.getText(), new BigDecimal((Float)spnPrecoPrato.getValue())));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				MeuResultSet codPratos = null;
+				
+				try 
+				{
+					codPratos = DAOs.getPratos().getPratos();
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				int codPrato;
+				
+				try
+				{
+					codPratos.last();
+					codPrato = codPratos.getInt("codPrato");
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				lblAvisoPrato.setText("");
+				
+				JOptionPane.showMessageDialog(null, "Insira a imagem do " + txtNomePrato.getText()+ " na pasta site/Imagens/ com o nome de " + codPrato + ".jpg");
+			}	
+		});
+		
+		JLabel lblEscolhaOPreo = new JLabel("Escolha o pre\u00E7o do prato");
+		panel_26.add(lblEscolhaOPreo);
+		
+		spnPrecoPrato.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		panel_26.add(spnPrecoPrato);
+		panel_26.add(btnAdicionarPrato);
+
+		panel_26.add(lblAvisoPrato);
+		
+		JPanel panel_25 = new JPanel();
+		panel_21.add(panel_25);
+		panel_25.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_27 = new JPanel();
+		panel_25.add(panel_27, BorderLayout.CENTER);
+		panel_27.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel lblEscoclhaOCdigo = new JLabel("Escolha o c\u00F3digo do prato que deseja deletar");
+		panel_27.add(lblEscoclhaOCdigo);
+		
+		DefaultListModel<Integer> listModelPratos = new DefaultListModel<Integer>();
+		JList<Integer> lstPratos = new JList<Integer>(listModelPratos);
+		lstPratos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scrollPanePratosDel = new JScrollPane (lstPratos);
+		panel_27.add(scrollPanePratosDel);
+
+		JButton btnAtualizarPratos = new JButton("Atualizar Pratos");
+		
+		JButton btnDeletarprato = new JButton("Deletar Prato");
+		btnDeletarprato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (lstPratos.getSelectedIndex() < 0)
+					return;
+				
+				try
+				{
+					DAOs.getPratos().excluir(lstPratos.getSelectedValue());
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				btnAtualizarPratos.doClick();
+			}
+		});
+		panel_27.add(btnDeletarprato);
+		
+		btnAtualizarPratos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MeuResultSet pratos = null;
+				listModelPratos.clear();
+						
+				try
+				{
+					pratos = DAOs.getPratos().getPratos();
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				try
+				{
+					while (pratos.next())
+						listModelPratos.addElement(pratos.getInt("codPrato"));
+				}
+				catch (Exception erro)
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+		});
+		panel_27.add(btnAtualizarPratos);
 
 		panel = new JPanel();
 		frmHaruNoHana.getContentPane().add(panel, BorderLayout.EAST);
@@ -866,6 +1076,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		btnAtualizaQuest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				tableModelQuest.setRowCount(0);
+				tblQuest.setEnabled(true);
 				MeuResultSet quest = null;
 				
 				try
@@ -884,7 +1095,11 @@ public class HaruNoHana extends Thread implements ActionListener {
 						tableModelQuest.addRow(new Object [] {quest.getInt("codQuest"),quest.getInt("codCliente"),quest.getFloat("qualidadeComida"),quest.getFloat("atendimento"),quest.getFloat("tempoEspera"),quest.getString("observacoes")});
 				}
 				catch (Exception erro)
-				{}
+				{
+					JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+				}
+				tblQuest.setEnabled(false);
 			}
 		});
 		panel_23.add(btnAtualizaQuest, BorderLayout.SOUTH);
@@ -1015,7 +1230,34 @@ public class HaruNoHana extends Thread implements ActionListener {
 				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			}
-		}			
+		} else if ((e.getSource() == rdbtnEntradas)||(e.getSource() == rdbtnPratos)||(e.getSource() == rdbtnSobremesas)||(e.getSource() == rdbtnBebidas)||(e.getSource()==rdbtnTodas)) {
+			MeuResultSet pratos = null;
+			tableModelPratos.setRowCount(0);
+			tblPratos.setEnabled(true);
+			
+			try
+			{
+				pratos = DAOs.getPratos().getPratosOrdenado(e.getActionCommand());
+			}
+			catch (Exception erro)
+			{
+				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+						JOptionPane.ERROR_MESSAGE);				
+			}
+			
+			try
+			{
+				while (pratos.next())
+					tableModelPratos.addRow(new Object [] {pratos.getInt("codPrato"),pratos.getString("nomePrato"),pratos.getString("ingredientes"),pratos.getString("descricao"),pratos.getString("classificacao"),pratos.getBigDecimal("preco")});
+			}
+			catch (Exception erro)
+			{
+				JOptionPane.showMessageDialog(null, erro.toString(), "Error",
+					JOptionPane.ERROR_MESSAGE);	
+			}
+			
+			tblPratos.setEnabled(false);
+		}	
 	}
 	
 	public void AtualizaPedidos ()
@@ -1070,4 +1312,11 @@ public class HaruNoHana extends Thread implements ActionListener {
 				JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	private static String getFileExtension(File file) {
+        String fileName = file.getName();
+        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+        return fileName.substring(fileName.lastIndexOf(".")+1);
+        else return "";
+    }
 }

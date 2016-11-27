@@ -4,8 +4,8 @@ import java.math.*;
 
 public class Prato
 {
-	private int codPrato,classificacao;
-	private String ingredientes,descricao;
+	private int codPrato;
+	private String classificacao,ingredientes,descricao,nome;
 	private BigDecimal preco;
 	
 	/**
@@ -18,12 +18,13 @@ public class Prato
 	 * @param preco	o preço do prato
 	 * @throws Exception	se algum dos parâmetros fornecidos for inválido (para mais informações, veja os setters)
 	 */
-	public Prato(int codPrato, int classificacao, String ingredientes, String descricao, BigDecimal preco) throws Exception{
+	public Prato(int codPrato, String classificacao, String ingredientes, String descricao, String nome, BigDecimal preco) throws Exception{
 		this.setCodPrato(codPrato);
 		this.setClassificacao(classificacao);
 		this.setIngredientes(ingredientes);
 		this.setDescricao(descricao);
 		this.setPreco(preco);
+		this.setNome(nome);
 	}
 	
 	/**
@@ -45,18 +46,18 @@ public class Prato
 	}
 	
 	/**
-	 * @return	um inteiro que representa a classificação do prato em entradas, pratos principais, sobremesas e bebidas
+	 * @return	a classificação do prato em entradas, pratos principais, sobremesas e bebidas
 	 */
-	public int getClassificacao() {
+	public String getClassificacao() {
 		return classificacao;
 	}
 	
 	/**
 	 * @param classificacao	a nova classificação a ser redefinida
-	 * @throws Exception	se a classificação for menor ou igual a 0 ou maior ou igual a 4
+	 * @throws Exception	se a classificação for nula ou vazia
 	 */
-	public void setClassificacao(int classificacao) throws Exception{
-		if (classificacao <= 0 || classificacao >= 5)
+	public void setClassificacao(String classificacao) throws Exception{
+		if (classificacao == null||classificacao.equals(""))
 			throw new Exception ("Classificação inválida");
 		
 		this.classificacao = classificacao;
@@ -116,6 +117,19 @@ public class Prato
 		this.preco = preco;
 	}
 	
+	public String getNome ()
+	{
+		return this.nome;
+	}
+	
+	public void setNome(String nome) throws Exception
+	{
+		if (nome == null|| nome.equals(""))
+			throw new Exception ("Prato: nome fornecido nulo ou vazio");
+		
+		this.nome = nome;
+	}
+	
 	/**
 	 * Gera o hashCode da instância
 	 * 
@@ -124,11 +138,12 @@ public class Prato
 	public int hashCode() {
 		final int prime = 31;
 		int result = 666;
-		result = prime * result + (new Integer(classificacao)).hashCode();
+		result = prime * result + ((classificacao == null)? 0 : classificacao.hashCode());
 		result = prime * result + (new Integer(codPrato)).hashCode();
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((ingredientes == null) ? 0 : ingredientes.hashCode());
 		result = prime * result + ((preco == null) ? 0 : preco.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
 
@@ -149,7 +164,10 @@ public class Prato
 		
 		Prato other = (Prato) obj;
 		
-		if (classificacao != other.classificacao)
+		if (!classificacao.equals(other.classificacao))
+			return false;
+		
+		if(!nome.equals(other.nome))
 			return false;
 		
 		if (codPrato != other.codPrato)

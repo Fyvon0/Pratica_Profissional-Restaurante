@@ -49,18 +49,37 @@ public class Pratos {
         if (prato==null)
             throw new Exception ("Livro nao fornecido");
 
+        int codPrato;
+        
         try
         {
-            String sql = "INSERT INTO Prato VALUES (?,?,?,?)";
+        	String sql = "SELECT codPrato FROM Prato";
+        	DAOs.getBD().prepareStatement(sql);
+        	MeuResultSet codPratos = (MeuResultSet)DAOs.getBD().executeQuery();
+        	codPratos.last();
+        	codPrato = codPratos.getInt("codPrato");
+        	codPrato++;
+        }
+        catch (Exception erro)
+        {
+        	throw new Exception ("Pratos: erro ao buscar pratos");
+        }
+        
+        try
+        {
+            String sql = "INSERT INTO Prato VALUES (?,?,?,?,?,?)";
 
             DAOs.getBD().prepareStatement (sql);
 
-            DAOs.getBD().setString(1, prato.getIngredientes ());
-            DAOs.getBD().setBigDecimal(2, prato.getPreco());
-            DAOs.getBD().setInt(3, prato.getClassificacao());
-            DAOs.getBD().setString(4, prato.getDescricao());
+            DAOs.getBD().setInt(1, codPrato);
+            DAOs.getBD().setString(2, prato.getIngredientes ());
+            DAOs.getBD().setString(3, prato.getDescricao());
+            DAOs.getBD().setString(4, prato.getClassificacao());
+            DAOs.getBD().setString(5, prato.getNome());
+            DAOs.getBD().setBigDecimal(6, prato.getPreco());
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -88,6 +107,7 @@ public class Pratos {
             DAOs.getBD().setInt (1, codigo);
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -111,14 +131,16 @@ public class Pratos {
 
         try
         {
-            String sql = "UPDATE Prato set ingredientes=?, preco=?, classificacao=?,descricao=? WHERE CODIGO = ?";
+            String sql = "UPDATE Prato set ingredientes=?, preco=?, classificacao=?,descricao=?, nome= ? WHERE CODIGO = ?";
 
             DAOs.getBD().prepareStatement (sql);
 
             DAOs.getBD().setString (1, prato.getIngredientes());
             DAOs.getBD().setBigDecimal (2, prato.getPreco());
-            DAOs.getBD().setInt (3, prato.getClassificacao());
+            DAOs.getBD().setString (3, prato.getClassificacao());
             DAOs.getBD().setString(4, prato.getDescricao());
+            DAOs.getBD().setString(5, prato.getNome());
+            DAOs.getBD().setInt(6, prato.getCodPrato());
 
             DAOs.getBD().executeUpdate ();
         }
@@ -135,7 +157,7 @@ public class Pratos {
      * @return	uma instância da classe Prato cujo código seja igual ao parâmetro
      * @throws Exception	se não houver prato com o código fornecido ou ocorrer algum erro ao conectar com o banco de dados
      */
-	public Prato getLivro (int codigo) throws Exception
+	public Prato getPrato (int codigo) throws Exception
     {
         Prato prato = null;
 
@@ -152,7 +174,7 @@ public class Pratos {
             if (!resultado.first())
                 throw new Exception ("Nao cadastrado");
 
-            prato = new Prato (resultado.getInt("codPrato"),resultado.getInt("classificacao"),resultado.getString("ingredientes"),resultado.getString("descricao"),resultado.getBigDecimal("preco"));
+            prato = new Prato (resultado.getInt("codPrato"),resultado.getString("classificacao"),resultado.getString("ingredientes"),resultado.getString("descricao"),resultado.getString("nome"),resultado.getBigDecimal("preco"));
         }
         catch (SQLException erro)
         {
@@ -187,4 +209,28 @@ public class Pratos {
 
         return resultado;
     }
+	
+	public MeuResultSet getPratosOrdenado (String campo) throws Exception
+	{
+		MeuResultSet resultado = null;
+		
+		String sql = "SELECT * FROM Prato";
+		
+		if (!campo.equals("Todas"))
+			sql += " WHERE classificacao = ?";
+		
+		try
+		{
+		DAOs.getBD().prepareStatement(sql);
+		if (!campo.equals("Todas"))
+			DAOs.getBD().setString(1, campo);
+		resultado = (MeuResultSet)DAOs.getBD().executeQuery();
+		}
+		catch (Exception erro)
+		{
+			throw new Exception ("Pratos: Erro ao buscar mesas");
+		}
+		
+		return resultado;
+	}
 }
