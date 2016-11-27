@@ -1,7 +1,6 @@
 package dbos;
 
 import java.sql.*;
-import java.util.Calendar;
 
 public class Cliente implements Cloneable
 {
@@ -13,7 +12,8 @@ public class Cliente implements Cloneable
 	/**
 	 * Construtor da classe cliente, inicializando suas variáveis a partir dos valores dos parametros
 	 * 
-	 * @param codCliente	código de Cliente
+	 * @param codCliente	código único que identifica cada Cliente
+	 * @param qtdVisitas	a quantidade de vezes que determinado cliente já visitou o restaurante
 	 * @param userLogin		nick que o usuário usa para se logar
 	 * @param senha			senha do usuário
 	 * @param nome			nome do usuário
@@ -51,7 +51,7 @@ public class Cliente implements Cloneable
 	}
 
 	/** 
-	 * @return codCliente	
+	 * @return um código único que identifica cliente	
 	 */
 	
 	public int getCodCliente() {
@@ -69,7 +69,7 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return userLogin
+	 * @return o login que o usuário usa para conectar
 	 */
 	public String getUserLogin() {
 		return userLogin;
@@ -87,7 +87,7 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return senha
+	 * @return a senha do usuário
 	 */
 	public String getSenha() {
 		return senha;
@@ -105,7 +105,7 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return nome
+	 * @return o nome do usuário
 	 */
 	public String getNome() {
 		return nome;
@@ -123,7 +123,7 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return celular
+	 * @return o celular do cliente
 	 */
 	public String getCelular() {
 		return celular;
@@ -141,7 +141,7 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return	mediaGasta
+	 * @return	a media gasta pelo cliente no restaurante durante todas suas visitas
 	 */
 	public float getMediaGasta() {
 		return mediaGasta;
@@ -159,7 +159,7 @@ public class Cliente implements Cloneable
 	}
 	
 	/**
-	 * @return ultimaVisita
+	 * @return a data da última visita do cliente ao restaurante
 	 */
 	public Timestamp getUltimaVisita() {
 		return ultimaVisita;
@@ -172,14 +172,12 @@ public class Cliente implements Cloneable
 	public void setUltimaVisita(Timestamp ultimaVisita) throws Exception{
 		if (ultimaVisita == null)
 			throw new Exception ("Data da última visita nula");
-			
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(ultimaVisita);
-		this.ultimaVisita = (Timestamp)cal.getTime();
+
+		this.ultimaVisita = ultimaVisita;
 	}
 	
 	/**
-	 * @return dataCadastro
+	 * @return a data de cadastro do cliente
 	 */
 	public Timestamp getDataCadastro() {
 		return dataCadastro;
@@ -193,17 +191,16 @@ public class Cliente implements Cloneable
 		if (dataCadastro == null)
 			throw new Exception ("Data de cadastro nula");
 		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(ultimaVisita);
-		this.ultimaVisita = (Timestamp)cal.getTime();
+		this.ultimaVisita = dataCadastro;
 	}
 	
 	// APOCALÍPTICOS
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * Retorna um código que identifica cada instância da classe de maneira única
+	 * 
+	 * @return o hashCode() da instância
 	 */
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -219,10 +216,11 @@ public class Cliente implements Cloneable
 		return result;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/**
+	 * Compara duas instâncias dessa classe
+	 * 
+	 * @return <code>true</code> se as instâncias forem iguais ou <code>false</code> se forem diferentes
 	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -278,7 +276,7 @@ public class Cliente implements Cloneable
 	public String toString() {
 		return "Cliente [codCliente=" + codCliente + ", userLogin=" + userLogin + ", senha=" + senha + ", nome=" + nome
 				+ ", celular=" + celular + ", mediaGasta=" + mediaGasta
-				+ ", ultimaVisita=" + ultimaVisita + ", dataCadastro=" + dataCadastro + "]";
+				+ ", ultimaVisita=" + ultimaVisita + ", dataCadastro=" + dataCadastro + ", qtdVisitas=" + qtdVisitas + "]";
 	}
 	
 	/**

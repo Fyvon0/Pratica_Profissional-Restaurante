@@ -18,7 +18,7 @@ public class Mesa {
 	 * @param statusMesa	indica se a mesa está ocupada ou livre
 	 * @param codCliente	código do cliente que está ocupando a mesa ou fez a reserva
 	 * @param horario	horário em que a sessão atual foi iniciada
-	 * @param horaPrevista	a hora prevista para a chegada da reserva (se houver)
+	 * @param horaPrevista	a hora prevista para a chegada da reserva
 	 * @param horaFechamento	a hora em que foi solicitado o fechamento da conta
 	 * @param formaPagamento	a forma de pagamento optada pelo cliente
 	 * @param valorTotal	o valor total da mesa até agora
@@ -38,7 +38,7 @@ public class Mesa {
 	}
 	
 	/**
-	 * @return codMesa
+	 * @return um código único que identifica cada Mesa
 	 */
 	public int getCodMesa() {
 		return codMesa;
@@ -94,7 +94,7 @@ public class Mesa {
 	}
 	
 	/**
-	 * @return	o código do cliente que ocupa a mesa ou fez a reserva
+	 * @return	o código do cliente que ocupa a mesa
 	 */
 	public int getCodCliente() {
 		return codCliente;
@@ -115,7 +115,7 @@ public class Mesa {
 	 * @return o horário em que a mesa foi iniciada
 	 */
 	public Timestamp getHorario() {
-		return horario;
+		return (Timestamp)horario.clone();
 	}
 	
 	/**
@@ -126,14 +126,14 @@ public class Mesa {
 		if (horario == null)
 			throw new Exception ("Horário nulo");
 		
-		this.horario = horario;
+		this.horario = (Timestamp)horario.clone();
 	}
 	
 	/**
 	 * @return hora prevista para chegada, caso haja reserva
 	 */
 	public Timestamp getHoraPrevista() {
-		return horaPrevista;
+		return (Timestamp)horaPrevista.clone();
 	}
 	
 	/**
@@ -144,14 +144,14 @@ public class Mesa {
 		if (horaPrevista == null)
 			throw new Exception ("Hora prevista não fornecida");
 		
-		this.horaPrevista = horaPrevista;
+		this.horaPrevista = (Timestamp)horaPrevista.clone();
 	}
 	
 	/**
 	 * @return o horário em que o fechamento da conta foi pedido
 	 */
 	public Timestamp getHoraFechamento() {
-		return horaFechamento;
+		return (Timestamp)horaFechamento.clone();
 	}
 	
 	/**
@@ -162,7 +162,7 @@ public class Mesa {
 		if (horaFechamento == null)
 			throw new Exception ("Hora de Fechamento da conta não fornecida");
 		
-		this.horaFechamento = horaFechamento;
+		this.horaFechamento = (Timestamp)horaFechamento.clone();
 	}
 	
 	/**
@@ -184,14 +184,14 @@ public class Mesa {
 	}
 	
 	/**
-	 * @return	uma instância de BigDecimal que indica o valor total do consumo na sessão atual nessa mesa
+	 * @return	uma instância de BigDecimal que indica o valor total do consumo na sessão atual ou na última sessão nessa mesa
 	 */
 	public BigDecimal getValorTotal() {
 		return valorTotal;
 	}
 	
 	/**
-	 * @param valorTotal	um BigDecimal que indique o total do consumo na mesa na sessão atual
+	 * @param valorTotal	um BigDecimal que indique o total do consumo na mesa na sessão atual ou na última sessão
 	 * @throws Exception	se o valorTotal for menor do que 0.0
 	 */
 	public void setValorTotal(BigDecimal valorTotal) throws Exception{
@@ -200,6 +200,8 @@ public class Mesa {
 			
 		this.valorTotal = valorTotal;
 	}
+	
+	//APOCALÍPTICOS
 
 	/**
 	 * Gera o hashCode da instância
@@ -282,6 +284,53 @@ public class Mesa {
 		
 		return true;
 	}
+
+	/**
+	 * Cria uma representação de uma instância dessa classe em String
+	 * 
+	 * @return uma String que representa os atributos da instância
+	 */
+	public String toString() {
+		return "Mesa [codMesa=" + codMesa + ", reserva=" + reserva + ", statusMesa=" + statusMesa + ", codCliente="
+				+ codCliente + ", horario=" + horario + ", horaPrevista=" + horaPrevista + ", horaFechamento="
+				+ horaFechamento + ", formaPagamento=" + formaPagamento + ", valorTotal=" + valorTotal + "]";
+	}
 	
+	/**
+	 * Um construtor que instância o this com os valores das váriaveis de outra instância de Mesa
+	 * 
+	 * @param m	instância de mesa que servirá de base para a inicialização das variáveis
+	 * @throws Exception	se a mesa fornecida for nula
+	 */
+	public Mesa (Mesa m) throws Exception
+	{
+		if (m == null)
+			throw new Exception ("Mesa fornecida nula");
+		
+		this.setCodMesa(m.codMesa);
+		this.setReserva(m.reserva);
+		this.setStatusMesa(m.statusMesa);
+		this.setCodCliente(m.codCliente);
+		this.setHorario(m.horario);
+		this.setHoraPrevista(m.horaPrevista);
+		this.setHoraFechamento(m.horaFechamento);
+		this.setFormaPagamento(m.formaPagamento);
+		this.setValorTotal(m.valorTotal);
+	}
 	
+	/**
+	 * Cria um clone dessa instância de mesa
+	 * 
+	 * @return um Object inicializado com essa instância
+	 */
+	public Object clone ()
+	{
+		Mesa retorno = null;
+		
+		try {
+			retorno = new Mesa (this.getCodMesa(),this.getReserva(),this.getStatusMesa(),this.getCodCliente(),this.getHorario(),this.getHoraPrevista(),this.getHoraFechamento(),this.getFormaPagamento(),this.getValorTotal());
+		} catch (Exception e) {}
+		
+		return retorno;
+	}
 }

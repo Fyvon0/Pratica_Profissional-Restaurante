@@ -2,37 +2,25 @@ package visual;
 
 import java.awt.EventQueue;
 import banco.de.dados.*;
-import daos.*;
 import dbos.*;
 import Core.*;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.GridLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
-import javax.swing.JLayeredPane;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -41,15 +29,10 @@ import java.util.TimerTask;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -60,9 +43,6 @@ import java.util.Date;
 import java.util.Calendar;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-
-import static java.nio.file.StandardCopyOption.*;
-import javax.swing.JFileChooser;
 
 public class HaruNoHana extends Thread implements ActionListener {
 
@@ -88,7 +68,6 @@ public class HaruNoHana extends Thread implements ActionListener {
 	private JTable tableFechs;
 	private JPanel panel;
 	private JTable tblPratos;
-	private JTable tblQuest;
 	private final ButtonGroup btnGrpPratos = new ButtonGroup();
 	private JTextField txtNomePrato;
 	private JTextField txtDescPrato;
@@ -146,7 +125,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		String [] cols = {"codPromocao","nome","descricao","desconto (%)","condicao"};
 		tableModelPromocoes = new DefaultTableModel(cols,0);
 		
-		DefaultListModel listModel = new DefaultListModel();
+		DefaultListModel<Integer> listModel = new DefaultListModel<Integer>();
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmHaruNoHana.getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -336,7 +315,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		panel_16.add(lblEscolhaONmero);
 		
 		JSpinner spnMesa = new JSpinner();
-		spnMesa.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		spnMesa.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		panel_16.add(spnMesa);
 		
 		JLabel lblAvisoMesa = new JLabel("");
@@ -364,7 +343,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 				
 				try
 				{
-					DAOs.getMesas().incluir(new Mesa((Integer)spnMesa.getValue(),0,0,1,new Timestamp(data),new Timestamp(data),new Timestamp(data),"Débito",new BigDecimal(0.0F)));
+					DAOs.getMesas().incluir(new Mesa((Integer)spnMesa.getValue(),0,0,2,new Timestamp(data),new Timestamp(data),new Timestamp(data),"Débito",new BigDecimal(0.0F)));
 				}
 				catch (Exception erro)
 				{
@@ -392,10 +371,11 @@ public class HaruNoHana extends Thread implements ActionListener {
 		JLabel lblEscolhaONmero_1 = new JLabel("Escolha o n\u00FAmero da mesa: ");
 		panel_18.add(lblEscolhaONmero_1);
 		
-		DefaultListModel listModelMesas = new DefaultListModel();
-		JList lstMesa = new JList(listModelMesas);
+		DefaultListModel<Integer> listModelMesas = new DefaultListModel<Integer>();
+		JList<Integer> lstMesa = new JList<Integer>(listModelMesas);
 		lstMesa.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		panel_18.add(lstMesa);
+		JScrollPane scrollPaneResMesa = new JScrollPane(lstMesa);
+		panel_18.add(scrollPaneResMesa);
 		
 		JLabel lblEscolhaOHorrio = new JLabel("Escolha o hor\u00E1rio: ");
 		panel_18.add(lblEscolhaOHorrio);
@@ -474,7 +454,9 @@ public class HaruNoHana extends Thread implements ActionListener {
 		
 		DefaultListModel<Integer> lstModelReserva = new DefaultListModel<Integer> ();
 		JList<Integer> lstMesasReserva = new JList<Integer>(lstModelReserva);
-		panel_19.add(lstMesasReserva);
+		lstMesasReserva.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JScrollPane scrollPaneCancResMesa = new JScrollPane (lstMesasReserva);
+		panel_19.add(scrollPaneCancResMesa);
 				
 		JButton btnCancelarReserva = new JButton("Cancelar Reserva");
 		btnCancelarReserva.addActionListener(new ActionListener() {
@@ -671,13 +653,13 @@ public class HaruNoHana extends Thread implements ActionListener {
 		panel_8.add(lblDesconto);
 		
 		JSpinner spnDesconto = new JSpinner();
-		spnDesconto.setModel(new SpinnerNumberModel(1, 1, 100, 1));
+		spnDesconto.setModel(new SpinnerNumberModel(1, 1, 99, 1));
 		panel_8.add(spnDesconto);
 		
 		JLabel lblAviso = new JLabel("");
 
-		JComboBox cmbxCond = new JComboBox();
-		JComboBox cmbxSinal = new JComboBox();
+		JComboBox<String> cmbxCond = new JComboBox<String>();
+		JComboBox<String> cmbxSinal = new JComboBox<String>();
 		JSpinner spnValor = new JSpinner();
 		
 		JButton btnIncluirPromoo = new JButton("Incluir Promo\u00E7\u00E3o");
@@ -714,10 +696,10 @@ public class HaruNoHana extends Thread implements ActionListener {
 		panel_8.add(panel_17);
 		panel_17.setLayout(new GridLayout(1, 3, 0, 0));
 		
-		cmbxCond.setModel(new DefaultComboBoxModel(new String[] {"mediaGasta", "qtdVisitas"}));
+		cmbxCond.setModel(new DefaultComboBoxModel<String>(new String[] {"mediaGasta", "qtdVisitas"}));
 		panel_17.add(cmbxCond);
 		
-		cmbxSinal.setModel(new DefaultComboBoxModel(new String[] {"<", "<=", "=", ">=", ">"}));
+		cmbxSinal.setModel(new DefaultComboBoxModel<String>(new String[] {"<", "<=", "=", ">=", ">"}));
 		panel_17.add(cmbxSinal);
 		
 		spnValor.setModel(new SpinnerNumberModel(1, 1, 100, 1));
@@ -739,7 +721,7 @@ public class HaruNoHana extends Thread implements ActionListener {
 		
 		JLabel lblDigiteOCdigo = new JLabel("Escolha o C\u00F3digo da Promo\u00E7\u00E3o que deseja excluir");
 		panel_9.add(lblDigiteOCdigo);
-		JList lstCodPromocoes = new JList(listModel);
+		JList<Integer> lstCodPromocoes = new JList<Integer>(listModel);
 		lstCodPromocoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		btnAtualizarCodigos = new JButton("Atualizar C\u00F3digos");
@@ -886,8 +868,8 @@ public class HaruNoHana extends Thread implements ActionListener {
 		JLabel lblEscolhaAClassificao = new JLabel("Escolha a classifica\u00E7\u00E3o do prato");
 		panel_26.add(lblEscolhaAClassificao);
 		
-		JComboBox cmbxClassificacao = new JComboBox();
-		cmbxClassificacao.setModel(new DefaultComboBoxModel(new String[] {"Entrada", "Pratos", "Sobremesa", "Bebidas"}));
+		JComboBox<String> cmbxClassificacao = new JComboBox<String>();
+		cmbxClassificacao.setModel(new DefaultComboBoxModel<String>(new String[] {"Entrada", "Pratos", "Sobremesa", "Bebidas"}));
 		panel_26.add(cmbxClassificacao);
 		
 		JLabel lblAvisoPrato = new JLabel("");
@@ -1312,11 +1294,4 @@ public class HaruNoHana extends Thread implements ActionListener {
 				JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
-	private static String getFileExtension(File file) {
-        String fileName = file.getName();
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-        return fileName.substring(fileName.lastIndexOf(".")+1);
-        else return "";
-    }
 }

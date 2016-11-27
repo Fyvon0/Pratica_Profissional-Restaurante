@@ -103,6 +103,14 @@ public class Clientes
 		return resultado;
 	}
 	
+	/**
+	 * Informa todos os clientes do banco de dados ordenados por um campo específico
+	 * 
+	 * @param campo	uma String com o campo pelo qual os dados de cliente serão ordenados
+	 * @param desc	um boolean que indica se os dados serão trazidos em ordem decrescente
+	 * @return	uma instância de MeuResultSet que armazena dados de todos os clientes
+	 * @throws Exception	se houver um erro ao buscar os clientes no banco de dados
+	 */
 	public MeuResultSet getClientesOrdenado (String campo,boolean desc) throws Exception {
 		MeuResultSet resultado = null;
 		

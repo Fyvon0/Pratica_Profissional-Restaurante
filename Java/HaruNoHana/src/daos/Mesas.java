@@ -47,7 +47,7 @@ public class Mesas {
 	 * @param mesa	uma instância da classe Mesa cujos valores das variáveis serão inseridos no banco de dados
 	 * @throws Exception	se a mesa fornecida for nula
 	 */
-	public void incluir (Mesa mesa) throws Exception
+	public synchronized void incluir (Mesa mesa) throws Exception
     {
         if (mesa==null)
             throw new Exception ("Mesa nao fornecida");
@@ -75,7 +75,7 @@ public class Mesas {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao inserir mesa");
+            throw new Exception ("Mesas: erro ao incluir mesa no banco de dados");
         }
     }
 	
@@ -99,6 +99,7 @@ public class Mesas {
             DAOs.getBD().setInt (1, codigo);
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -138,6 +139,7 @@ public class Mesas {
             DAOs.getBD().setInt(9, mesa.getCodMesa ());
 
             DAOs.getBD().executeUpdate ();
+            DAOs.getBD().commit();
         }
         catch (SQLException erro)
         {
@@ -176,7 +178,7 @@ public class Mesas {
         }
         catch (SQLException erro)
         {
-            throw new Exception ("Erro ao procurar livro");
+            throw new Exception ("Erro ao procurar mesa");
         }
 
         return mesa;
@@ -188,7 +190,7 @@ public class Mesas {
      * @return	uma instância de MeuResultSet com todas as mesas do banco de dados
      * @throws Exception	se houver algum erro ao conectar com o banco de dados
      */
-    public MeuResultSet getMesas () throws Exception
+    public synchronized MeuResultSet getMesas () throws Exception
     {
         MeuResultSet resultado = null;
 
@@ -207,8 +209,16 @@ public class Mesas {
 
         return resultado;
     }
-	
-	public MeuResultSet getMesasOrdenado (String[] condicao, String campo,boolean desc) throws Exception {
+    /**
+     * Retorna todas as mesas do banco de dados ordenadas por um campo e que atendam a determinadas condições
+     * 
+     * @param condicao	um Array de String com as condições que as mesas devem ter
+     * @param campo		uma String que indica o campo pelo qual a pesquisa deve ser ordenada
+     * @param desc		um boolean que indica se os resultados devem estar em ordem decrescente
+     * @return	uma instância de MeuResultSet com todas as mesas do banco de dados
+     * @throws Exception	se houver algum erro ao conectar com o banco de dados
+     */
+	public synchronized MeuResultSet getMesasOrdenado (String[] condicao, String campo,boolean desc) throws Exception {
 		MeuResultSet resultado = null;
 		
 		try
@@ -250,6 +260,13 @@ public class Mesas {
 		return resultado;
 	}
 	
+	/**
+	 * Reserva uma mesa em um determinado horário
+	 * 
+	 * @param codigo	código da mesa reservada
+	 * @param horario	horario previsto para a chegada do cliente
+	 * @throws Exception	se nçao houver mesa com o código informado ou se o horário fornecido for nulo
+	 */
 	public void reservar (int codigo, Timestamp horario) throws Exception
 	{
 		if (!cadastrado(codigo))
@@ -276,6 +293,12 @@ public class Mesas {
 		}
 	}
 	
+	/**
+	 * Cancela a reserva de uma determinada mesa
+	 * 
+	 * @param codigo	código da mesa cuja reserva será cancelada
+	 * @throws Exception	se não houver mesa com o código informado
+	 */
 	public void cancelarReserva (int codigo) throws Exception
 	{
 		if (!cadastrado(codigo))

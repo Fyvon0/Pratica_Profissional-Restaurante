@@ -1,15 +1,11 @@
-/**
- * 
- */
 package banco.de.dados;
 
-/**
- * @author u16164
- *
- */
 import Core.*;
 import daos.*;
 
+/**
+ * A class DAOs serve como um "hub", reunindo todos as classes de acesso ao banco de dados utilizadas no projeto
+ */
 public class DAOs {
 	
 	private static MeuPreparedStatement bd;
