@@ -41,8 +41,8 @@
     $stmt = sqlsrv_query($con, $sql);
     
     if ($linha = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)) {
-        $nome = $linha[4];
-        $celular = $linha[8];
+        $nome = $linha[3];
+        $celular = $linha[7];
     }
 	?>
 
