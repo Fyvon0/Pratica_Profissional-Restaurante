@@ -23,7 +23,7 @@ public class DAOs {
 		{
 			DAOs.bd = new MeuPreparedStatement (
                     "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-                    "jdbc:sqlserver://regulus.cotuca.unicamp.br:1433;databasename=BDGRUPO9",
+                    "jdbc:sqlserver://regulus:1433;databasename=BDGRUPO9",
                     "BDGRUPO9", "BDGRUPO9");
 
           DAOs.clientes = new Clientes ();

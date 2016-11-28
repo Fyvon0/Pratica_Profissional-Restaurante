@@ -17,6 +17,17 @@ session_start();
         }
         unset ($_SESSION['pedido']);
     }
+if (!(isset($_SESSION['totalPromo'])))
+    $_SESSION['totalPromo'] = 0;
+ 
+
+if (isset($_POST['promocoes']))
+{
+    $_SESSION['porcentagem'] = (100 - $_POST['promocoes'])/100;
+    $_SESSION['codCliPromo'] = $_POST['codCliPromo'];
+}
+
+
 ?>
 <html>
     <head>
@@ -26,11 +37,18 @@ session_start();
         <link rel="stylesheet" type="text/css" href="buttons.css">
        <link href="https://fonts.googleapis.com/css?family=Montez|Poiret+One" rel="stylesheet">  
     <link rel="icon" href="logo.ico">
+    <script>
+        function insivel()
+        {
+            document.getElementById("PromocoesDiv").style.visibility = "hidden";
+        }
+        </script>
     </head>
         
     <body>
         <?php
         include ('topo.php');
+
        
         
         if (isset($_POST['x'])){
@@ -48,7 +66,8 @@ session_start();
         <!--<img src="topo.png" style="width:98%;">-->
     <form action="pedido.php" method="post" style="position:relative;top:-70px;">
         <input type="submit" name="x" value="Pedidos"> 
-        <input type="submit" name="x" value="FecharConta">    
+        <input type="submit" name="x" value="FecharConta"> 
+       
     </form>
     
    
@@ -76,7 +95,10 @@ session_start();
                     echo "<br><br>";
                     echo "<hr>";
         }
-        echo "<label style='color: red; size: 70px'>Valor Total: R$".number_format($_SESSION['total'],2)."</label>";
+            if (isset($_SESSION['porcentagem']))
+        echo "<label style='color: red; size: 70px'>Valor Total: R$".number_format($_SESSION['total'],2)*$_SESSION['porcentagem']."</label>";
+        else
+            echo "<label style='color: red; size: 70px'>Valor Total: R$".number_format($_SESSION['total'],2)."</label>";
         }
         if ($aba=='FecharConta')
         {
@@ -84,6 +106,7 @@ session_start();
             
             echo "<label>Formas de Pagamento: </label><br><br>";
             echo '<form action="pedido.php" method="post">
+            
                     <input type="radio" name="pag" value="Credito">Crédito
                     <input type="radio" name="pag" value="Debito">Débito<br><br>
                     <input type="submit" name="fechar" value = Fechar>
@@ -125,6 +148,38 @@ session_start();
                     header ('Location:questionario.php');
             }
             
-    ?></div>
+    ?>
+        
+         
+        </div>
+        <?php
+        echo '<form action="pedido.php" method="post">';
+        echo "<div id='PromocoesDiv' style='position:absolute;top:200px;right:120px;'>";
+        echo "<label>Suas promoções</label><Br>";
+        echo"<label>Descontos</label><br>";
+        $sql = "Select * from ClientePromocao where codCliente in(select codCliente from Cliente where userLogin='".$_SESSION['user']."')";
+                    $stm = sqlsrv_query($con,$sql);
+                    if($linha = sqlsrv_fetch_array($stm))
+                    {
+                    $sql = "select * from Promocao where codPromocao =".$linha[2]."";
+                    $stm = sqlsrv_query($con,$sql);
+                    echo "<input type='hidden' name='codCliPromo' value =$linha[0]>"; 
+                    echo "<select name='promocoes'>";
+                    while ($linha = sqlsrv_fetch_array($stm))
+                    echo "<option>$linha[3]</option>";
+                    echo "</select><br>";
+                    echo"<input type='submit' name='promo' value='Confirmar'>" ;
+        echo"</div>";
+                    }
+                if (isset($_SESSION['porcentagem']))
+{
+                    echo $_SESSION['porcentagem'];
+    echo "<script>document.getElementById('PromocoesDiv').style.visibility = 'hidden'</script>";
+    $sql = "delete from ClientePromocao where codClientePromocao =".$_SESSION['codCliPromo'];
+    $stmt = sqlsrv_query($con,$sql);
+    if (!$stmt) {echo "deu ruim ";}
+}
+        
+        ?>
     </body>
         </html>

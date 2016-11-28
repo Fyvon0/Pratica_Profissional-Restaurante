@@ -44,7 +44,7 @@
            
         }
         
-		$sql = "INSERT INTO Cliente VALUES ('".$_SESSION['user']."',0,'".$_SESSION['pword']."','".$_POST['nome']."',GETDATE(),GETDATE(),0,'".$_SESSION['celular']."',0)";
+		$sql = "INSERT INTO Cliente VALUES ('".$_SESSION['user']."','".$_SESSION['pword']."','".$_POST['nome']."',GETDATE(),GETDATE(),0,'".$_SESSION['celular']."',0)";
 
 		$stmt = sqlsrv_query($con,$sql);
         
